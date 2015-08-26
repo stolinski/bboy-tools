@@ -58,9 +58,9 @@ Type = React.createClass({
   },  
 
   render() {
-    var toggleForm = 'open';
-    // var toggleForm = this.state.formToggle ? 'open' : '';
-    toggleForm += 'add-new-move';
+
+    var toggleForm = this.state.formToggle ? 'open' : '';
+    toggleForm += ' add-new-move';
 
     return (
         <div className={this.typeClasses()}>
@@ -96,8 +96,11 @@ Type = React.createClass({
           <button 
             className={toggleForm}
             onClick={this.openForm}>
-              <i className="fa fa-plus"></i>
-              <span>New Move</span>
+              <span className="form-toggle-icons">
+                <i className="fa fa-plus"></i>
+                <i className="fa fa-minus"></i>
+              </span>
+              <span className="form-toggle-text">New Move</span>
           </button>
         </div> 
     );

@@ -38,14 +38,19 @@ App = React.createClass({
                 return arr1obj[prop] === arr2obj[prop];
             });
 
-            arr1obj ? _.extend(arr1obj, arr2obj) : arr1.push(arr2obj);
+            arr1obj ? start.push(arr2obj) : arr1.push(arr2obj);
         });
     }
     mergeByProperty(start, this.data.moves, 'type');
+     // start = this.data.moves;
+    console.log(start);
+
     // console.log(this.data.moves);
     var group = _.groupBy(start, function(move) {
       return move.type;
     });    
+
+    
 
 
 

@@ -209,8 +209,32 @@ header
 	font-size 1.4em
 	padding 15px  
 	transform: translateY(-63px)
-	span
-		display none
+	transition all 0.3s ease
+	&:focus
+		outline none
+	.form-toggle-icons
+		width 20px 
+		height 20px 
+		position relative
+		display inline-block
+		i
+			position absolute
+			transition all 0.3s ease 
+	&.open
+		transform: translateY(0)
+		.fa-plus
+			transform: scaleY(0)
+	.form-toggle-text
+		opacity 0 
+		white-space: nowrap
+		display inline-block
+		width 0 
+		overflow hidden
+		transition all 0.3s ease 
+	&:hover
+		.form-toggle-text
+			opacity 1 
+			width 150px 
 		
 footer
 	background #333

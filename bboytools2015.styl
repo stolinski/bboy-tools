@@ -1,0 +1,231 @@
+/*------------------------------------*\
+    $VARIABLES
+\*------------------------------------*/
+
+
+// Colors
+blue = #4A90E2
+
+social = {
+    twitter: #00aced,
+    facebook: #3b5998,
+    google: #dd4b39,
+    youtube: #bb0000
+}
+
+// Grid
+$xsmall = 340px
+$small = 500px
+$med = 800px
+$large = 960px
+$wide = 1200px
+
+// Layers
+z = {
+    video: 7,
+    header: 8,
+    nav: 9,
+    modal: 10
+}
+
+
+
+
+
+/*------------------------------------*\
+    $BASE
+\*------------------------------------*/
+
+
+normalize-css()
+
+html
+    box-sizing: border-box
+
+*, *:before, *:after
+    box-sizing: inherit
+
+body 
+	font-family: 'Roboto', sans-serif
+	background: #DEDEDE
+	padding-top 200px 
+
+header 
+	background blue
+	color #fff
+	padding 20px
+	fixed top left
+	width 100%
+	z-index: z.nav
+	box-shadow: 1px 3px 4px rgba(#000000, 0.22), -3px 1px 4px rgba(#000000, 0.15)
+	clearfix()
+	h1, h2
+		margin 0 
+		float left
+
+.main-nav
+	float right
+	ul
+		list-style none
+		padding 0
+	li
+		float left
+
+#login-dropdown-list
+	position fixed
+	right 0
+	border none
+	border-radius 0
+	left auto
+	box-shadow: 1px 3px 4px rgba(#000000, 0.22), -3px 1px 4px rgba(#000000, 0.15)
+	background blue
+	color #FFF
+	width 100% 
+	top 0
+	margin 0
+	height 100%  
+
+#login-buttons, .accounts-dialog
+	label 
+		font-size 1.6em 
+	input[type=text], input[type=text], input[type=email], input[type=email], input[type=password], input[type=password]
+		appearance none 
+		background blue + 20
+		border-radius 0
+		border none 
+		font-size 1.6em 
+
+
+
+
+
+/*------------------------------------*\
+    $HOMEPAGE
+\*------------------------------------*/
+
+
+.homepage-zone
+	text-align center
+
+.brand-new-move
+	display none
+
+.types
+	position relative
+	background: #FFF
+	width: 98%
+	margin: 0 auto
+	display: flex
+	flex-wrap: wrap
+	justify-content: space-between
+	border-radius: 12px
+	padding: 30px 40px
+	box-shadow: -4px 2px 6px rgba(#000000, 0.09), 2px 2px 7px rgba(#000000, 0.08)
+	+above($large)
+		width: 90%
+		padding: 40px 80px
+
+.book
+	width 120px 
+	height 180px 
+	top -110px 
+	left 50%
+	transform: translateX(-60px)  
+	position absolute
+	border-radius 9px 
+	background #333
+	box-shadow: 1px 3px 4px rgba(#000000, 0.22), -3px 1px 4px rgba(#000000, 0.15)
+	+above($med)
+		top -40px
+		left -50px
+		transform: translateX(0)
+	p
+		background #FFF 
+		font-size 56px 
+		margin 50px 10px
+		border-radius 5px
+		text-align center 
+	.book-title
+		display none   
+
+.type
+	width 100% 
+	+above($large)
+		width: 48%
+	h3
+		border-bottom: solid 4px green
+		font-size: 38px;
+		padding-bottom 6px 
+	&.go-down
+		h3
+			border-color purple 
+	&.power-move
+		h3
+			border-color red 
+	&.top-rock
+		h3
+			border-color blue 						
+
+.moves
+	list-style none
+	padding 0
+
+.move
+	margin 0 10px 20px
+	font-size: 26px
+	> .controls
+		display: none
+		&.open
+			display inline-block
+
+.move-form
+	font-size 26px 
+		
+.new-move
+	display: flex
+	justify-content space-apart 
+	input
+		width 60% 
+		padding: 10px 13px 6px
+		background: #EEEEEE
+		border: none
+		& + input
+			width 25% 
+			margin-left 2.5%
+	button
+		margin-left 2.5% 
+		background blue
+		border: none
+		color #FFF
+		text-align center
+		width 10%
+		
+.add-new-move
+	width 100%
+	background #FFF
+	border none
+	color #D5D5D5
+	border-top @color solid 4px   
+	font-size 1.4em
+	padding 15px  
+	transform: translateY(-63px)
+	span
+		display none
+		
+footer
+	background #333
+	margin-top 40px 
+	color #FFF  
+	padding 20px
+	
+.newmove-enter
+  animation-duration: .75s;
+  animation-name: fadeInLeft;
+  transform-origin: center bottom;
+
+.newmove-leave
+  animation-name: zoomOut;
+  animation-duration: .75s;
+  background: yellow;
+  opacity: 1.0;
+  transition: opacity .5s ease-in;

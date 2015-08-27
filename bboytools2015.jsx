@@ -17,9 +17,17 @@ if (Meteor.isClient) {
     }
   });
 
+  FlowRouter.route('/thirties', {
+    action: function() {
+      // We render the template with React
+      React.render(<Thirties />, document.getElementById("render-target"));
+    }
+  });  
+
   Meteor.startup(function () {
   });
 }
 
 if (Meteor.isServer) {
 }
+

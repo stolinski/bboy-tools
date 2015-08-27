@@ -38,12 +38,14 @@ Move = React.createClass({
           &times;
         </button>
         </div> 
-        <span className="text">{this.props.move.name} - {this.props.move.value}</span>
+        <span className="text" contentEditable={true}>{this.props.move.name} - {this.props.move.value}</span>
         <input
+          id="checkboxz"
           type="checkbox"
           readOnly={true}
           checked={this.props.move.checked}
           onClick={this.toggleControls} />
+        <label htmlFor="checkboxz"><i className="fa fa-pencil"></i></label>
       </li>
     );
   }

@@ -23,10 +23,14 @@ App = React.createClass({
       {
         type: 'top_rock'
       }, {
+        type: 'go_down'
+      }, {
         type: 'footwork'
       }, {
         type: 'power_move'
       }, {
+        type: 'freeze'
+      }, {        
         type: 'burner'
       }
     ]
@@ -43,15 +47,10 @@ App = React.createClass({
     }
     mergeByProperty(start, this.data.moves, 'type');
      // start = this.data.moves;
-    console.log(start);
 
-    // console.log(this.data.moves);
     var group = _.groupBy(start, function(move) {
       return move.type;
-    });    
-
-    
-
+    });
 
 
     // Get moves from this.data.moves

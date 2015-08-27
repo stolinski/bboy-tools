@@ -20,7 +20,10 @@ Type = React.createClass({
     return _.startCase(this.props.type[0].type);
   },
   renderCategorySnake() {
-    return this.props.type[0].type;
+
+    if(this.props.type.length > 0) {
+      return this.props.type[0].type;
+    }
   },
   typeClasses() {
     return _.kebabCase(this.props.type[0].type) + " type";
@@ -31,10 +34,14 @@ Type = React.createClass({
   },
 
   renderTypes() {
-    // Get types from this.data.types
-    return this.props.type.map((move) => {
-      return <Move key={move._id} move={move} />;
-    });
+    // this.props.type.shift();
+    if(this.props.type.length > 0) {
+      return this.props.type.map((move) => {
+        return <Move key={move._id} move={move} />;
+      });      
+    } else {
+      return <li className="no-results">No Moves Added Yet</li>;
+    }
   },
 
   handleSubmit(event) {
@@ -49,6 +56,8 @@ Type = React.createClass({
       name: name,
       value: value,
       type: type,
+      owner: Meteor.userId(),
+      username: Meteor.user().username,      
       createdAt: new Date() // current time
     });
  

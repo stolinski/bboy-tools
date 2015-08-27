@@ -4,13 +4,34 @@
 
 
 // Colors
-blue = #4A90E2
+blue = #607D8B
+yellow = #FFC107
+text = #212121
+dark-blue = #455A64
+light-blue = #CFD8DC
+light-grey = #B6B6B6
+grey = #727272
+
+red = #e51c23
+purple = #673ab7
+indigo = #3f51b5
+green = #259b24
+orange = #ff9800
 
 social = {
     twitter: #00aced,
     facebook: #3b5998,
     google: #dd4b39,
     youtube: #bb0000
+}
+
+moves = {
+	top-rock: blue,
+	go-down: purple,
+	footwork: green,
+	power-move: red,
+	freeze: indigo,
+	burner: orange
 }
 
 // Grid
@@ -48,7 +69,38 @@ html
 body 
 	font-family: 'Roboto', sans-serif
 	background: #DEDEDE
+	color text 
 	padding-top 200px 
+
+[type=checkbox]
+	// display:none;
+
+ 
+[type=checkbox] + label
+	display:inline-block;
+	padding: 0 0 0 0px;
+	color #333
+	cursor pointer
+
+[type=checkbox]:checked + label
+	display:inline-block;
+	padding: 0 0 0 0px;
+	color red
+
+
+.btn
+	background blue
+	color #FFF
+	text-transform uppercase
+	border none
+	border-radius 4px 
+	padding: 25px 80px
+	font-weight 700 
+	transition: all 0.3s
+	&.btn-cancel
+		background red 
+	&.btn-start
+		background green   
 
 header 
 	background blue
@@ -65,6 +117,8 @@ header
 
 .main-nav
 	float right
+	a
+		text-decoration none
 	ul
 		list-style none
 		padding 0
@@ -156,15 +210,10 @@ header
 		border-bottom: solid 4px green
 		font-size: 38px;
 		padding-bottom 6px 
-	&.go-down
-		h3
-			border-color purple 
-	&.power-move
-		h3
-			border-color red 
-	&.top-rock
-		h3
-			border-color blue 						
+	for $label, $color in moves
+		&.{$label}
+			h3
+				border-color $color
 
 .moves
 	list-style none
@@ -173,6 +222,8 @@ header
 .move
 	margin 0 10px 20px
 	font-size: 26px
+	&:first-child
+		display none
 	> .controls
 		display: none
 		&.open
@@ -194,25 +245,29 @@ header
 			margin-left 2.5%
 	button
 		margin-left 2.5% 
-		background blue
+		background yellow
 		border: none
 		color #FFF
 		text-align center
 		width 10%
+		transition all 0.2s ease
+		&:hover 
+			background yellow - 20 
 		
 .add-new-move
 	width 100%
 	background #FFF
 	border none
-	color #D5D5D5
+	color light-grey
 	border-top @color solid 4px   
 	font-size 1.4em
-	padding 15px  
+	padding 15px 
 	transform: translateY(-63px)
 	transition all 0.3s ease
 	&:focus
 		outline none
 	.form-toggle-icons
+		top -2px 
 		width 20px 
 		height 20px 
 		position relative
@@ -235,9 +290,31 @@ header
 		.form-toggle-text
 			opacity 1 
 			width 150px 
-		
+
+
+.stopwatch
+	text-align center
+	background: #FFF
+	width: 98%
+	margin: 0 auto 60px
+	border-radius: 12px
+	padding: 30px 40px
+	box-shadow: -4px 2px 6px rgba(#000000, 0.09), 2px 2px 7px rgba(#000000, 0.08)
+	+above($large)
+		width: 90%
+		padding: 40px 80px
+		h3
+			font-size 10em 
+			margin 0.4em 0
+		.btn
+			font-size 2em
+			& + .btn
+				margin-left 5px 
+
+
+
 footer
-	background #333
+	background text
 	margin-top 40px 
 	color #FFF  
 	padding 20px

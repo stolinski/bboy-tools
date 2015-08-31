@@ -83,8 +83,8 @@ App = React.createClass({
     // Clear form
     React.findDOMNode(this.refs.moveName).value = "";
     React.findDOMNode(this.refs.moveValue).value = "";
-  },
- 
+  }, 
+
   render() {
     return (
       <div className="container">

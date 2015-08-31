@@ -11,7 +11,7 @@ Header = React.createClass({
 
   render() {
 
-    var menuToggle = this.state.menuClass ? 'open' : '';
+    var menuToggle = this.state.menuClass ? 'open main-menu' : 'main-menu';
     return (
         <header className={menuToggle}>
             <h2>Bboy Tools</h2>

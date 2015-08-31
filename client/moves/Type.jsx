@@ -67,6 +67,41 @@ Type = React.createClass({
     React.findDOMNode(this.refs.moveValue).value = "";
   },  
 
+  // componentDidMount: function() {
+  //   // Config
+  //   // =================================================
+
+  //   var header             = document.querySelector('header');
+  //   console.log(header);
+
+  //   var header_height      = getComputedStyle(header).height.split('px')[0],
+  //       title              = document.querySelector('.top-rock');
+
+  //   console.log(title);
+  //   var title_height       = getComputedStyle(title).height.split('px')[0],
+  //       fix_class          = 'is--fixed';
+
+  //   // Method
+  //   // =================================================
+
+  //   function stickyScroll(e) {
+
+  //     if( window.pageYOffset > (header_height - title_height ) / 2 ) {
+  //       title.classList.add(fix_class);
+  //     }
+
+  //     if( window.pageYOffset < (header_height - title_height ) / 2 ) {
+  //       title.classList.remove(fix_class);
+  //     }
+  //   }
+
+  //   // Handler
+  //   // =================================================
+
+  //   // Scroll handler to toggle classes.
+  //   window.addEventListener('scroll', stickyScroll, false);
+  // },
+
   render() {
 
     var toggleForm = this.state.formToggle ? 'open' : '';

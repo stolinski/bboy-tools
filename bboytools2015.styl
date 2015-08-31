@@ -4,10 +4,10 @@
 
 
 // Colors
-blue = #607D8B
-yellow = #FFC107
+blue = #3F51B5
+yellow = #FF0
 text = #212121
-dark-blue = #455A64
+dark-blue = #303F9F
 light-blue = #CFD8DC
 light-grey = #B6B6B6
 grey = #727272
@@ -62,6 +62,7 @@ normalize-css()
 
 html
     box-sizing: border-box
+    height 100% 
 
 *, *:before, *:after
     box-sizing: inherit
@@ -70,22 +71,12 @@ body
 	font-family: 'Roboto', sans-serif
 	background: #DEDEDE
 	color text 
-	padding-top 200px 
+	height 100% 
+	> div, > div > div, > div > div > div 
+		height 100%
 
-[type=checkbox]
-	// display:none;
-
- 
-[type=checkbox] + label
-	display:inline-block;
-	padding: 0 0 0 0px;
-	color #333
-	cursor pointer
-
-[type=checkbox]:checked + label
-	display:inline-block;
-	padding: 0 0 0 0px;
-	color red
+p
+	font-size 1.6em 
 
 
 .btn
@@ -102,28 +93,75 @@ body
 	&.btn-start
 		background green   
 
+.page-wrapper
+	min-height: 100%
+	
+
 header 
-	background blue
-	color #fff
-	padding 20px
-	fixed top left
-	width 100%
-	z-index: z.nav
-	box-shadow: 1px 3px 4px rgba(#000000, 0.22), -3px 1px 4px rgba(#000000, 0.15)
-	clearfix()
-	h1, h2
-		margin 0 
-		float left
+    background blue
+    color #fff
+    fixed top left
+    width 100%
+    z-index: z.nav
+    text-align center
+    box-shadow: 1px 3px 4px rgba(#000000, 0.22), -3px 1px 4px rgba(#000000, 0.15)
+    .fa-navicon, .fa-times
+        cursor pointer
+        position: absolute
+        top: 0
+        right: 0
+        padding 25px 20px 
+        font-size: 1.4em
+    .fa-times
+        display none
+    clearfix()
+    h1, h2
+        padding 20px 20px 15px  
+        margin 0 
+        font-size: 31px
+        font-weight: 400
+        line-height: 33px
+    +above($large)
+        float left
+
+.open   
+    .main-nav
+        transform: translateX(0)
+        transition all 0.4s ease-in
+    .fa-navicon
+        display none
+    .fa-times
+        display block
 
 .main-nav
-	float right
-	a
-		text-decoration none
+    background blue
+    fixed top left
+    width 100% 
+    height 100%
+    padding-top 100px 
+    z-index: -1
+    transition all 0.4s ease-out
+    transform: translateX(-100%)
 	ul
 		list-style none
 		padding 0
-	li
-		float left
+		margin 0
+		clearfix()
+	ul li a
+		padding 20px
+		color #FFF 
+		transition all 0.3s ease
+		display block
+		text-decoration none
+		border-bottom 4px solid blue
+		&:hover
+			border-bottom 4px solid yellow
+			background dark-blue
+	+above($large)
+		transform translateX(0)
+		float right
+		li
+			float left
 
 #login-dropdown-list
 	position fixed
@@ -137,7 +175,20 @@ header
 	width 100% 
 	top 0
 	margin 0
-	height 100%  
+	height 100% 
+	+above($large)
+		padding: 5% 15%
+
+#login-buttons
+	display block
+	.login-button
+		font-size 1.6em 
+	#login-buttons-twitter 
+		background: #FFF
+		border: none
+		color: social.twitter 
+	+above($large)
+		display inline-block
 
 #login-buttons, .accounts-dialog
 	label 
@@ -154,12 +205,21 @@ header
 
 
 /*------------------------------------*\
-    $HOMEPAGE
+    $HOME
 \*------------------------------------*/
 
 
 .homepage-zone
 	text-align center
+
+
+
+
+
+/*------------------------------------*\
+    $MOVES
+\*------------------------------------*/
+
 
 .brand-new-move
 	display none
@@ -168,18 +228,21 @@ header
 	position relative
 	background: #FFF
 	width: 98%
-	margin: 0 auto
+	margin: 60px auto
 	display: flex
 	flex-wrap: wrap
 	justify-content: space-between
 	border-radius: 12px
-	padding: 30px 40px
+	padding: 15px
 	box-shadow: -4px 2px 6px rgba(#000000, 0.09), 2px 2px 7px rgba(#000000, 0.08)
+	+above($small)
+		padding: 30px 40px
 	+above($large)
 		width: 90%
 		padding: 40px 80px
 
 .book
+	display none
 	width 120px 
 	height 180px 
 	top -110px 
@@ -218,14 +281,41 @@ header
 .moves
 	list-style none
 	padding 0
+	overflow hidden
 
 .move
 	margin 0 10px 20px
 	font-size: 26px
+	position relative
+	.move-value
+		display inline-block
+		background blue
+		color #FFF
+		border-radius 50%
+		opacity 0.5
+		font-size 0.8em
+		font-weight 800
+		width 25px
+		height 25px
+		text-align center
+		line-height 25px
+		margin-left 10px  
+	.edit-toggle
+		position absolute
+		right 0
+		opacity 0.1
+		transition all 0.3s ease
+	&:hover
+		.edit-toggle
+			opacity 0.5   
 	&:first-child
 		display none
 	> .controls
 		display: none
+		.delete.btn
+			background red
+			padding: 5px 10px
+			margin-right 5px 
 		&.open
 			display inline-block
 
@@ -245,20 +335,20 @@ header
 			margin-left 2.5%
 	button
 		margin-left 2.5% 
-		background yellow
+		background blue
 		border: none
 		color #FFF
 		text-align center
 		width 10%
 		transition all 0.2s ease
 		&:hover 
-			background yellow - 20 
+			background dark-blue
 		
 .add-new-move
 	width 100%
 	background #FFF
 	border none
-	color light-grey
+	color #D5D5D5
 	border-top @color solid 4px   
 	font-size 1.4em
 	padding 15px 
@@ -292,14 +382,28 @@ header
 			width 150px 
 
 
+
+
+
+/*------------------------------------*\
+    $STOPWATCH
+\*------------------------------------*/
+
+
 .stopwatch
 	text-align center
 	background: #FFF
 	width: 98%
-	margin: 0 auto 60px
+	margin: 0 auto
 	border-radius: 12px
-	padding: 30px 40px
+	padding: 20px 15px
 	box-shadow: -4px 2px 6px rgba(#000000, 0.09), 2px 2px 7px rgba(#000000, 0.08)
+	h3
+		font-size 6em
+		margin 0.4em 0
+	.btn 
+		width 100%
+		margin-bottom 20px  
 	+above($large)
 		width: 90%
 		padding: 40px 80px
@@ -313,9 +417,8 @@ header
 
 
 
-footer
+.site-footer
 	background text
-	margin-top 40px 
 	color #FFF  
 	padding 20px
 	
@@ -325,8 +428,20 @@ footer
   transform-origin: center bottom;
 
 .newmove-leave
-  animation-name: zoomOut;
-  animation-duration: .75s;
-  background: yellow;
-  opacity: 1.0;
-  transition: opacity .5s ease-in;
+  animation-name: zoomOut
+  animation-duration: .75s
+  background: yellow
+  opacity: 1.0
+  transition: opacity .5s ease-in
+
+.page-wrapper
+  min-height: 100%
+  margin-bottom: -142px
+  padding 80px 0
+
+.page-wrapper:after
+  content: ""
+  display: block
+
+.site-footer, .page-wrap:after
+	height: 142px

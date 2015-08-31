@@ -5,22 +5,36 @@ if (Meteor.isClient) {
 
   FlowRouter.route('/', {
     action: function() {
-      // We render the template with React
-      React.render(<Home />, document.getElementById('render-target'));
+      Tracker.autorun(function() {
+        if(Meteor.userId()) {
+          FlowRouter.go('/moves');
+        }
+        ReactLayout.render(MainLayout, {
+          content: <Home />
+        })        
+      });
     }
   });
 
   FlowRouter.route('/moves', {
     action: function() {
-      // We render the template with React
-      React.render(<App />, document.getElementById("render-target"));
+      Tracker.autorun(function() {
+        if(Meteor.userId()) {
+          ReactLayout.render(MainLayout, {
+            content: <App />
+          });
+        } else {
+          FlowRouter.go('/');
+        }
+      });
     }
   });
 
   FlowRouter.route('/thirties', {
     action: function() {
-      // We render the template with React
-      React.render(<Thirties />, document.getElementById("render-target"));
+      ReactLayout.render(MainLayout, {
+        content: <Thirties />
+      });
     }
   });  
 

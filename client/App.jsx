@@ -3,6 +3,8 @@ _ = lodash
 // mount animation <ReactCSSTransitionGroup> from React namespace
 var ReactCSSTransitionGroup = React.addons.CSSTransitionGroup;
 
+Meteor.subscribe("moves");
+
 // App component - represents the whole app
 App = React.createClass({
  
@@ -12,8 +14,8 @@ App = React.createClass({
   // Loads items from the Moves collection and puts them on this.data.moves
   getMeteorData() {
     return {
-      moves: Moves.find({}, {sort: {createdAt: 1}}).fetch(),
-      // moves: Moves.find({owner: Meteor.userId()}, {sort: {createdAt: 1}}).fetch(),
+      // moves: Moves.find({}, {sort: {createdAt: 1}}).fetch(),
+      moves: Moves.find({owner: Meteor.userId()}, {sort: {createdAt: 1}}).fetch(),
       currentUser: Meteor.user()
     }
   },
@@ -86,10 +88,7 @@ App = React.createClass({
   render() {
     return (
       <div className="container">
-        <header>
-          <h2>Bboy Tools</h2>
-          <MainNav />
-        </header>      
+        <h1>My Moves</h1>
         <form className="brand-new-move" onSubmit={this.handleSubmit} >
           <input
             type="text"

@@ -34,18 +34,12 @@ Move = React.createClass({
     return (
       <li className={moveClassName}>
         <div className={controlsToggle}>
-        <button className="delete" onClick={this.deleteThisMove}>
+        <button className="delete btn" onClick={this.deleteThisMove}>
           &times;
         </button>
         </div> 
-        <span className="text" contentEditable={true}>{this.props.move.name} - {this.props.move.value}</span>
-        <input
-          id="checkboxz"
-          type="checkbox"
-          readOnly={true}
-          checked={this.props.move.checked}
-          onClick={this.toggleControls} />
-        <label htmlFor="checkboxz"><i className="fa fa-pencil"></i></label>
+        <span className="text" contentEditable={true}>{this.props.move.name}<span className="move-value">{this.props.move.value}</span></span>
+        <span className="edit-toggle" onClick={this.toggleControls}><i className="fa fa-pencil"></i></span>
       </li>
     );
   }

@@ -19,12 +19,13 @@ Type = React.createClass({
   renderCategory() {
     return _.startCase(this.props.type[0].type);
   },
-  renderCategorySnake() {
 
+  renderCategorySnake() {
     if(this.props.type.length > 0) {
       return this.props.type[0].type;
     }
   },
+  
   typeClasses() {
     return _.kebabCase(this.props.type[0].type) + " type";
   },

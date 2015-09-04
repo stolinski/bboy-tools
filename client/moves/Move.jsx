@@ -38,7 +38,25 @@ Move = React.createClass({
           &times;
         </button>
         </div> 
-        <span className="text" contentEditable={true}>{this.props.move.name}<span className="move-value">{this.props.move.value}</span></span>
+        <span className="text">{this.props.move.name}<span className="move-value">{this.props.move.value}</span></span>
+        <form className="edit-move" onSubmit={this.updateMove} >
+          <input
+            type="text"
+            ref="moveName"
+            placeholder="Move Name" />
+          <input
+            type="number"
+            ref="moveValue"
+            min="0"
+            max="10"
+            placeholder="Value" />
+          <input
+            type="hidden"
+            ref="moveType"/>
+          <button type="submit">
+            <i className="fa fa-check"></i>
+          </button>
+        </form>
         <span className="edit-toggle" onClick={this.toggleControls}><i className="fa fa-pencil"></i></span>
       </li>
     );

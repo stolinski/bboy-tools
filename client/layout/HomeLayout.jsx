@@ -1,9 +1,10 @@
-MainLayout = React.createClass({
+HomeLayout = React.createClass({
   render() {
     return <div>
-      <div className="page-wrapper">
+      <div className="page-wrapper home-layout">
         <Header /> 
-        <main className="main-layout">
+        <img src="/img/tom.jpg" className="billboard" />
+        <main className="">
           {this.props.content}
         </main>
       </div>

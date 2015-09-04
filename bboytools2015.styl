@@ -26,12 +26,12 @@ social = {
 }
 
 moves = {
-	top-rock: blue,
-	go-down: purple,
-	footwork: green,
-	power-move: red,
-	freeze: indigo,
-	burner: orange
+    top-rock: blue,
+    go-down: purple,
+    footwork: green,
+    power-move: red,
+    freeze: indigo,
+    burner: orange
 }
 
 // Grid
@@ -68,40 +68,41 @@ html
     box-sizing: inherit
 
 body 
-	font-family: 'Roboto', sans-serif
-	background: #DEDEDE
-	color text 
-	height 100% 
-	> div, > div > div, > div > div > div 
-		height 100%
+    font-family: 'Roboto', sans-serif
+    background: #DEDEDE
+    color text 
+    height 100% 
+    > div, > div > div
+        height 100%
 
 p
-	font-size 1.6em 
+    font-size 1.6em 
 
 
 .btn
-	background blue
-	color #FFF
-	text-transform uppercase
-	border none
-	border-radius 4px 
-	padding: 25px 80px
-	font-weight 700 
-	transition: all 0.3s
-	&.btn-cancel
-		background red 
-	&.btn-start
-		background green   
+    background blue
+    color #FFF
+    text-transform uppercase
+    border none
+    border-radius 4px 
+    padding: 25px 80px
+    font-weight 700 
+    transition: all 0.3s
+    &.btn-cancel
+        background red 
+    &.btn-start
+        background green   
 
 .page-wrapper
-	min-height: 100%
-	
+    min-height: 100%
+    
 
 header 
     background blue
     color #fff
     fixed top left
     width 100%
+    height 65px 
     z-index: z.nav
     text-align center
     box-shadow: 1px 3px 4px rgba(#000000, 0.22), -3px 1px 4px rgba(#000000, 0.15)
@@ -116,13 +117,16 @@ header
         display none
     clearfix()
     h1, h2
-        padding 20px 20px 15px  
         margin 0 
+        padding 0 20px 
         font-size: 31px
         font-weight: 400
-        line-height: 33px
+        line-height: 65px
     +above($large)
-        float left
+        h1, h2 
+            float left
+        .fa-navicon
+            display none !important
 
 .open   
     .main-nav
@@ -134,71 +138,77 @@ header
         display block
 
 .main-nav
+    transform: translateX(-100%)
     background blue
     fixed top left
     width 100% 
     height 100%
     padding-top 100px 
-    z-index: -1
     transition all 0.4s ease-out
-    transform: translateX(-100%)
-	ul
-		list-style none
-		padding 0
-		margin 0
-		clearfix()
-	ul li a
-		padding 20px
-		color #FFF 
-		transition all 0.3s ease
-		display block
-		text-decoration none
-		border-bottom 4px solid blue
-		&:hover
-			border-bottom 4px solid yellow
-			background dark-blue
-	+above($large)
-		transform translateX(0)
-		float right
-		li
-			float left
+    ul
+        list-style none
+        padding 0
+        margin 0
+        clearfix()
+    ul li a
+        padding 20px
+        color #FFF 
+        transition all 0.3s ease
+        display block
+        text-decoration none
+        border-bottom 4px solid blue
+        height 65px 
+        &:hover
+            border-bottom 4px solid yellow
+            background dark-blue
+    +above($large)
+        transform: none
+        padding-top 0 
+        float right
+        width auto 
+        position relative
+        li
+            font-size 16px 
+            float left
 
 #login-dropdown-list
-	position fixed
-	right 0
-	border none
-	border-radius 0
-	left auto
-	box-shadow: 1px 3px 4px rgba(#000000, 0.22), -3px 1px 4px rgba(#000000, 0.15)
-	background blue
-	color #FFF
-	width 100% 
-	top 0
-	margin 0
-	height 100% 
-	+above($large)
-		padding: 5% 15%
+    position fixed
+    right 0
+    border none
+    border-radius 0
+    left 0
+    box-shadow: 1px 3px 4px rgba(#000000, 0.22), -3px 1px 4px rgba(#000000, 0.15)
+    background blue
+    color #FFF
+    width 100% 
+    top 0
+    margin 0
+    height 100% 
+    +above($large)
+        padding: 5% 15%
 
 #login-buttons
-	display block
-	.login-button
-		font-size 1.6em 
-	#login-buttons-twitter 
-		background: #FFF
-		border: none
-		color: social.twitter 
-	+above($large)
-		display inline-block
+    display block
+    a 
+        text-decoration none
+    .login-button
+        font-size 1.6em 
+    #login-buttons-twitter 
+        background: #FFF
+        border: none
+        color: social.twitter 
+    +above($large)
+        display inline-block
 
 #login-buttons, .accounts-dialog
-	label 
-		font-size 1.6em 
-	input[type=text], input[type=text], input[type=email], input[type=email], input[type=password], input[type=password]
-		appearance none 
-		background blue + 20
-		border-radius 0
-		border none 
-		font-size 1.6em 
+    label 
+        font-size 1.6em 
+    input[type=text], input[type=text], input[type=email], input[type=email], input[type=password], input[type=password]
+        appearance none 
+        background blue + 20
+        border-radius 0
+        border none 
+        font-size 1.6em 
 
 
 
@@ -209,9 +219,79 @@ header
 \*------------------------------------*/
 
 
-.homepage-zone
-	text-align center
+.home-layout
+    overflow hidden
+    background #111 
+    header
+        background rgba(black, 0.3) 
+    main
+        position relative
+        z-index 8
 
+.homepage-zone
+    text-align left
+    color #FFF
+    &.site-intro
+        padding 20px 5% 
+        clearfix()
+        h2
+            font-size 4em 
+            display inline-block
+            background #111
+            padding 10px 
+            margin 20px 0
+            box-shadow 1px 1px 4px rgba(black, 0.3)  
+            &:after
+                clear: both
+        p
+            font-size 2em 
+            box-shadow 1px 1px 4px rgba(black, 0.3)
+            display inline-block
+            background #111 
+            padding 10px
+        button
+            background blue 
+            color #FFF
+            appearance none
+            border none
+            font-size 2em
+            padding 10px 20px
+            text-transform uppercase
+            border-radius 4px    
+            box-shadow 1px 1px 4px rgba(black, 0.3) 
+
+.billboard
+    z-index 5
+    opacity 0.4
+    position absolute
+    top 0
+    left 0
+    width 100%   
+
+
+
+/*------------------------------------*\
+    $MAINLAYOUT
+\*------------------------------------*/
+
+
+.main-layout
+    width: 100%
+    margin: 60px auto
+    h1
+        font-size: 2em;
+        margin: 0.67em 0;
+        background-color: #212121;
+        color: #FFF;
+        padding: 11px 20px 25px;
+        margin: 0;
+        display: inline-block;
+        border-radius: 8px;
+        position: relative;
+        top: 10px;
+        left: 10px;
+    +above($large)
+        width: 90%
 
 
 
@@ -222,170 +302,169 @@ header
 
 
 .brand-new-move
-	display none
+    display none
 
 .types
-	position relative
-	background: #FFF
-	width: 100%
-	margin: 60px auto
-	display: flex
-	flex-wrap: wrap
-	justify-content: space-between
-	border-radius: 12px
-	padding: 15px 0
-	box-shadow: -4px 2px 6px rgba(#000000, 0.09), 2px 2px 7px rgba(#000000, 0.08)
-	+above($small)
-		padding: 30px 40px
-	+above($large)
-		width: 90%
-		padding: 40px 80px
+    position relative
+    background: #FFF
+    width: 100%
+    display: flex
+    flex-wrap: wrap
+    justify-content: space-between
+    border-radius: 12px
+    box-shadow: -4px 2px 6px rgba(#000000, 0.09), 2px 2px 7px rgba(#000000, 0.08)
+    padding: 15px 0
+    +above($small)
+        padding: 30px 40px
+    +above($large)
+        padding: 40px 80px
 
 .book
-	display none
-	width 120px 
-	height 180px 
-	top -110px 
-	left 50%
-	transform: translateX(-60px)  
-	position absolute
-	border-radius 9px 
-	background #333
-	box-shadow: 1px 3px 4px rgba(#000000, 0.22), -3px 1px 4px rgba(#000000, 0.15)
-	+above($med)
-		top -40px
-		left -50px
-		transform: translateX(0)
-	p
-		background #FFF 
-		font-size 56px 
-		margin 50px 10px
-		border-radius 5px
-		text-align center 
-	.book-title
-		display none   
+    display none
+    width 120px 
+    height 180px 
+    top -110px 
+    left 50%
+    transform: translateX(-60px)  
+    position absolute
+    border-radius 9px 
+    background #333
+    box-shadow: 1px 3px 4px rgba(#000000, 0.22), -3px 1px 4px rgba(#000000, 0.15)
+    +above($med)
+        top -40px
+        left -50px
+        transform: translateX(0)
+    p
+        background #FFF 
+        font-size 56px 
+        margin 50px 10px
+        border-radius 5px
+        text-align center 
+    .book-title
+        display none   
 
 .type
-	width 100% 
-	+above($large)
-		width: 48%
-	h3
+    width 100% 
+    +above($large)
+        width: 48%
+    h3
         border-bottom: solid 4px green
         font-size: 38px;
         padding 10px 15px
-        color #FFF
-	for $label, $color in moves
-		&.{$label}
-			h3
-                color #FFF
+        color text
+    for $label, $color in moves
+        &.{$label}
+            h3
                 border-color $color
-                background $color
 
 .moves
-	list-style none
-	padding 0
+    list-style none
+    padding 0
     margin 0 15px    
-	overflow hidden
+    overflow hidden
 
 .move
-	margin 0 10px 20px
-	font-size: 26px
-	position relative
-	.move-value
-		display inline-block
-		background blue
-		color #FFF
-		border-radius 50%
-		opacity 0.5
-		font-size 0.8em
-		font-weight 800
-		width 25px
-		height 25px
-		text-align center
-		line-height 25px
-		margin-left 10px  
-	.edit-toggle
-		position absolute
-		right 0
-		opacity 0.1
-		transition all 0.3s ease
-	&:hover
-		.edit-toggle
-			opacity 0.5   
-	&:first-child
-		display none
-	> .controls
-		display: none
-		.delete.btn
-			background red
-			padding: 5px 10px
-			margin-right 5px 
-		&.open
-			display inline-block
+    margin 0 10px 20px
+    font-size: 26px
+    position relative
+    .move-value
+        display inline-block
+        background blue
+        color #FFF
+        border-radius 50%
+        opacity 0.5
+        font-size 0.8em
+        font-weight 800
+        width 25px
+        height 25px
+        text-align center
+        line-height 25px
+        margin-left 10px  
+    .edit-toggle
+        position absolute
+        right 0
+        top 10px
+        opacity 0.1
+        transition all 0.3s ease
+    &:hover
+        .edit-toggle
+            opacity 0.5   
+    &:first-child
+        display none
+    > .controls
+        display: none
+        .delete.btn
+            background red
+            padding: 5px 10px
+            margin-right 5px 
+        &.open
+            display inline-block
 
 .move-form
     margin-bottom: 17px;
     font-size 26px 
 
 .new-move
-	display: flex
-	justify-content space-apart 
-	input
-		width 60% 
-		padding: 10px 13px 6px
-		background: #EEEEEE
-		border: none
-		& + input
-			width 25% 
-			margin-left 2.5%
-	button
-		margin-left 2.5% 
-		background blue
-		border: none
-		color #FFF
-		text-align center
-		width 10%
-		transition all 0.2s ease
-		&:hover 
-			background dark-blue
-		
+    display: flex
+    justify-content space-apart 
+    input
+        width 60% 
+        padding: 10px 13px 6px
+        background: #EEEEEE
+        border: none
+        & + input
+            width 25% 
+            margin-left 2.5%
+    button
+        margin-left 2.5% 
+        background blue
+        border: none
+        color #FFF
+        text-align center
+        width 10%
+        transition all 0.2s ease
+        &:hover 
+            background dark-blue
+        
 .add-new-move
-	width 100%
-	background #FFF
-	border none
-	color #D5D5D5
-	border-top @color solid 4px   
-	font-size 1.4em
-	padding 15px 
-	transform: translateY(-65px)
-	transition all 0.3s ease
-	&:focus
-		outline none
-	.form-toggle-icons
-		top -2px 
-		width 20px 
-		height 20px 
-		position relative
-		display inline-block
-		i
-			position absolute
-			transition all 0.3s ease 
-	&.open
-		transform: translateY(0)
-		.fa-plus
-			transform: scaleY(0)
-	.form-toggle-text
-		opacity 0 
-		white-space: nowrap
-		display inline-block
-		width 0 
-		overflow hidden
-		transition all 0.3s ease 
-	&:hover
-		.form-toggle-text
-			opacity 1 
-			width 150px 
+    width 100%
+    background #FFF
+    border none
+    color #D5D5D5
+    border-top @color solid 4px   
+    font-size 1.4em
+    padding 15px 
+    transform: translateY(-65px)
+    transition all 0.3s ease
+    &:focus
+        outline none
+    .form-toggle-icons
+        top -2px 
+        width 20px 
+        height 20px 
+        position relative
+        display inline-block
+        i
+            position absolute
+            transition all 0.3s ease 
+    &.open
+        transform: translateY(0)
+        .fa-plus
+            transform: scaleY(0)
+    .form-toggle-text
+        opacity 0 
+        white-space: nowrap
+        display inline-block
+        width 0 
+        overflow hidden
+        transition all 0.3s ease 
+    &:hover
+        .form-toggle-text
+            opacity 1 
+            width 150px 
 
+.edit-move
+    display none
 
 
 
@@ -396,37 +475,38 @@ header
 
 
 .stopwatch
-	text-align center
-	background: #FFF
-	width: 98%
-	margin: 0 auto
-	border-radius: 12px
-	padding: 20px 15px
-	box-shadow: -4px 2px 6px rgba(#000000, 0.09), 2px 2px 7px rgba(#000000, 0.08)
-	h3
-		font-size 6em
-		margin 0.4em 0
-	.btn 
-		width 100%
-		margin-bottom 20px  
-	+above($large)
-		width: 90%
-		padding: 40px 80px
-		h3
-			font-size 10em 
-			margin 0.4em 0
-		.btn
-			font-size 2em
-			& + .btn
-				margin-left 5px 
+    text-align center
+    background: #FFF
+    border-radius: 12px
+    padding: 20px 15px
+    box-shadow: -4px 2px 6px rgba(#000000, 0.09), 2px 2px 7px rgba(#000000, 0.08)
+    h3
+        font-size 6em
+        margin 0.4em 0
+    .btn 
+        width 100%
+        margin-bottom 20px  
+    +above($large)
+        padding: 40px 80px
+        h3
+            font-size 10em 
+            margin 0.4em 0
+        .btn
+            width auto       
+            font-size 2em
+            & + .btn
+                margin-left 5px 
 
 
 
 .site-footer
-	background text
-	color #FFF  
-	padding 20px
-	
+    background #111
+    color #FFF
+    padding 20px
+    z-index 8
+    position relative 
+    margin-top 20px 
+    
 .newmove-enter
   animation-duration: .75s;
   animation-name: fadeInLeft;
@@ -449,4 +529,4 @@ header
   display: block
 
 .site-footer, .page-wrap:after
-	height: 142px
+    height: 142px

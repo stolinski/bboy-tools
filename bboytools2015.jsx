@@ -9,7 +9,7 @@ if (Meteor.isClient) {
         if(Meteor.userId()) {
           FlowRouter.go('/moves');
         }
-        ReactLayout.render(MainLayout, {
+        ReactLayout.render(HomeLayout, {
           content: <Home />
         })        
       });
@@ -17,6 +17,9 @@ if (Meteor.isClient) {
   });
 
   FlowRouter.route('/moves', {
+    subscriptions: function() {
+      this.register( 'users', Meteor.subscribe( 'users' ) );
+    },    
     action: function() {
       Tracker.autorun(function() {
         if(Meteor.userId()) {
@@ -34,6 +37,14 @@ if (Meteor.isClient) {
     action: function() {
       ReactLayout.render(MainLayout, {
         content: <Thirties />
+      });
+    }
+  });  
+
+  FlowRouter.route('/battle-mode', {
+    action: function() {
+      ReactLayout.render(MainLayout, {
+        content: <BattleMode />
       });
     }
   });  

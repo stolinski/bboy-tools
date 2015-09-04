@@ -1,5 +1,6 @@
 _ = lodash
 
+
 // mount animation <ReactCSSTransitionGroup> from React namespace
 var ReactCSSTransitionGroup = React.addons.CSSTransitionGroup;
 
@@ -36,6 +37,7 @@ App = React.createClass({
         type: 'burner'
       }
     ]
+    var copy = start.slice();
 
 
     function mergeByProperty(arr1, arr2, prop) {
@@ -53,11 +55,14 @@ App = React.createClass({
     var group = _.groupBy(start, function(move) {
       return move.type;
     });
-
+    
 
     // Get moves from this.data.moves
-    return _.map(group, function(type) {
-      return <Type key={type._id} type={type} />;
+    return _.map(copy, function(type, index) {
+      var movez = _.filter(start, function(n){
+        return n.type === type.type;
+      });
+      return <Type type={type} moves={movez} />;
     });
   },
 

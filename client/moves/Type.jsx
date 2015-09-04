@@ -7,7 +7,8 @@ Type = React.createClass({
   propTypes: {
     // This component gets the move to display through a React prop.
     // We can use propTypes to indicate it is required
-    type: React.PropTypes.object.isRequired
+    type: React.PropTypes.object.isRequired,
+    moves: React.PropTypes.object.isRequired
   },
 
   getInitialState() {
@@ -17,17 +18,15 @@ Type = React.createClass({
   }, 
 
   renderCategory() {
-    return _.startCase(this.props.type[0].type);
+    return _.startCase(this.props.type.type);
   },
 
   renderCategorySnake() {
-    if(this.props.type.length > 0) {
-      return this.props.type[0].type;
-    }
+    return this.props.type.type;
   },
   
   typeClasses() {
-    return _.kebabCase(this.props.type[0].type) + " type";
+    return _.kebabCase(this.props.type.type) + " type";
   },
 
   openForm() {
@@ -36,13 +35,14 @@ Type = React.createClass({
 
   renderTypes() {
     // this.props.type.shift();
-    if(this.props.type.length > 0) {
-      return this.props.type.map((move) => {
-        return <Move key={move._id} move={move} />;
-      });      
-    } else {
-      return <li className="no-results">No Moves Added Yet</li>;
-    }
+
+    return this.props.moves.map((move) => {
+      return <Move key={move._id} move={move} />
+    });
+  },
+
+  noTypes() {
+    return <li className="no-results">No Moves Added Yet</li>
   },
 
   handleSubmit(event) {
@@ -67,40 +67,13 @@ Type = React.createClass({
     React.findDOMNode(this.refs.moveValue).value = "";
   },  
 
-  // componentDidMount: function() {
-  //   // Config
-  //   // =================================================
+  log: function() {
+    // console.log('waypoint enter')
+  },
 
-  //   var header             = document.querySelector('header');
-  //   console.log(header);
-
-  //   var header_height      = getComputedStyle(header).height.split('px')[0],
-  //       title              = document.querySelector('.top-rock');
-
-  //   console.log(title);
-  //   var title_height       = getComputedStyle(title).height.split('px')[0],
-  //       fix_class          = 'is--fixed';
-
-  //   // Method
-  //   // =================================================
-
-  //   function stickyScroll(e) {
-
-  //     if( window.pageYOffset > (header_height - title_height ) / 2 ) {
-  //       title.classList.add(fix_class);
-  //     }
-
-  //     if( window.pageYOffset < (header_height - title_height ) / 2 ) {
-  //       title.classList.remove(fix_class);
-  //     }
-  //   }
-
-  //   // Handler
-  //   // =================================================
-
-  //   // Scroll handler to toggle classes.
-  //   window.addEventListener('scroll', stickyScroll, false);
-  // },
+  logLeave: function() {
+    // console.log('waypoint left')
+  },
 
   render() {
 
@@ -112,9 +85,9 @@ Type = React.createClass({
           <h3>{this.renderCategory()}</h3>
           <ul className="moves">
             <ReactCSSTransitionGroup transitionName="newmove">
-              {this.renderTypes()}
-            </ReactCSSTransitionGroup>
-
+                {this.renderTypes()}
+            </ReactCSSTransitionGroup> :
+            {this.noTypes()}
             <li className="move-form">
               <form className="new-move" onSubmit={this.handleSubmit} >
                 <input

@@ -68,7 +68,7 @@ html
     box-sizing: inherit
 
 body 
-    font-family: 'Roboto', sans-serif
+    font-family: 'Raleway', sans-serif;
     background: #DEDEDE
     color text 
     height 100% 
@@ -92,6 +92,9 @@ p
         background red 
     &.btn-start
         background green   
+    &.use-move
+        margin-left 50px
+        padding: 10px 50px
 
 .page-wrapper
     min-height: 100%
@@ -224,6 +227,10 @@ header
     background #111 
     header
         background rgba(black, 0.3) 
+        transition all 0.3s ease
+    &.scrolled
+        header
+            background text
     main
         position relative
         z-index 8
@@ -235,7 +242,6 @@ header
         padding 20px 5% 
         clearfix()
         h2
-            font-size 4em 
             display inline-block
             background #111
             padding 10px 
@@ -244,7 +250,7 @@ header
             &:after
                 clear: both
         p
-            font-size 2em 
+            font-size 1.6em 
             box-shadow 1px 1px 4px rgba(black, 0.3)
             display inline-block
             background #111 
@@ -259,15 +265,57 @@ header
             text-transform uppercase
             border-radius 4px    
             box-shadow 1px 1px 4px rgba(black, 0.3) 
+        +above($large)
+            height: 80vh
+            h2
+                font-size 4em
+            p
+                font-size 2em                 
 
 .billboard
     z-index 5
     opacity 0.4
-    position absolute
+    position fixed
     top 0
     left 0
     width 100%   
 
+.first-zone
+    padding 5% 
+    background text 
+    text-align center
+    box-shadow 0px -1px 4px rgba(#000, 0.3) 
+    .fa-wrench
+        font-size 5em
+        border solid 1px #fff
+        border-radius 50%  
+        padding 20px
+        margin-bottom 40px 
+    h2
+        font-size 2em
+        text-transform uppercase
+        font-weight 400
+        letter-spacing 0.4em
+        margin-bottom 40px
+        line-height 2.2 
+        span
+            border-bottom 4px solid red
+            padding-bottom 5px
+    p
+        font-size 1em
+        line-height 1.2 
+    article
+        margin-bottom 60px 
+    .tools-tease
+        +above($large)
+            display flex
+            justify-content space-apart
+            article
+                width 33% 
+                padding 0 20px 
+                h3
+                    font-size 2em
+                    font-weight 400  
 
 
 /*------------------------------------*\
@@ -314,10 +362,25 @@ header
     border-radius: 12px
     box-shadow: -4px 2px 6px rgba(#000000, 0.09), 2px 2px 7px rgba(#000000, 0.08)
     padding: 15px 0
+    &:after
+        content ''
+        display block
+        background #bbb 
+        position absolute
+        left -5px
+        right -5px
+        top -5px
+        bottom -5px
+        border-radius 17px 
+        z-index -1 
+        box-shadow: -4px 2px 6px rgba(#000000, 0.09), 2px 2px 7px rgba(#000000, 0.08)
     +above($small)
         padding: 30px 40px
     +above($large)
         padding: 40px 80px
+    &.types-battle-mode
+        .moves
+            width 100% 
 
 .book
     display none
@@ -378,19 +441,25 @@ header
         width 25px
         height 25px
         text-align center
-        line-height 25px
+        line-height 21px
         margin-left 10px  
+        position relative
+        top -4px
+        left 0
+        transition all 0.2s ease
     .edit-toggle
         position absolute
         right 0
         top 10px
         opacity 0.1
         transition all 0.3s ease
+    &.battle-used
+        color red  
     &:hover
         .edit-toggle
-            opacity 0.5   
-    &:first-child
-        display none
+            opacity 0.5 
+        .move-value
+            left 5px 
     > .controls
         display: none
         .delete.btn
@@ -399,6 +468,8 @@ header
             margin-right 5px 
         &.open
             display inline-block
+
+
 
 .move-form
     margin-bottom: 17px;
@@ -489,7 +560,7 @@ header
     +above($large)
         padding: 40px 80px
         h3
-            font-size 10em 
+            font-size 12em 
             margin 0.4em 0
         .btn
             width auto       

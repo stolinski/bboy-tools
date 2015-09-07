@@ -1,7 +1,16 @@
 MainLayout = React.createClass({
+  propTypes: {
+    // This component gets the move to display through a React prop.
+    // We can use propTypes to indicate it is required
+    route: React.PropTypes.string
+  },
+
   render() {
+    var wrapperClass = 'page-wrapper ';
+    wrapperClass += this.props.route
+
     return <div>
-      <div className="page-wrapper">
+      <div className={wrapperClass}>
         <Header /> 
         <main className="main-layout">
           {this.props.content}

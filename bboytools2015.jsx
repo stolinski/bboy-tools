@@ -21,36 +21,47 @@ if (Meteor.isClient) {
       this.register( 'users', Meteor.subscribe( 'users' ) );
     },    
     action: function() {
-      Tracker.autorun(function() {
-        if(Meteor.userId()) {
-          ReactLayout.render(MainLayout, {
-            content: <App />
-          });
-        } else {
-          FlowRouter.go('/');
-        }
-      });
+      if(Meteor.userId()) {
+        console.log('Moves - Render');
+        ReactLayout.render(MainLayout, {
+          content: <App />,
+          route: "moves-page"
+        });
+      } else {
+        console.log('Moves -> Home');
+        FlowRouter.go('/');
+      }
     }
   });
 
   FlowRouter.route('/thirties', {
     action: function() {
-      ReactLayout.render(MainLayout, {
-        content: <Thirties />
-      });
+      if(Meteor.userId()) {
+        console.log('Thirties - Render');
+        ReactLayout.render(MainLayout, {
+          content: <Thirties />
+        });
+      } else {
+        console.log('Thirties -> Home');
+        FlowRouter.go('/');
+      }
     }
   });  
 
   FlowRouter.route('/battle-mode', {
     action: function() {
-      ReactLayout.render(MainLayout, {
-        content: <BattleMode />
-      });
+      if(Meteor.userId()) {
+        console.log('Battle Mode - Route');
+        ReactLayout.render(MainLayout, {
+          content: <BattleMode />
+        });
+      } else {
+        console.log('Battle Mode -> Home');
+        FlowRouter.go('/');
+      }
     }
   });  
 
-  Meteor.startup(function () {
-  });
 }
 
 if (Meteor.isServer) {

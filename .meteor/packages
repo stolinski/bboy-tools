@@ -4,17 +4,30 @@
 # 'meteor add' and 'meteor remove' will edit this file for you,
 # but you can also edit it by hand.
 
-meteor-platform
 insecure
-react
+react@0.1.12
 msavin:mongol
 erasaur:meteor-lodash
 stolinski:stylus-multi
 fortawesome:fontawesome
 accounts-ui
 accounts-password
-meteorhacks:flow-router
 accounts-twitter
 natestrauser:animate-css
-kadira:react-layout
 accounts-facebook
+kadira:flow-router
+standard-minifiers
+meteor-base
+mobile-experience
+mongo
+blaze-html-templates
+session
+jquery
+tracker
+logging
+reload
+random
+ejson
+spacebars
+check
+kadira:react-layout

@@ -4,7 +4,7 @@ Header = React.createClass({
     return {
       menuClass: false
     };
-  },	
+  },
   toggleMenu() {
     this.setState({menuClass: !this.state.menuClass});
   },

@@ -8,7 +8,7 @@ Type = React.createClass({
     // This component gets the move to display through a React prop.
     // We can use propTypes to indicate it is required
     type: React.PropTypes.object.isRequired,
-    moves: React.PropTypes.object.isRequired
+    moves: React.PropTypes.array.isRequired
   },
 
   getInitialState() {
@@ -34,10 +34,9 @@ Type = React.createClass({
   },
 
   renderTypes() {
-    // this.props.type.shift();
-
+    this.props.moves.shift();
     return this.props.moves.map((move) => {
-      return <Move key={move._id} move={move} />
+      return <Move key={move._id} move={move} bMode={false}/>
     });
   },
 
@@ -67,14 +66,6 @@ Type = React.createClass({
     React.findDOMNode(this.refs.moveValue).value = "";
   },  
 
-  log: function() {
-    // console.log('waypoint enter')
-  },
-
-  logLeave: function() {
-    // console.log('waypoint left')
-  },
-
   render() {
 
     var toggleForm = this.state.formToggle ? 'open' : '';
@@ -86,8 +77,7 @@ Type = React.createClass({
           <ul className="moves">
             <ReactCSSTransitionGroup transitionName="newmove">
                 {this.renderTypes()}
-            </ReactCSSTransitionGroup> :
-            {this.noTypes()}
+            </ReactCSSTransitionGroup>
             <li className="move-form">
               <form className="new-move" onSubmit={this.handleSubmit} >
                 <input

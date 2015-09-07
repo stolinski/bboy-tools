@@ -1,13 +1,21 @@
 var controlsToggle = 'controls';
 // Move component - represents a single todo item
 Move = React.createClass({
+  getDefaultProps: function() {
+    return {
+      bMode: false
+    };
+  },
+
   propTypes: {
     // This component gets the move to display through a React prop.
     // We can use propTypes to indicate it is required
-    move: React.PropTypes.object.isRequired
+    move: React.PropTypes.object.isRequired,
+    bMode: React.PropTypes.bool
   },
  
   getInitialState() {
+    let current = FlowRouter.current();
     return {
       controlsToggle: false
     }
@@ -18,9 +26,20 @@ Move = React.createClass({
       controlsToggle: !this.state.controlsToggle
     });
   },
+
+  useMove() {
+
+    Moves.update(this.props.move._id, {
+        $set: {battleUsed: !this.props.move.battleUsed}
+    });
+  },
  
   deleteThisMove() {
     Moves.remove(this.props.move._id);
+  },
+
+  battle() {
+    return this.props.bMode ? 'BATTLE' : 'Nope';
   },
 
   render() {
@@ -28,17 +47,12 @@ Move = React.createClass({
     // so that we can style them nicely in CSS
     var moveClassName = this.props.move.checked ? "checked" : "";
     moveClassName += ' move';
+    moveClassName += this.props.bMode ? ' battle-mode' : '';
+    moveClassName += this.props.move.battleUsed ? ' battle-used' : '';
     var controlsToggle = this.state.controlsToggle ? 'open' : "";
     controlsToggle += ' controls';
 
-    return (
-      <li className={moveClassName}>
-        <div className={controlsToggle}>
-        <button className="delete btn" onClick={this.deleteThisMove}>
-          &times;
-        </button>
-        </div> 
-        <span className="text">{this.props.move.name}<span className="move-value">{this.props.move.value}</span></span>
+    var moveEditForm = (
         <form className="edit-move" onSubmit={this.updateMove} >
           <input
             type="text"
@@ -57,7 +71,30 @@ Move = React.createClass({
             <i className="fa fa-check"></i>
           </button>
         </form>
-        <span className="edit-toggle" onClick={this.toggleControls}><i className="fa fa-pencil"></i></span>
+    )
+
+    var modeControls;
+    if (this.props.bMode) {
+        modeControls = (
+            <button className="btn btn-cancel use-move"
+                    onClick={(this.useMove)}>Use Move</button>
+        )
+    } else {
+        modeControls = (
+            <span className="edit-toggle" onClick={this.toggleControls}><i className="fa fa-pencil"></i></span>
+        )        
+    }
+
+    return (
+      <li className={moveClassName}>
+        <div className={controlsToggle}>
+        <button className="delete btn" onClick={this.deleteThisMove}>
+          &times;
+        </button>
+        </div> 
+        <span className="text">{this.props.move.name}<span className="move-value">{this.props.move.value}</span></span>
+        {moveEditForm}
+        {modeControls} {/*If battle mode page, show battle mode toggle*/}
       </li>
     );
   }

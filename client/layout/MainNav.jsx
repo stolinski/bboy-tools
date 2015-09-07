@@ -14,7 +14,7 @@ MainNav = React.createClass({
 
   getContent() {
     return (
-    <img src={this.data.user.services.twitter.profile_image_url} />
+        <img src={this.data.user.services.twitter.profile_image_url} />
     );
   },
 
@@ -26,7 +26,9 @@ MainNav = React.createClass({
             <ul>
                 <li><a href="/moves">My Moves</a></li>
                 <li><a href="/thirties">30/30s</a></li>
-                {/*<li><a href="/battle-mode">Battle Mode</a></li> */}
+                {<li><a href="/battle-mode">Battle Mode</a></li>}
+                {/*<li><a href="/battle-mode">Mixtape Boombox</a></li> */}
+                {/*<li><a href="/battle-mode">Video Delay Mirror</a></li> */}
                 <li><AccountsUIWrapper /></li>
             </ul>
         )

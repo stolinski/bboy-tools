@@ -1,3 +1,13 @@
+// uses gwendall:auth-client-callbacks
+Accounts.onLogin(function(){
+  FlowRouter.go('moves');
+});
+
+Accounts.onLogout(function(){
+  FlowRouter.go('home');
+});
+
+
 MainLayout = React.createClass({
   propTypes: {
     // This component gets the move to display through a React prop.

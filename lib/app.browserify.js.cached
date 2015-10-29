@@ -1,0 +1,1415 @@
+(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+SoundPlayerComponents = require('react-soundplayer/components');
+SoundPlayerAddons = require('react-soundplayer/addons');
+},{"react-soundplayer/addons":2,"react-soundplayer/components":3}],2:[function(require,module,exports){
+module.exports = require('./lib/addons');
+
+},{"./lib/addons":5}],3:[function(require,module,exports){
+module.exports = require('./lib/components');
+
+},{"./lib/components":13}],4:[function(require,module,exports){
+(function (global){
+'use strict';
+
+var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
+
+var _defineProperty = function (obj, key, value) { return Object.defineProperty(obj, key, { value: value, enumerable: key == null || typeof Symbol == 'undefined' || key.constructor !== Symbol, configurable: true, writable: true }); };
+
+var _classCallCheck = function (instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } };
+
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+var _get = function get(object, property, receiver) { var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+var _inherits = function (subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; };
+
+Object.defineProperty(exports, '__esModule', {
+    value: true
+});
+
+var _React = (typeof window !== "undefined" ? window['React']['require'] : typeof global !== "undefined" ? global['React']['require'] : null)("react/addons");
+
+var _React2 = _interopRequireWildcard(_React);
+
+var _SoundCloudAudio = require('soundcloud-audio');
+
+var _SoundCloudAudio2 = _interopRequireWildcard(_SoundCloudAudio);
+
+var _assign = require('object-assign');
+
+var _assign2 = _interopRequireWildcard(_assign);
+
+var _stopAllOther$addToPlayedStore = require('../utils/audioStore.js');
+
+var PropTypes = _React2['default'].PropTypes;
+var Component = _React2['default'].Component;
+var cloneWithProps = _React2['default'].addons.cloneWithProps;
+
+var SoundPlayerContainer = (function (_Component) {
+    function SoundPlayerContainer(props, context) {
+        _classCallCheck(this, SoundPlayerContainer);
+
+        _get(Object.getPrototypeOf(SoundPlayerContainer.prototype), 'constructor', this).call(this, props, context);
+
+        if (!props.clientId) {
+            throw new Error('You need to get clientId from SoundCloud\n                https://github.com/soundblogs/react-soundplayer#usage');
+        }
+
+        // Don't create a SoundCloudAudio instance
+        // if there is no `window`
+        if ('undefined' !== typeof window) {
+            this.soundCloudAudio = new _SoundCloudAudio2['default'](props.clientId);
+        }
+
+        this.state = {
+            duration: 0,
+            currentTime: 0,
+            seeking: false,
+            playing: false
+        };
+        this.wrapChild = this.wrapChild.bind(this);
+    }
+
+    _inherits(SoundPlayerContainer, _Component);
+
+    _createClass(SoundPlayerContainer, [{
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            var _this = this;
+
+            var soundCloudAudio = this.soundCloudAudio;
+            var _props = this.props;
+            var resolveUrl = _props.resolveUrl;
+            var streamUrl = _props.streamUrl;
+
+            if (streamUrl) {
+                soundCloudAudio.preload(streamUrl);
+            } else if (resolveUrl) {
+                soundCloudAudio.resolve(resolveUrl, function (data) {
+                    _this.setState(_defineProperty({}, data.tracks ? 'playlist' : 'track', data));
+                });
+            }
+
+            // https://developer.mozilla.org/en-US/docs/Web/Guide/Events/Media_events
+            soundCloudAudio.on('playing', this.onAudioStarted.bind(this));
+            soundCloudAudio.on('timeupdate', this.getCurrentTime.bind(this));
+            soundCloudAudio.on('loadedmetadata', this.getDuration.bind(this));
+            soundCloudAudio.on('seeking', this.onSeekingTrack.bind(this));
+            soundCloudAudio.on('seeked', this.onSeekedTrack.bind(this));
+            soundCloudAudio.on('pause', this.onAudioPaused.bind(this));
+            soundCloudAudio.on('ended', this.onAudioEnded.bind(this));
+        }
+    }, {
+        key: 'componentWillReceiveProps',
+        value: function componentWillReceiveProps(nextProps) {
+            var _this2 = this;
+
+            var soundCloudAudio = this.soundCloudAudio;
+            var _props2 = this.props;
+            var streamUrl = _props2.streamUrl;
+            var resolveUrl = _props2.resolveUrl;
+
+            var playedBefore = this.state.playing;
+
+            function restartIfPlayed() {
+                if (playedBefore) {
+                    soundCloudAudio.play();
+                }
+            }
+
+            if (streamUrl !== nextProps.streamUrl) {
+                soundCloudAudio.stop();
+                soundCloudAudio.preload(nextProps.streamUrl);
+                restartIfPlayed();
+            } else if (resolveUrl !== nextProps.resolveUrl) {
+                soundCloudAudio.stop();
+                soundCloudAudio.resolve(nextProps.resolveUrl, function (data) {
+                    _this2.setState(_defineProperty({}, data.tracks ? 'playlist' : 'track', data));
+                    restartIfPlayed();
+                });
+            }
+        }
+    }, {
+        key: 'componentWillUnmount',
+        value: function componentWillUnmount() {
+            this.soundCloudAudio.unbindAll();
+        }
+    }, {
+        key: 'onSeekingTrack',
+        value: function onSeekingTrack() {
+            this.setState({ seeking: true });
+        }
+    }, {
+        key: 'onSeekedTrack',
+        value: function onSeekedTrack() {
+            this.setState({ seeking: false });
+        }
+    }, {
+        key: 'onAudioStarted',
+        value: function onAudioStarted() {
+            var soundCloudAudio = this.soundCloudAudio;
+            var onStartTrack = this.props.onStartTrack;
+
+            this.setState({ playing: true });
+
+            _stopAllOther$addToPlayedStore.stopAllOther(soundCloudAudio.playing);
+            _stopAllOther$addToPlayedStore.addToPlayedStore(soundCloudAudio);
+
+            onStartTrack && onStartTrack(soundCloudAudio, soundCloudAudio.playing);
+        }
+    }, {
+        key: 'onAudioPaused',
+        value: function onAudioPaused() {
+            var onPauseTrack = this.props.onPauseTrack;
+
+            this.setState({ playing: false });
+
+            onPauseTrack && onPauseTrack(this.soundCloudAudio);
+        }
+    }, {
+        key: 'onAudioEnded',
+        value: function onAudioEnded() {
+            var onStopTrack = this.props.onStopTrack;
+
+            this.setState({ playing: false });
+
+            onStopTrack && onStopTrack(this.soundCloudAudio);
+        }
+    }, {
+        key: 'getCurrentTime',
+        value: function getCurrentTime() {
+            this.setState({ currentTime: this.soundCloudAudio.audio.currentTime });
+        }
+    }, {
+        key: 'getDuration',
+        value: function getDuration() {
+            this.setState({ duration: this.soundCloudAudio.audio.duration });
+        }
+    }, {
+        key: 'wrapChild',
+        value: function wrapChild(child) {
+            var newProps = _assign2['default']({}, { soundCloudAudio: this.soundCloudAudio }, this.state);
+            return cloneWithProps(child, newProps);
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            var children = this.props.children;
+
+            if (!children) {
+                return null;
+            }
+
+            if (!Array.isArray(children)) {
+                var child = children;
+                return this.wrapChild(child);
+            } else {
+                return _React2['default'].createElement(
+                    'span',
+                    null,
+                    _React2['default'].Children.map(children, this.wrapChild)
+                );
+            }
+        }
+    }]);
+
+    return SoundPlayerContainer;
+})(Component);
+
+SoundPlayerContainer.propTypes = {
+    streamUrl: PropTypes.string,
+    resolveUrl: PropTypes.string,
+    clientId: PropTypes.string.isRequired,
+    onStartTrack: PropTypes.func,
+    onStopTrack: PropTypes.func,
+    onPauseTrack: PropTypes.func
+};
+
+exports['default'] = SoundPlayerContainer;
+module.exports = exports['default'];
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+
+},{"../utils/audioStore.js":14,"object-assign":16,"soundcloud-audio":17}],5:[function(require,module,exports){
+'use strict';
+
+var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
+
+Object.defineProperty(exports, '__esModule', {
+  value: true
+});
+
+var _SoundPlayerContainer2 = require('./SoundPlayerContainer');
+
+var _SoundPlayerContainer3 = _interopRequireWildcard(_SoundPlayerContainer2);
+
+exports.SoundPlayerContainer = _SoundPlayerContainer3['default'];
+},{"./SoundPlayerContainer":4}],6:[function(require,module,exports){
+(function (global){
+'use strict';
+
+var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
+
+var _classCallCheck = function (instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } };
+
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+var _inherits = function (subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; };
+
+Object.defineProperty(exports, '__esModule', {
+    value: true
+});
+
+var _React = (typeof window !== "undefined" ? window['React']['require'] : typeof global !== "undefined" ? global['React']['require'] : null)("react/addons");
+
+var _React2 = _interopRequireWildcard(_React);
+
+var _ClassNames = require('classnames');
+
+var _ClassNames2 = _interopRequireWildcard(_ClassNames);
+
+var _SoundCloudLogoSVG = require('./Icons');
+
+var PropTypes = _React2['default'].PropTypes;
+var Component = _React2['default'].Component;
+
+var Cover = (function (_Component) {
+    function Cover() {
+        _classCallCheck(this, Cover);
+
+        if (_Component != null) {
+            _Component.apply(this, arguments);
+        }
+    }
+
+    _inherits(Cover, _Component);
+
+    _createClass(Cover, [{
+        key: 'render',
+        value: function render() {
+            var _props = this.props;
+            var backgroundUrl = _props.backgroundUrl;
+            var trackName = _props.trackName;
+            var artistName = _props.artistName;
+            var className = _props.className;
+            var children = _props.children;
+
+            var classNames = _ClassNames2['default']('sb-soundplayer-cover', className);
+
+            return _React2['default'].createElement(
+                'div',
+                { style: { backgroundImage: 'url(' + backgroundUrl + ')' }, className: classNames },
+                _React2['default'].createElement(
+                    'div',
+                    null,
+                    _React2['default'].createElement(_SoundCloudLogoSVG.SoundCloudLogoSVG, null)
+                ),
+                _React2['default'].createElement(
+                    'div',
+                    null,
+                    _React2['default'].createElement(
+                        'span',
+                        { className: 'sb-soundplayer-track sb-soundplayer-info-box' },
+                        trackName
+                    )
+                ),
+                _React2['default'].createElement(
+                    'div',
+                    null,
+                    _React2['default'].createElement(
+                        'span',
+                        { className: 'sb-soundplayer-artist sb-soundplayer-info-box' },
+                        'by ',
+                        artistName
+                    )
+                ),
+                _React2['default'].Children.map(children, _React2['default'].addons.cloneWithProps)
+            );
+        }
+    }]);
+
+    return Cover;
+})(Component);
+
+Cover.propTypes = {
+    className: PropTypes.string,
+    backgroundUrl: PropTypes.string.isRequired,
+    trackName: PropTypes.string.isRequired,
+    artistName: PropTypes.string.isRequired
+};
+
+exports['default'] = Cover;
+module.exports = exports['default'];
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+
+},{"./Icons":7,"classnames":15}],7:[function(require,module,exports){
+(function (global){
+"use strict";
+
+var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { "default": obj }; };
+
+var _classCallCheck = function (instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } };
+
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+var _inherits = function (subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; };
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _React = (typeof window !== "undefined" ? window['React']['require'] : typeof global !== "undefined" ? global['React']['require'] : null)("react");
+
+var _React2 = _interopRequireWildcard(_React);
+
+var Component = _React2["default"].Component;
+
+// SoundCloud Logo
+
+var SoundCloudLogoSVG = (function (_Component) {
+    function SoundCloudLogoSVG() {
+        _classCallCheck(this, SoundCloudLogoSVG);
+
+        if (_Component != null) {
+            _Component.apply(this, arguments);
+        }
+    }
+
+    _inherits(SoundCloudLogoSVG, _Component);
+
+    _createClass(SoundCloudLogoSVG, [{
+        key: "shouldComponentUpdate",
+        value: function shouldComponentUpdate() {
+            return false;
+        }
+    }, {
+        key: "render",
+        value: function render() {
+            return _React2["default"].createElement(
+                "svg",
+                {
+                    className: "sb-soundplayer-cover-logo",
+                    xmlns: "http://www.w3.org/2000/svg",
+                    fill: "currentColor"
+                },
+                _React2["default"].createElement("path", { d: "M10.517 3.742c-.323 0-.49.363-.49.582 0 0-.244 3.591-.244 4.641 0 1.602.15 2.621.15 2.621 0 .222.261.401.584.401.321 0 .519-.179.519-.401 0 0 .398-1.038.398-2.639 0-1.837-.153-4.127-.284-4.592-.112-.395-.313-.613-.633-.613zm-1.996.268c-.323 0-.49.363-.49.582 0 0-.244 3.322-.244 4.372 0 1.602.119 2.621.119 2.621 0 .222.26.401.584.401.321 0 .581-.179.581-.401 0 0 .081-1.007.081-2.608 0-1.837-.206-4.386-.206-4.386 0-.218-.104-.581-.425-.581zm-2.021 1.729c-.324 0-.49.362-.49.582 0 0-.272 1.594-.272 2.644 0 1.602.179 2.559.179 2.559 0 .222.229.463.552.463.321 0 .519-.241.519-.463 0 0 .19-.944.19-2.546 0-1.837-.253-2.657-.253-2.657 0-.22-.104-.582-.425-.582zm-2.046-.358c-.323 0-.49.363-.49.582 0 0-.162 1.92-.162 2.97 0 1.602.069 2.496.069 2.496 0 .222.26.557.584.557.321 0 .581-.304.581-.526 0 0 .143-.936.143-2.538 0-1.837-.206-2.96-.206-2.96 0-.218-.198-.581-.519-.581zm-2.169 1.482c-.272 0-.232.218-.232.218v3.982s-.04.335.232.335c.351 0 .716-.832.716-2.348 0-1.245-.436-2.187-.716-2.187zm18.715-.976c-.289 0-.567.042-.832.116-.417-2.266-2.806-3.989-5.263-3.989-1.127 0-2.095.705-2.931 1.316v8.16s0 .484.5.484h8.526c1.655 0 3-1.55 3-3.155 0-1.607-1.346-2.932-3-2.932zm10.17.857c-1.077-.253-1.368-.389-1.368-.815 0-.3.242-.611.97-.611.621 0 1.106.253 1.542.699l.981-.951c-.641-.669-1.417-1.067-2.474-1.067-1.339 0-2.425.757-2.425 1.99 0 1.338.873 1.736 2.124 2.026 1.281.291 1.513.486 1.513.923 0 .514-.379.738-1.184.738-.65 0-1.26-.223-1.736-.777l-.98.873c.514.757 1.504 1.232 2.639 1.232 1.853 0 2.668-.873 2.668-2.163 0-1.477-1.193-1.845-2.27-2.097zm6.803-2.745c-1.853 0-2.949 1.435-2.949 3.502s1.096 3.501 2.949 3.501c1.852 0 2.949-1.434 2.949-3.501s-1.096-3.502-2.949-3.502zm0 5.655c-1.097 0-1.553-.941-1.553-2.153 0-1.213.456-2.153 1.553-2.153 1.096 0 1.551.94 1.551 2.153.001 1.213-.454 2.153-1.551 2.153zm8.939-1.736c0 1.086-.533 1.756-1.396 1.756-.864 0-1.388-.689-1.388-1.775v-3.897h-1.358v3.916c0 1.978 1.106 3.084 2.746 3.084 1.726 0 2.754-1.136 2.754-3.103v-3.897h-1.358v3.916zm8.142-.89l.019 1.485c-.087-.174-.31-.515-.475-.768l-2.703-3.692h-1.362v6.894h1.401v-2.988l-.02-1.484c.088.175.311.514.475.767l2.79 3.705h1.213v-6.894h-1.339v2.975zm5.895-2.923h-2.124v6.791h2.027c1.746 0 3.474-1.01 3.474-3.395 0-2.484-1.437-3.396-3.377-3.396zm-.097 5.472h-.67v-4.152h.719c1.436 0 2.028.688 2.028 2.076 0 1.242-.651 2.076-2.077 2.076zm7.909-4.229c.611 0 1 .271 1.242.737l1.26-.582c-.426-.883-1.202-1.503-2.483-1.503-1.775 0-3.016 1.435-3.016 3.502 0 2.143 1.191 3.501 2.968 3.501 1.232 0 2.047-.572 2.513-1.533l-1.145-.68c-.358.602-.718.864-1.329.864-1.019 0-1.611-.932-1.611-2.153-.001-1.261.583-2.153 1.601-2.153zm5.17-1.192h-1.359v6.791h4.083v-1.338h-2.724v-5.453zm6.396-.157c-1.854 0-2.949 1.435-2.949 3.502s1.095 3.501 2.949 3.501c1.853 0 2.95-1.434 2.95-3.501s-1.097-3.502-2.95-3.502zm0 5.655c-1.097 0-1.553-.941-1.553-2.153 0-1.213.456-2.153 1.553-2.153 1.095 0 1.55.94 1.55 2.153.001 1.213-.454 2.153-1.55 2.153zm8.557-1.736c0 1.086-.532 1.756-1.396 1.756-.864 0-1.388-.689-1.388-1.775v-3.794h-1.358v3.813c0 1.978 1.106 3.084 2.746 3.084 1.726 0 2.755-1.136 2.755-3.103v-3.794h-1.36v3.813zm5.449-3.907h-2.318v6.978h2.211c1.908 0 3.789-1.037 3.789-3.489 0-2.552-1.565-3.489-3.682-3.489zm-.108 5.623h-.729v-4.266h.783c1.565 0 2.21.706 2.21 2.133.001 1.276-.707 2.133-2.264 2.133z" })
+            );
+        }
+    }]);
+
+    return SoundCloudLogoSVG;
+})(Component);
+
+// Player Button Icons
+
+var ButtonIconSVG = (function (_Component2) {
+    function ButtonIconSVG() {
+        _classCallCheck(this, ButtonIconSVG);
+
+        if (_Component2 != null) {
+            _Component2.apply(this, arguments);
+        }
+    }
+
+    _inherits(ButtonIconSVG, _Component2);
+
+    _createClass(ButtonIconSVG, [{
+        key: "render",
+        value: function render() {
+            return _React2["default"].createElement(
+                "svg",
+                {
+                    className: "sb-soundplayer-play-icon",
+                    xmlns: "http://www.w3.org/2000/svg",
+                    viewBox: "0 0 32 32",
+                    fill: "currentColor"
+                },
+                this.props.children
+            );
+        }
+    }]);
+
+    return ButtonIconSVG;
+})(Component);
+
+// |> Play
+
+var PlayIconSVG = (function (_Component3) {
+    function PlayIconSVG() {
+        _classCallCheck(this, PlayIconSVG);
+
+        if (_Component3 != null) {
+            _Component3.apply(this, arguments);
+        }
+    }
+
+    _inherits(PlayIconSVG, _Component3);
+
+    _createClass(PlayIconSVG, [{
+        key: "shouldComponentUpdate",
+        value: function shouldComponentUpdate() {
+            return false;
+        }
+    }, {
+        key: "render",
+        value: function render() {
+            return _React2["default"].createElement(
+                ButtonIconSVG,
+                null,
+                _React2["default"].createElement("path", { d: "M0 0 L32 16 L0 32 z" })
+            );
+        }
+    }]);
+
+    return PlayIconSVG;
+})(Component);
+
+// || Pause
+
+var PauseIconSVG = (function (_Component4) {
+    function PauseIconSVG() {
+        _classCallCheck(this, PauseIconSVG);
+
+        if (_Component4 != null) {
+            _Component4.apply(this, arguments);
+        }
+    }
+
+    _inherits(PauseIconSVG, _Component4);
+
+    _createClass(PauseIconSVG, [{
+        key: "shouldComponentUpdate",
+        value: function shouldComponentUpdate() {
+            return false;
+        }
+    }, {
+        key: "render",
+        value: function render() {
+            return _React2["default"].createElement(
+                ButtonIconSVG,
+                null,
+                _React2["default"].createElement("path", { d: "M0 0 H12 V32 H0 z M20 0 H32 V32 H20 z" })
+            );
+        }
+    }]);
+
+    return PauseIconSVG;
+})(Component);
+
+// |>| Next
+
+var NextIconSVG = (function (_Component5) {
+    function NextIconSVG() {
+        _classCallCheck(this, NextIconSVG);
+
+        if (_Component5 != null) {
+            _Component5.apply(this, arguments);
+        }
+    }
+
+    _inherits(NextIconSVG, _Component5);
+
+    _createClass(NextIconSVG, [{
+        key: "shouldComponentUpdate",
+        value: function shouldComponentUpdate() {
+            return false;
+        }
+    }, {
+        key: "render",
+        value: function render() {
+            return _React2["default"].createElement(
+                ButtonIconSVG,
+                null,
+                _React2["default"].createElement("path", { d: "M4 4 L24 14 V4 H28 V28 H24 V18 L4 28 z " })
+            );
+        }
+    }]);
+
+    return NextIconSVG;
+})(Component);
+
+// |<| Prev
+
+var PrevIconSVG = (function (_Component6) {
+    function PrevIconSVG() {
+        _classCallCheck(this, PrevIconSVG);
+
+        if (_Component6 != null) {
+            _Component6.apply(this, arguments);
+        }
+    }
+
+    _inherits(PrevIconSVG, _Component6);
+
+    _createClass(PrevIconSVG, [{
+        key: "shouldComponentUpdate",
+        value: function shouldComponentUpdate() {
+            return false;
+        }
+    }, {
+        key: "render",
+        value: function render() {
+            return _React2["default"].createElement(
+                ButtonIconSVG,
+                null,
+                _React2["default"].createElement("path", { d: "M4 4 H8 V14 L28 4 V28 L8 18 V28 H4 z " })
+            );
+        }
+    }]);
+
+    return PrevIconSVG;
+})(Component);
+
+exports["default"] = {
+    SoundCloudLogoSVG: SoundCloudLogoSVG,
+    PlayIconSVG: PlayIconSVG,
+    PauseIconSVG: PauseIconSVG,
+    NextIconSVG: NextIconSVG,
+    PrevIconSVG: PrevIconSVG
+};
+module.exports = exports["default"];
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+
+},{}],8:[function(require,module,exports){
+(function (global){
+'use strict';
+
+var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
+
+var _classCallCheck = function (instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } };
+
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+var _inherits = function (subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; };
+
+Object.defineProperty(exports, '__esModule', {
+    value: true
+});
+
+var _React = (typeof window !== "undefined" ? window['React']['require'] : typeof global !== "undefined" ? global['React']['require'] : null)("react");
+
+var _React2 = _interopRequireWildcard(_React);
+
+var _ClassNames = require('classnames');
+
+var _ClassNames2 = _interopRequireWildcard(_ClassNames);
+
+var _SoundCloudAudio = require('soundcloud-audio');
+
+var _SoundCloudAudio2 = _interopRequireWildcard(_SoundCloudAudio);
+
+var _NextIconSVG = require('./Icons');
+
+var PropTypes = _React2['default'].PropTypes;
+var Component = _React2['default'].Component;
+
+var NextButton = (function (_Component) {
+    function NextButton() {
+        _classCallCheck(this, NextButton);
+
+        if (_Component != null) {
+            _Component.apply(this, arguments);
+        }
+    }
+
+    _inherits(NextButton, _Component);
+
+    _createClass(NextButton, [{
+        key: 'shouldComponentUpdate',
+        value: function shouldComponentUpdate() {
+            return false;
+        }
+    }, {
+        key: 'handleClick',
+        value: function handleClick() {
+            var _props = this.props;
+            var soundCloudAudio = _props.soundCloudAudio;
+            var onNextClick = _props.onNextClick;
+
+            soundCloudAudio && soundCloudAudio.next();
+            onNextClick && onNextClick.call(this);
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            var className = this.props.className;
+
+            var classNames = _ClassNames2['default']('sb-soundplayer-play-btn', className);
+
+            return _React2['default'].createElement(
+                'button',
+                { className: classNames, onClick: this.handleClick.bind(this) },
+                _React2['default'].createElement(_NextIconSVG.NextIconSVG, null)
+            );
+        }
+    }]);
+
+    return NextButton;
+})(Component);
+
+NextButton.propTypes = {
+    className: PropTypes.string,
+    onNextClick: PropTypes.func,
+    soundCloudAudio: PropTypes.instanceOf(_SoundCloudAudio2['default'])
+};
+
+exports['default'] = NextButton;
+module.exports = exports['default'];
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+
+},{"./Icons":7,"classnames":15,"soundcloud-audio":17}],9:[function(require,module,exports){
+(function (global){
+'use strict';
+
+var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
+
+var _classCallCheck = function (instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } };
+
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+var _inherits = function (subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; };
+
+Object.defineProperty(exports, '__esModule', {
+    value: true
+});
+
+var _React = (typeof window !== "undefined" ? window['React']['require'] : typeof global !== "undefined" ? global['React']['require'] : null)("react");
+
+var _React2 = _interopRequireWildcard(_React);
+
+var _ClassNames = require('classnames');
+
+var _ClassNames2 = _interopRequireWildcard(_ClassNames);
+
+var _SoundCloudAudio = require('soundcloud-audio');
+
+var _SoundCloudAudio2 = _interopRequireWildcard(_SoundCloudAudio);
+
+var _PlayIconSVG$PauseIconSVG = require('./Icons');
+
+var PropTypes = _React2['default'].PropTypes;
+var Component = _React2['default'].Component;
+
+var PlayButton = (function (_Component) {
+    function PlayButton() {
+        _classCallCheck(this, PlayButton);
+
+        if (_Component != null) {
+            _Component.apply(this, arguments);
+        }
+    }
+
+    _inherits(PlayButton, _Component);
+
+    _createClass(PlayButton, [{
+        key: 'shouldComponentUpdate',
+        value: function shouldComponentUpdate(nextProps) {
+            var _props = this.props;
+            var playing = _props.playing;
+            var seeking = _props.seeking;
+
+            return playing !== nextProps.playing || seeking !== nextProps.seeking;
+        }
+    }, {
+        key: 'handleClick',
+        value: function handleClick(e) {
+            var _props2 = this.props;
+            var playing = _props2.playing;
+            var soundCloudAudio = _props2.soundCloudAudio;
+            var onTogglePlay = _props2.onTogglePlay;
+
+            if (!playing) {
+                soundCloudAudio && soundCloudAudio.play();
+            } else {
+                soundCloudAudio && soundCloudAudio.pause();
+            }
+
+            onTogglePlay && onTogglePlay(e);
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            var _props3 = this.props;
+            var playing = _props3.playing;
+            var seekingIcon = _props3.seekingIcon;
+            var seeking = _props3.seeking;
+            var className = _props3.className;
+
+            var iconNode = undefined;
+            if (seeking && seekingIcon) {
+                iconNode = _React2['default'].cloneElement(seekingIcon);
+            } else if (playing) {
+                iconNode = _React2['default'].createElement(_PlayIconSVG$PauseIconSVG.PauseIconSVG, null);
+            } else {
+                iconNode = _React2['default'].createElement(_PlayIconSVG$PauseIconSVG.PlayIconSVG, null);
+            }
+
+            var classNames = _ClassNames2['default']('sb-soundplayer-play-btn', className);
+
+            return _React2['default'].createElement(
+                'button',
+                { className: classNames, onClick: this.handleClick.bind(this) },
+                iconNode
+            );
+        }
+    }]);
+
+    return PlayButton;
+})(Component);
+
+PlayButton.propTypes = {
+    className: PropTypes.string,
+    seeking: PropTypes.bool,
+    playing: PropTypes.bool,
+    onTogglePlay: PropTypes.func,
+    seekingIcon: PropTypes.node,
+    soundCloudAudio: PropTypes.instanceOf(_SoundCloudAudio2['default'])
+};
+
+PlayButton.defaultProps = {
+    playing: false,
+    seeking: false
+};
+
+exports['default'] = PlayButton;
+module.exports = exports['default'];
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+
+},{"./Icons":7,"classnames":15,"soundcloud-audio":17}],10:[function(require,module,exports){
+(function (global){
+'use strict';
+
+var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
+
+var _classCallCheck = function (instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } };
+
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+var _inherits = function (subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; };
+
+Object.defineProperty(exports, '__esModule', {
+    value: true
+});
+
+var _React = (typeof window !== "undefined" ? window['React']['require'] : typeof global !== "undefined" ? global['React']['require'] : null)("react");
+
+var _React2 = _interopRequireWildcard(_React);
+
+var _ClassNames = require('classnames');
+
+var _ClassNames2 = _interopRequireWildcard(_ClassNames);
+
+var _SoundCloudAudio = require('soundcloud-audio');
+
+var _SoundCloudAudio2 = _interopRequireWildcard(_SoundCloudAudio);
+
+var _PrevIconSVG = require('./Icons');
+
+var PropTypes = _React2['default'].PropTypes;
+var Component = _React2['default'].Component;
+
+var PrevButton = (function (_Component) {
+    function PrevButton() {
+        _classCallCheck(this, PrevButton);
+
+        if (_Component != null) {
+            _Component.apply(this, arguments);
+        }
+    }
+
+    _inherits(PrevButton, _Component);
+
+    _createClass(PrevButton, [{
+        key: 'shouldComponentUpdate',
+        value: function shouldComponentUpdate() {
+            return false;
+        }
+    }, {
+        key: 'handleClick',
+        value: function handleClick() {
+            var _props = this.props;
+            var soundCloudAudio = _props.soundCloudAudio;
+            var onPrevClick = _props.onPrevClick;
+
+            soundCloudAudio && soundCloudAudio.previous();
+            onPrevClick && onPrevClick.call(this);
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            var className = this.props.className;
+
+            var classNames = _ClassNames2['default']('sb-soundplayer-play-btn', className);
+
+            return _React2['default'].createElement(
+                'button',
+                { className: classNames, onClick: this.handleClick.bind(this) },
+                _React2['default'].createElement(_PrevIconSVG.PrevIconSVG, null)
+            );
+        }
+    }]);
+
+    return PrevButton;
+})(Component);
+
+PrevButton.propTypes = {
+    className: PropTypes.string,
+    onPrevClick: PropTypes.func,
+    soundCloudAudio: PropTypes.instanceOf(_SoundCloudAudio2['default'])
+};
+
+exports['default'] = PrevButton;
+module.exports = exports['default'];
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+
+},{"./Icons":7,"classnames":15,"soundcloud-audio":17}],11:[function(require,module,exports){
+(function (global){
+'use strict';
+
+var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
+
+var _classCallCheck = function (instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } };
+
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+var _inherits = function (subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; };
+
+Object.defineProperty(exports, '__esModule', {
+    value: true
+});
+
+var _React = (typeof window !== "undefined" ? window['React']['require'] : typeof global !== "undefined" ? global['React']['require'] : null)("react");
+
+var _React2 = _interopRequireWildcard(_React);
+
+var _SoundCloudAudio = require('soundcloud-audio');
+
+var _SoundCloudAudio2 = _interopRequireWildcard(_SoundCloudAudio);
+
+var _ClassNames = require('classnames');
+
+var _ClassNames2 = _interopRequireWildcard(_ClassNames);
+
+var PropTypes = _React2['default'].PropTypes;
+var Component = _React2['default'].Component;
+
+var Progress = (function (_Component) {
+    function Progress() {
+        _classCallCheck(this, Progress);
+
+        if (_Component != null) {
+            _Component.apply(this, arguments);
+        }
+    }
+
+    _inherits(Progress, _Component);
+
+    _createClass(Progress, [{
+        key: 'handleSeekTrack',
+        value: function handleSeekTrack(e) {
+            var _props = this.props;
+            var onSeekTrack = _props.onSeekTrack;
+            var soundCloudAudio = _props.soundCloudAudio;
+
+            var xPos = (e.pageX - e.currentTarget.getBoundingClientRect().left) / e.currentTarget.offsetWidth;
+
+            if (soundCloudAudio && !isNaN(soundCloudAudio.audio.duration)) {
+                soundCloudAudio.audio.currentTime = xPos * soundCloudAudio.audio.duration;
+            }
+
+            onSeekTrack && onSeekTrack.call(this, xPos, e);
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            var _props2 = this.props;
+            var value = _props2.value;
+            var className = _props2.className;
+            var innerClassName = _props2.innerClassName;
+
+            if (value < 0) {
+                value = 0;
+            }
+
+            if (value > 100) {
+                value = 100;
+            }
+
+            var style = { width: '' + value + '%' };
+            var classNames = _ClassNames2['default']('sb-soundplayer-progress-container', className);
+            var innerClassNames = _ClassNames2['default']('sb-soundplayer-progress-inner', innerClassName);
+
+            return _React2['default'].createElement(
+                'div',
+                { className: classNames, onClick: this.handleSeekTrack.bind(this) },
+                _React2['default'].createElement('div', { className: innerClassNames, style: style })
+            );
+        }
+    }]);
+
+    return Progress;
+})(Component);
+
+Progress.propTypes = {
+    className: PropTypes.string,
+    innerClassName: _React2['default'].PropTypes.string,
+    value: _React2['default'].PropTypes.number,
+    onSeekTrack: PropTypes.func,
+    soundCloudAudio: PropTypes.instanceOf(_SoundCloudAudio2['default'])
+};
+
+Progress.defaultProps = {
+    value: 0
+};
+
+exports['default'] = Progress;
+module.exports = exports['default'];
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+
+},{"classnames":15,"soundcloud-audio":17}],12:[function(require,module,exports){
+(function (global){
+'use strict';
+
+var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
+
+var _classCallCheck = function (instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } };
+
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+var _inherits = function (subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; };
+
+Object.defineProperty(exports, '__esModule', {
+    value: true
+});
+
+var _React = (typeof window !== "undefined" ? window['React']['require'] : typeof global !== "undefined" ? global['React']['require'] : null)("react");
+
+var _React2 = _interopRequireWildcard(_React);
+
+var _ClassNames = require('classnames');
+
+var _ClassNames2 = _interopRequireWildcard(_ClassNames);
+
+var PropTypes = _React2['default'].PropTypes;
+var Component = _React2['default'].Component;
+
+var Timer = (function (_Component) {
+    function Timer() {
+        _classCallCheck(this, Timer);
+
+        if (_Component != null) {
+            _Component.apply(this, arguments);
+        }
+    }
+
+    _inherits(Timer, _Component);
+
+    _createClass(Timer, [{
+        key: 'render',
+        value: function render() {
+            var _props = this.props;
+            var duration = _props.duration;
+            var currentTime = _props.currentTime;
+            var className = _props.className;
+
+            var classNames = _ClassNames2['default']('sb-soundplayer-timer', className);
+
+            return _React2['default'].createElement(
+                'div',
+                { className: classNames },
+                Timer.prettyTime(currentTime),
+                ' / ',
+                Timer.prettyTime(duration)
+            );
+        }
+    }], [{
+        key: 'prettyTime',
+        value: function prettyTime(time) {
+            var hours = Math.floor(time / 3600);
+            var mins = '0' + Math.floor(time % 3600 / 60);
+            var secs = '0' + Math.floor(time % 60);
+
+            mins = mins.substr(mins.length - 2);
+            secs = secs.substr(secs.length - 2);
+
+            if (!isNaN(secs)) {
+                if (hours) {
+                    return '' + hours + ':' + mins + ':' + secs;
+                } else {
+                    return '' + mins + ':' + secs;
+                }
+            } else {
+                return '00:00';
+            }
+        }
+    }]);
+
+    return Timer;
+})(Component);
+
+Timer.propTypes = {
+    className: PropTypes.string,
+    duration: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    currentTime: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
+};
+
+Timer.defaultProps = {
+    duration: 0,
+    currentTime: 0
+};
+
+exports['default'] = Timer;
+module.exports = exports['default'];
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+
+},{"classnames":15}],13:[function(require,module,exports){
+'use strict';
+
+var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
+
+Object.defineProperty(exports, '__esModule', {
+  value: true
+});
+
+var _PlayButton2 = require('./PlayButton');
+
+var _PlayButton3 = _interopRequireWildcard(_PlayButton2);
+
+exports.PlayButton = _PlayButton3['default'];
+
+var _NextButton2 = require('./NextButton');
+
+var _NextButton3 = _interopRequireWildcard(_NextButton2);
+
+exports.NextButton = _NextButton3['default'];
+
+var _PrevButton2 = require('./PrevButton');
+
+var _PrevButton3 = _interopRequireWildcard(_PrevButton2);
+
+exports.PrevButton = _PrevButton3['default'];
+
+var _Progress2 = require('./Progress');
+
+var _Progress3 = _interopRequireWildcard(_Progress2);
+
+exports.Progress = _Progress3['default'];
+
+var _Timer2 = require('./Timer');
+
+var _Timer3 = _interopRequireWildcard(_Timer2);
+
+exports.Timer = _Timer3['default'];
+
+var _Cover2 = require('./Cover');
+
+var _Cover3 = _interopRequireWildcard(_Cover2);
+
+exports.Cover = _Cover3['default'];
+
+var _Icons2 = require('./Icons');
+
+var _Icons3 = _interopRequireWildcard(_Icons2);
+
+exports.Icons = _Icons3['default'];
+},{"./Cover":6,"./Icons":7,"./NextButton":8,"./PlayButton":9,"./PrevButton":10,"./Progress":11,"./Timer":12}],14:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.stopAllOther = stopAllOther;
+exports.addToPlayedStore = addToPlayedStore;
+// handling multiple audio on the page helpers
+var _playedAudios = [];
+
+function each(arr, cb) {
+    if (arr) {
+        for (var i = 0, len = arr.length; i < len; i++) {
+            if (arr[i] && cb(arr[i], i, arr)) {
+                break;
+            }
+        }
+    }
+}
+
+function stopAllOther(playing) {
+    each(_playedAudios, function (soundCloudAudio) {
+        if (soundCloudAudio.playing && soundCloudAudio.playing !== playing) {
+            soundCloudAudio.stop();
+        }
+    });
+}
+
+function addToPlayedStore(soundCloudAudio) {
+    var isPresent = false;
+
+    each(_playedAudios, function (_soundCloudAudio) {
+        if (_soundCloudAudio.playing === soundCloudAudio.playing) {
+            isPresent = true;
+            return true;
+        }
+    });
+
+    if (!isPresent) {
+        _playedAudios.push(soundCloudAudio);
+    }
+}
+},{}],15:[function(require,module,exports){
+/*!
+  Copyright (c) 2015 Jed Watson.
+  Licensed under the MIT License (MIT), see
+  http://jedwatson.github.io/classnames
+*/
+/* global define */
+
+(function () {
+	'use strict';
+
+	var hasOwn = {}.hasOwnProperty;
+
+	function classNames () {
+		var classes = '';
+
+		for (var i = 0; i < arguments.length; i++) {
+			var arg = arguments[i];
+			if (!arg) continue;
+
+			var argType = typeof arg;
+
+			if (argType === 'string' || argType === 'number') {
+				classes += ' ' + arg;
+			} else if (Array.isArray(arg)) {
+				classes += ' ' + classNames.apply(null, arg);
+			} else if (argType === 'object') {
+				for (var key in arg) {
+					if (hasOwn.call(arg, key) && arg[key]) {
+						classes += ' ' + key;
+					}
+				}
+			}
+		}
+
+		return classes.substr(1);
+	}
+
+	if (typeof module !== 'undefined' && module.exports) {
+		module.exports = classNames;
+	} else if (typeof define === 'function' && typeof define.amd === 'object' && define.amd) {
+		// register as 'classnames', consistent with npm package name
+		define('classnames', function () {
+			return classNames;
+		});
+	} else {
+		window.classNames = classNames;
+	}
+}());
+
+},{}],16:[function(require,module,exports){
+/* eslint-disable no-unused-vars */
+'use strict';
+var hasOwnProperty = Object.prototype.hasOwnProperty;
+var propIsEnumerable = Object.prototype.propertyIsEnumerable;
+
+function toObject(val) {
+	if (val === null || val === undefined) {
+		throw new TypeError('Object.assign cannot be called with null or undefined');
+	}
+
+	return Object(val);
+}
+
+module.exports = Object.assign || function (target, source) {
+	var from;
+	var to = toObject(target);
+	var symbols;
+
+	for (var s = 1; s < arguments.length; s++) {
+		from = Object(arguments[s]);
+
+		for (var key in from) {
+			if (hasOwnProperty.call(from, key)) {
+				to[key] = from[key];
+			}
+		}
+
+		if (Object.getOwnPropertySymbols) {
+			symbols = Object.getOwnPropertySymbols(from);
+			for (var i = 0; i < symbols.length; i++) {
+				if (propIsEnumerable.call(from, symbols[i])) {
+					to[symbols[i]] = from[symbols[i]];
+				}
+			}
+		}
+	}
+
+	return to;
+};
+
+},{}],17:[function(require,module,exports){
+'use strict';
+
+function SoundCloud (clientId) {
+    if (!(this instanceof SoundCloud)) {
+        return new SoundCloud(clientId);
+    }
+
+    if (!clientId) {
+        throw new Error('SoundCloud API clientId is required, get it - https://developers.soundcloud.com/');
+    }
+
+    this._events = {};
+
+    this._clientId = clientId;
+    this._baseUrl = 'https://api.soundcloud.com';
+
+    this.playing = false;
+    this.duration = 0;
+
+    this.audio = document.createElement('audio');
+}
+
+SoundCloud.prototype.resolve = function (url, callback) {
+    if (!url) {
+        throw new Error('SoundCloud track or playlist url is required');
+    }
+
+    url = this._baseUrl + '/resolve.json?url=' + url + '&client_id=' + this._clientId;
+
+    this._jsonp(url, function (data) {
+        if (Array.isArray(data)) {
+            var tracks = data;
+            data = {tracks: tracks};
+            this._playlist = data;
+        } else if (data.tracks) {
+            this._playlist = data;
+        } else {
+            this._track = data;
+        }
+
+        this.duration = data.duration && !isNaN(data.duration) ?
+            data.duration / 1000 : // convert to seconds
+            0; // no duration is zero
+
+        callback(data);
+    }.bind(this));
+};
+
+SoundCloud.prototype._jsonp = function (url, callback) {
+    var target = document.getElementsByTagName('script')[0] || document.head;
+    var script = document.createElement('script');
+
+    var id = 'jsonp_callback_' + Math.round(100000 * Math.random());
+    window[id] = function (data) {
+        if (script.parentNode) {
+            script.parentNode.removeChild(script);
+        }
+        window[id] = function () {};
+        callback(data);
+    };
+
+    script.src = url + (url.indexOf('?') >= 0 ? '&' : '?') + 'callback=' + id;
+    target.parentNode.insertBefore(script, target);
+};
+
+SoundCloud.prototype.on = function (e, fn) {
+    this._events[e] = fn;
+    this.audio.addEventListener(e, fn, false);
+};
+
+SoundCloud.prototype.off = function (e, fn) {
+    this._events[e] = null;
+    this.audio.removeEventListener(e, fn);
+};
+
+SoundCloud.prototype.unbindAll = function () {
+    for (var e in this._events) {
+        var fn = this._events[e];
+        if (fn) {
+            this.off(e, fn);
+        }
+    }
+};
+
+SoundCloud.prototype.preload = function (streamUrl) {
+    this._track = {stream_url: streamUrl};
+    this.audio.src = streamUrl + '?client_id=' + this._clientId;
+};
+
+SoundCloud.prototype.play = function (options) {
+    options = options || {};
+    var src;
+
+    if (options.streamUrl) {
+        src = options.streamUrl;
+    } else if (this._playlist) {
+        var length = this._playlist.tracks.length;
+        if (length) {
+            this._playlistIndex = options.playlistIndex || 0;
+
+            // be silent if index is out of range
+            if (this._playlistIndex >= length || this._playlistIndex < 0) {
+                this._playlistIndex = 0;
+                return;
+            }
+            src = this._playlist.tracks[this._playlistIndex].stream_url;
+        }
+    } else if (this._track) {
+        src = this._track.stream_url;
+    }
+
+    if (!src) {
+        throw new Error('There is no tracks to play, use `streamUrl` option or `load` method');
+    }
+
+    src += '?client_id=' + this._clientId;
+
+    if (src !== this.audio.src) {
+        this.audio.src = src;
+    }
+
+    this.playing = src;
+    this.audio.play();
+};
+
+SoundCloud.prototype.pause = function () {
+    this.audio.pause();
+    this.playing = false;
+};
+
+SoundCloud.prototype.stop = function () {
+    this.audio.pause();
+    this.audio.currentTime = 0;
+    this.playing = false;
+};
+
+SoundCloud.prototype.next = function () {
+    var tracksLength = this._playlist.tracks.length;
+    if (this._playlistIndex >= tracksLength - 1) {
+        return;
+    }
+    if (this._playlist && tracksLength) {
+        this.play({playlistIndex: ++this._playlistIndex});
+    }
+};
+
+SoundCloud.prototype.previous = function () {
+    if (this._playlistIndex <= 0) {
+        return;
+    }
+    if (this._playlist && this._playlist.tracks.length) {
+        this.play({playlistIndex: --this._playlistIndex});
+    }
+};
+
+SoundCloud.prototype.seek = function (e) {
+    if (!this.audio.readyState) {
+        return false;
+    }
+    var percent = e.offsetX / e.target.offsetWidth || (e.layerX - e.target.offsetLeft) / e.target.offsetWidth;
+    this.audio.currentTime = percent * (this.audio.duration || 0);
+};
+
+module.exports = SoundCloud;
+
+},{}]},{},[1])
+//# sourceMappingURL=app.browserify.js

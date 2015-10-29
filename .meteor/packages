@@ -5,8 +5,8 @@
 # but you can also edit it by hand.
 
 insecure
-react@0.1.12
-msavin:mongol
+react
+meteortoys:allthings
 erasaur:meteor-lodash
 stolinski:stylus-multi
 fortawesome:fontawesome
@@ -31,3 +31,9 @@ ejson
 spacebars
 check
 kadira:react-layout
+meteorhacks:npm
+zimme:active-route
+
+npm-container
+cosmos:browserify
+gwendall:auth-client-callbacks

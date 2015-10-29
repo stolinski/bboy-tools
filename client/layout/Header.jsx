@@ -5,6 +5,11 @@ Header = React.createClass({
       menuClass: false
     };
   },
+
+  closeMenu() {
+    this.setState({menuClass: false});
+  },
+
   toggleMenu() {
     this.setState({menuClass: !this.state.menuClass});
   },
@@ -15,7 +20,7 @@ Header = React.createClass({
     return (
         <header className={menuToggle}>
             <h2>Bboy Tools</h2>
-            <MainNav />
+            <MainNav toggleMenu={this.closeMenu} />
             <i className="fa fa-navicon" onClick={this.toggleMenu}></i>
             <i className="fa fa-times" onClick={this.toggleMenu}></i>
         </header>

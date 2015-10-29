@@ -6,7 +6,7 @@
 // Colors
 blue = #3F51B5
 yellow = #FF0
-text = #212121
+text = #323338
 dark-blue = #303F9F
 light-blue = #CFD8DC
 light-grey = #B6B6B6
@@ -15,7 +15,7 @@ grey = #727272
 red = #e51c23
 purple = #673ab7
 indigo = #3f51b5
-green = #259b24
+green = #8ADF8F
 orange = #ff9800
 
 social = {
@@ -49,7 +49,22 @@ z = {
     modal: 10
 }
 
-
+// Material Shadows
+shadow-level(l = 1)
+    if l == -1
+        box-shadow: inset 0 7px 9px -7px rgba(0,0,0,0.7);
+    if l == 0
+        box-shadow: none;
+    if l == 1
+        box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    if l == 2
+        box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+    if l == 3
+        box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+    if l == 4
+        box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+    if l == 5
+        box-shadow: 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);
 
 
 
@@ -68,8 +83,8 @@ html
     box-sizing: inherit
 
 body 
-    font-family: 'Raleway', sans-serif;
-    background: #DEDEDE
+    font-family: 'Avenir Next', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    background url('img/comp.png');
     color text 
     height 100% 
     > div, > div > div
@@ -109,6 +124,7 @@ header
     z-index: z.nav
     text-align center
     box-shadow: 1px 3px 4px rgba(#000000, 0.22), -3px 1px 4px rgba(#000000, 0.15)
+    transition all 0.3s ease
     .fa-navicon, .fa-times
         cursor pointer
         position: absolute
@@ -162,7 +178,7 @@ header
         border-bottom 4px solid blue
         height 65px 
         &:hover
-            border-bottom 4px solid yellow
+            border-bottom 4px solid green
             background dark-blue
     +above($large)
         transform: none
@@ -227,7 +243,6 @@ header
     background #111 
     header
         background rgba(black, 0.3) 
-        transition all 0.3s ease
     &.scrolled
         header
             background text
@@ -326,18 +341,6 @@ header
 .main-layout
     width: 100%
     margin: 60px auto
-    h1
-        font-size: 2em;
-        margin: 0.67em 0;
-        background-color: #212121;
-        color: #FFF;
-        padding: 11px 20px 25px;
-        margin: 0;
-        display: inline-block;
-        border-radius: 8px;
-        position: relative;
-        top: 10px;
-        left: 10px;
     +above($large)
         width: 90%
 
@@ -356,55 +359,33 @@ header
     position relative
     background: #FFF
     width: 100%
-    display: flex
-    flex-wrap: wrap
-    justify-content: space-between
-    border-radius: 12px
-    box-shadow: -4px 2px 6px rgba(#000000, 0.09), 2px 2px 7px rgba(#000000, 0.08)
-    padding: 15px 0
-    &:after
-        content ''
-        display block
-        background #bbb 
-        position absolute
-        left -5px
-        right -5px
-        top -5px
-        bottom -5px
-        border-radius 17px 
-        z-index -1 
-        box-shadow: -4px 2px 6px rgba(#000000, 0.09), 2px 2px 7px rgba(#000000, 0.08)
-    +above($small)
-        padding: 30px 40px
-    +above($large)
-        padding: 40px 80px
+    border-radius 4px 
+    shadow-level(4)
+    h1
+        font-size: 1.8em
+        letter-spacing 2px 
+        background-color: blue
+        text-transform uppercase
+        text-align center
+        color: #FFF;
+        padding: 15px 20px
+        margin: 0;
+        display: block;
+        border-radius: 4px 4px 0 0;
     &.types-battle-mode
         .moves
             width 100% 
 
-.book
-    display none
-    width 120px 
-    height 180px 
-    top -110px 
-    left 50%
-    transform: translateX(-60px)  
-    position absolute
-    border-radius 9px 
-    background #333
-    box-shadow: 1px 3px 4px rgba(#000000, 0.22), -3px 1px 4px rgba(#000000, 0.15)
-    +above($med)
-        top -40px
-        left -50px
-        transform: translateX(0)
-    p
-        background #FFF 
-        font-size 56px 
-        margin 50px 10px
-        border-radius 5px
-        text-align center 
-    .book-title
-        display none   
+.types-wrapper
+    display: flex
+    flex-wrap: wrap
+    justify-content: space-between    
+    padding: 0 0 15px
+    clearfix()
+    +above($small)
+        padding: 0 40px 30px
+    +above($large)
+        padding: 0 80px 40px
 
 .type
     width 100% 
@@ -429,7 +410,10 @@ header
 .move
     margin 0 10px 20px
     font-size: 26px
+    max-height 400px 
     position relative
+    background #FFF 
+    transition all 0.3s ease
     .move-value
         display inline-block
         background blue
@@ -441,7 +425,7 @@ header
         width 25px
         height 25px
         text-align center
-        line-height 21px
+        line-height: 28px
         margin-left 10px  
         position relative
         top -4px
@@ -454,18 +438,44 @@ header
         opacity 0.1
         transition all 0.3s ease
     &.battle-used
-        color red  
+        overflow hidden
+        max-height 0px 
+        margin 0 10px
+        padding-top 0 !important
+        border-top 0px solid rgba(blue, 0.2) !important
+    &.battle-mode
+        .text
+            display block
+            text-align center
+        .use-move
+            display block
+            text-align center
+            width 100% 
+            margin-left 0
+        +above($large)
+            .text
+                text-align left
+                display: inline-block
+                width: 40%
+            .use-move
+                display block
+                width auto
+                text-align center
+            
+    &.battle-mode + .move 
+        border-top 1px solid rgba(blue, 0.2)
+        padding-top 20px
     &:hover
         .edit-toggle
             opacity 0.5 
         .move-value
             left 5px 
     > .controls
-        display: none
+        display none
         .delete.btn
             background red
             padding: 5px 10px
-            margin-right 5px 
+            margin-right 5px
         &.open
             display inline-block
 
@@ -505,12 +515,12 @@ header
     border-top @color solid 4px   
     font-size 1.4em
     padding 15px 
-    transform: translateY(-65px)
+    transform: translateY(-75px)
     transition all 0.3s ease
     &:focus
         outline none
     .form-toggle-icons
-        top -2px 
+        top -5px 
         width 20px 
         height 20px 
         position relative
@@ -546,11 +556,6 @@ header
 
 
 .stopwatch
-    text-align center
-    background: #FFF
-    border-radius: 12px
-    padding: 20px 15px
-    box-shadow: -4px 2px 6px rgba(#000000, 0.09), 2px 2px 7px rgba(#000000, 0.08)
     h3
         font-size 6em
         margin 0.4em 0
@@ -558,7 +563,6 @@ header
         width 100%
         margin-bottom 20px  
     +above($large)
-        padding: 40px 80px
         h3
             font-size 12em 
             margin 0.4em 0
@@ -568,6 +572,58 @@ header
             & + .btn
                 margin-left 5px 
 
+
+.practice-tools, .battle-tools
+    .types-wrapper
+        display block
+    h1
+        background green
+        margin-bottom 40px 
+
+.battle-tools
+    h1
+        background red 
+
+.practice-tool
+    display block
+    lost-column 1/1
+    text-decoration none
+    color text
+    margin-bottom 20px 
+    padding 0 0 20px
+    shadow-level(1)
+    transition all 0.3s ease
+    h3 
+        background text
+        color #FFF
+        margin 0
+        font-size 1.5rem
+        padding 20px 
+        text-transform uppercase
+        letter-spacing: .2em
+        font-weight: 600
+        text-align: center
+        letter-spacing: 3px
+    p
+        padding 20px 
+        margin 0
+        line-height 1.2 
+    &:hover
+        shadow-level(3)
+    +above($large)
+        lost-column 1/2
+
+
+/*------------------------------------*\
+    $BATTLE_MODE
+\*------------------------------------*/
+
+.btn-reset
+    background green
+    margin-bottom 40px 
+    padding: 10px 50px;
+    font-size 26px
+    width 100%
 
 
 .site-footer
@@ -590,6 +646,15 @@ header
   opacity: 1.0
   transition: opacity .5s ease-in
 
+.pagetrans-appear
+    transform: translate3d(0, 100vh, 0)
+    transition: all .5s cubic-bezier(0.165, 0.84, 0.44, 1.1)
+    opacity 0 
+
+.pagetrans-appear.pagetrans-appear-active
+  transform: translate3d(0, 0, 0)
+  opacity 1 
+
 .page-wrapper
   min-height: 100%
   margin-bottom: -142px
@@ -601,3 +666,27 @@ header
 
 .site-footer, .page-wrap:after
     height: 142px
+    
+.book
+    display none
+    width 120px 
+    height 180px 
+    top -110px 
+    left 50%
+    transform: translateX(-60px)  
+    position absolute
+    border-radius 9px 
+    background #333
+    box-shadow: 1px 3px 4px rgba(#000000, 0.22), -3px 1px 4px rgba(#000000, 0.15)
+    +above($med)
+        top -40px
+        left -50px
+        transform: translateX(0)
+    p
+        background #FFF 
+        font-size 56px 
+        margin 50px 10px
+        border-radius 5px
+        text-align center 
+    .book-title
+        display none   

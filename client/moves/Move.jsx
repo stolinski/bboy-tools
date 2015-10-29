@@ -8,8 +8,6 @@ Move = React.createClass({
   },
 
   propTypes: {
-    // This component gets the move to display through a React prop.
-    // We can use propTypes to indicate it is required
     move: React.PropTypes.object.isRequired,
     bMode: React.PropTypes.bool
   },
@@ -28,9 +26,10 @@ Move = React.createClass({
   },
 
   useMove() {
-
-    Moves.update(this.props.move._id, {
-        $set: {battleUsed: !this.props.move.battleUsed}
+    Meteor.call('move.battleuse', this.props.move._id, this.props.move.battleUsed, (error) => {
+      if (error) {
+        sAlert.error(error.reason);
+      }      
     });
   },
  

@@ -1,4 +1,5 @@
 var audio = new Audio('/instantrapairhorn.mp3');
+var audio1 = new Audio('/champ.mp3');
 
 StopWatch = React.createClass({
   getInitialState: function() {
@@ -17,7 +18,7 @@ StopWatch = React.createClass({
     var elapsed = Date.now() - this.state.start + this.state.diff;
     var s = String(Math.floor((elapsed%(1000*60))/1000)+100).substring(1); 
     if(!(s % 30)) {
-      audio.play();
+      audio1.play();
     }
     this.setState({elapsed: elapsed});
   },
@@ -44,6 +45,7 @@ StopWatch = React.createClass({
       });
     }
   },
+  
   setLap: function() {
     var lapElapsed = this.state.laps.length ? this.state.laps[0].elapsed : 0;
     var lapTitle = "Lap"+(this.state.laps.length+1);
@@ -63,18 +65,20 @@ StopWatch = React.createClass({
   },
   render: function() {
     return (
-      <div className="stopwatch">
-        <h3>{this.getTimeSpan(this.state.elapsed)}</h3>
-        <button className="btn btn-start" onClick={this.onClick}>
-          {this.state.isStart ? "pause" : "start"}
-        </button>
-        <button className="btn" onClick={this.setLap}>lap</button>
-        <button className="btn btn-cancel" onClick={this.reset}>reset</button>
-        <ul>
-          {this.state.laps.map(function(lap) {
-            return <li key={lap.id}>{lap.label}</li>;
-          })}
-        </ul>
+      <div className="stopwatch practice-tools types">
+        <h1>30/30's</h1>
+        <div className="types-wrapper">
+          <h3>{this.getTimeSpan(this.state.elapsed)}</h3>
+          <button className="btn btn-start" onClick={this.onClick}>
+            {this.state.isStart ? "pause" : "start"}
+          </button>
+          <button className="btn btn-cancel" onClick={this.reset}>reset</button>
+          <ul>
+            {this.state.laps.map(function(lap) {
+              return <li key={lap.id}>{lap.label}</li>;
+            })}
+          </ul>
+        </div>
       </div>
     );
   }

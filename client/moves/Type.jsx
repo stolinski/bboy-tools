@@ -5,8 +5,6 @@ var ReactCSSTransitionGroup = React.addons.CSSTransitionGroup;
 // Type component - represents the whole type
 Type = React.createClass({
   propTypes: {
-    // This component gets the move to display through a React prop.
-    // We can use propTypes to indicate it is required
     type: React.PropTypes.object.isRequired,
     moves: React.PropTypes.array.isRequired
   },
@@ -34,7 +32,11 @@ Type = React.createClass({
   },
 
   renderTypes() {
-    this.props.moves.shift();
+    if(typeof this.props.moves[0] != 'undefined') {
+      if(this.props.moves[0].name === undefined) {
+        this.props.moves.shift();
+      }
+    }
     return this.props.moves.map((move) => {
       return <Move key={move._id} move={move} bMode={false}/>
     });
@@ -51,16 +53,13 @@ Type = React.createClass({
     var name = React.findDOMNode(this.refs.moveName).value.trim();
     var value = React.findDOMNode(this.refs.moveValue).value.trim();
     var type = React.findDOMNode(this.refs.moveType).value.trim();
- 
-    Moves.insert({
-      name: name,
-      value: value,
-      type: type,
-      owner: Meteor.userId(),
-      username: Meteor.user().username,      
-      createdAt: new Date() // current time
+
+    Meteor.call('move.add', name, value, type, Meteor.userId(), Meteor.user().username, (error) => {
+      if (error) {
+        sAlert.error(error.reason);
+      }
     });
- 
+
     // Clear form
     React.findDOMNode(this.refs.moveName).value = "";
     React.findDOMNode(this.refs.moveValue).value = "";
@@ -73,11 +72,15 @@ Type = React.createClass({
 
     return (
         <div className={this.typeClasses()}>
+
           <h3>{this.renderCategory()}</h3>
+
           <ul className="moves">
+
             <ReactCSSTransitionGroup transitionName="newmove">
                 {this.renderTypes()}
             </ReactCSSTransitionGroup>
+
             <li className="move-form">
               <form className="new-move" onSubmit={this.handleSubmit} >
                 <input
@@ -100,7 +103,8 @@ Type = React.createClass({
               </form>
             </li>
 
-          </ul>   
+          </ul> 
+
           <button 
             className={toggleForm}
             onClick={this.openForm}>

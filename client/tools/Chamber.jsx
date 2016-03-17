@@ -1,4 +1,5 @@
-var ReactCSSTransitionGroup = React.addons.CSSTransitionGroup;
+import React from 'react';
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
 Chamber = React.createClass({
   render: function() {

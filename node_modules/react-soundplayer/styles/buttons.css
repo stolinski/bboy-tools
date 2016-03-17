@@ -1,0 +1,37 @@
+.sb-soundplayer-play-btn {
+    display: inline-block;
+    background-color: transparent;
+    color: #FC561E;
+    font-size: 1em;
+    padding: 16px;
+    padding: 1rem;
+    margin: 0;
+    height: auto;
+    vertical-align: middle;
+    border-radius: 3px;
+    text-decoration: none;
+    border: 0;
+    outline: none;
+    cursor: pointer;
+    -webkit-transition: -webkit-transform, box-shadow, .05s ease;
+            transition: transform, box-shadow, .05s ease;
+    box-sizing: border-box;
+    -webkit-appearance: none;
+}
+.sb-soundplayer-play-btn:hover {
+    -webkit-transform: scale(1.0625);
+        -ms-transform: scale(1.0625);
+            transform: scale(1.0625);
+}
+.sb-soundplayer-play-btn:focus {
+    -webkit-transform: scale(.9375);
+        -ms-transform: scale(.9375);
+            transform: scale(.9375);
+}
+.sb-soundplayer-play-btn:active {
+    box-shadow: inset 0 0 0 2px #FC561E;
+}
+.sb-soundplayer-play-btn:hover,
+.sb-soundplayer-play-btn:focus {
+    box-shadow: none;
+}

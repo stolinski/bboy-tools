@@ -1,3 +1,4 @@
+import React from 'react';
 /**
  * Calls a function when you scroll to the element.
  */

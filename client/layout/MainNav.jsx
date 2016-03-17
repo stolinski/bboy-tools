@@ -1,19 +1,7 @@
+import React from 'react';
 _ = lodash
 
 MainNav = React.createClass({
-
-  mixins: [ReactMeteorData],
-
-  getMeteorData() {
-    var data = {};
-    var postId = this.props.postId;
-    var handle = Meteor.subscribe('users');
-    if(handle.ready()) {
-      data.user = Meteor.users.findOne({_id: Meteor.userId()});
-    }
-    return data;
-  },
-
   render() {
     var loggedIn;
     if(Meteor.userId()){
@@ -29,8 +17,8 @@ MainNav = React.createClass({
         loggedIn = (
             <ul>
                 <li><AccountsUIWrapper /></li>
-            </ul>  
-        )      
+            </ul>
+        )
     }
 
     return (
@@ -39,5 +27,4 @@ MainNav = React.createClass({
         </nav>
     );
   }
-
 });

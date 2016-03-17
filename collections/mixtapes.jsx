@@ -1,11 +1,7 @@
-var PlayButton = SoundPlayerComponents.PlayButton;
-var Timer = SoundPlayerComponents.PlayButton;
-var Progress = SoundPlayerComponents.Progress;
+import React from 'react';
 
-// icons are components too!
-var SoundCloudLogoSVG = SoundPlayerComponents.Icons.SoundCloudLogoSVG
-
-var SoundPlayerContainer = SoundPlayerAddons.SoundPlayerContainer;
+import SoundPlayerComponents, {PlayButton, Timer, Progress, Icons} from 'react-soundplayer/components';
+import SoundPlayerAddons, {SoundPlayerContainer} from 'react-soundplayer/addons';
 
 const clientId = '148e939ec8af3082a2ebfad45d65165d';
 const resolve = 'https://soundcloud.com/sayloulou/nothing-but-a-heartbeat';

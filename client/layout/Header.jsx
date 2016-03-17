@@ -1,4 +1,5 @@
-// About component - represents the whole about
+import React from 'react';
+
 Header = React.createClass({
   getInitialState: function() {
     return {

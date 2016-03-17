@@ -1,3 +1,5 @@
+import React from 'react';
+
 function hasGetUserMedia() {
   return !!(navigator.getUserMedia || navigator.webkitGetUserMedia ||
             navigator.mozGetUserMedia || navigator.msGetUserMedia);
@@ -135,7 +137,7 @@ Webcam = React.createClass({
     // vid.play();
     var canvas = document.getElementById('canvas');
     canvas.height = vid.clientHeight;
-    canvas.width = vid.clientWidth;    
+    canvas.width = vid.clientWidth;
     context = canvas.getContext('2d');
     var that = this;
     vid.addEventListener('play', function(){

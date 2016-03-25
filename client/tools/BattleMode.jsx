@@ -41,7 +41,7 @@ export default class BattleMode extends TrackerReact(Component) {
                     <div className='types types-battle-mode' key='2'>
                         <h1>Battle Mode</h1>
                         <button className='btn btn-reset' onClick={this.resetBattleMode}>Reset</button>
-                        <ul className='moves'>
+                        <ul className='bmoves'>
                             {this.renderMoves()}
                         </ul>
                     </div>

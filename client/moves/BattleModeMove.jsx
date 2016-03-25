@@ -3,7 +3,6 @@ import React, {Component} from 'react';
 export default class BattleModeMove extends Component {
 
     useMove() {
-        console.log(this);
         Meteor.call('move.battleuse', this.props.move._id, this.props.move.battleUsed, (error) => {
             if (error) {
                 sAlert.error(error.reason);

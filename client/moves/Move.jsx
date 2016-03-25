@@ -74,6 +74,9 @@ Move = React.createClass({
         );
 
         var modeControls;
+
+        const MOVE_VALUE = this.props.move.value ? <span className='move-value'>{this.props.move.value}</span> : '';
+
         if (this.props.bMode) {
             modeControls = (
                 <button className='btn btn-cancel use-move'
@@ -93,7 +96,7 @@ Move = React.createClass({
                     </button>
                 </div>
                 <span className='text'>{this.props.move.name}
-                    <span className='move-value'>{this.props.move.value}</span>
+                    {MOVE_VALUE}
                 </span>
                 {moveEditForm}
                 {modeControls} {/*If battle mode page, show battle mode toggle*/}

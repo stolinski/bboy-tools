@@ -12,6 +12,7 @@ import BattleMode from './tools/BattleMode.jsx';
 FlowRouter.route('/', {
     name: 'home',
     action() {
+        if (Meteor.userId()) {FlowRouter.go('moves');}
         mount(HomeLayout, {
             content: () => (<Home />)
         });
@@ -21,6 +22,7 @@ FlowRouter.route('/', {
 FlowRouter.route('/moves', {
     name: 'moves',
     action() {
+        if (!Meteor.userId()) {FlowRouter.go('home');}
         mount(MainLayout, {
             content: () => (<App />)
         });

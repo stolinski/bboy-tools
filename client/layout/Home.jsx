@@ -18,8 +18,8 @@ export default class Home extends Component {
                           <button onClick={this.handleClick}>Sign Up</button>
                       </section>
                       <section className='first-zone homepage-zone'>
-                          <h2><span>Practice & Battle Tools</span></h2>
                           <i className='fa fa-wrench'></i>
+                          <h2><span>Practice & Battle Tools</span></h2>
                           <div className='tools-tease'>
                               <article>
                                   <h3>Battle Mode</h3>

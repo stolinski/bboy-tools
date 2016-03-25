@@ -1,71 +1,6 @@
-/*------------------------------------*\
-    $VARIABLES
-\*------------------------------------*/
-
-
-// Colors
-blue = #3F51B5
-yellow = #FF0
-text = #323338
-dark-blue = #303F9F
-light-blue = #CFD8DC
-light-grey = #B6B6B6
-grey = #727272
-
-red = #e51c23
-purple = #673ab7
-indigo = #3f51b5
-green = #8ADF8F
-orange = #ff9800
-
-social = {
-    twitter: #00aced,
-    facebook: #3b5998,
-    google: #dd4b39,
-    youtube: #bb0000
-}
-
-moves = {
-    top-rock: blue,
-    go-down: purple,
-    footwork: green,
-    power-move: red,
-    freeze: indigo,
-    burner: orange
-}
-
-// Grid
-$xsmall = 340px
-$small = 500px
-$med = 800px
-$large = 960px
-$wide = 1200px
-
-// Layers
-z = {
-    video: 7,
-    header: 8,
-    nav: 9,
-    modal: 10
-}
-
-// Material Shadows
-shadow-level(l = 1)
-    if l == -1
-        box-shadow: inset 0 7px 9px -7px rgba(0,0,0,0.7);
-    if l == 0
-        box-shadow: none;
-    if l == 1
-        box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
-    if l == 2
-        box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
-    if l == 3
-        box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
-    if l == 4
-        box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
-    if l == 5
-        box-shadow: 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);
-
+@import './styl/_easings.styl'
+@import './styl/_vars.styl'
+@import './styl/_funcs.styl'
 
 
 /*------------------------------------*\
@@ -77,21 +12,23 @@ normalize-css()
 
 html
     box-sizing: border-box
-    height 100% 
+    height 100%
 
 *, *:before, *:after
     box-sizing: inherit
 
-body 
+body
     font-family: 'Avenir Next', 'Helvetica Neue', Helvetica, Arial, sans-serif;
     background url('img/comp.png');
-    color text 
-    height 100% 
+    color text
+    padding-top: $headHeight
+    height 100%
     > div, > div > div
         height 100%
 
 p
-    font-size 1.6em 
+    font-size 1.6em
+    line-height 1.5
 
 
 .btn
@@ -99,28 +36,28 @@ p
     color #FFF
     text-transform uppercase
     border none
-    border-radius 4px 
+    border-radius 4px
     padding: 25px 80px
-    font-weight 700 
+    font-weight 700
     transition: all 0.3s
     &.btn-cancel
-        background red 
+        background red
     &.btn-start
-        background green   
+        background green
     &.use-move
         margin-left 50px
         padding: 10px 50px
 
 .page-wrapper
     min-height: 100%
-    
 
-header 
+
+header
     background blue
     color #fff
     fixed top left
     width 100%
-    height 65px 
+    height $headHeight
     z-index: z.nav
     text-align center
     box-shadow: 1px 3px 4px rgba(#000000, 0.22), -3px 1px 4px rgba(#000000, 0.15)
@@ -130,24 +67,24 @@ header
         position: absolute
         top: 0
         right: 0
-        padding 25px 20px 
+        padding 25px 20px
         font-size: 1.4em
     .fa-times
         display none
     clearfix()
     h1, h2
-        margin 0 
-        padding 0 20px 
+        margin 0
+        padding 0 20px
         font-size: 31px
-        font-weight: 400
+        font-weight: 700
         line-height: 65px
     +above($large)
-        h1, h2 
+        h1, h2
             float left
         .fa-navicon
             display none !important
 
-.open   
+.open
     .main-nav
         transform: translateX(0)
         transition all 0.4s ease-in
@@ -160,9 +97,9 @@ header
     transform: translateX(-100%)
     background blue
     fixed top left
-    width 100% 
+    width 100%
     height 100%
-    padding-top 100px 
+    padding-top 100px
     transition all 0.4s ease-out
     ul
         list-style none
@@ -171,23 +108,23 @@ header
         clearfix()
     ul li a
         padding 20px
-        color #FFF 
+        color #FFF
         transition all 0.3s ease
         display block
         text-decoration none
         border-bottom 4px solid blue
-        height 65px 
+        height 65px
         &:hover
             border-bottom 4px solid green
             background dark-blue
     +above($large)
         transform: none
-        padding-top 0 
+        padding-top 0
         float right
-        width auto 
+        width auto
         position relative
         li
-            font-size 16px 
+            font-size 16px
             float left
 
 #login-dropdown-list
@@ -199,35 +136,35 @@ header
     box-shadow: 1px 3px 4px rgba(#000000, 0.22), -3px 1px 4px rgba(#000000, 0.15)
     background blue
     color #FFF
-    width 100% 
+    width 100%
     top 0
     margin 0
-    height 100% 
+    height 100%
     +above($large)
         padding: 5% 15%
 
 #login-buttons
     display block
-    a 
+    a
         text-decoration none
     .login-button
-        font-size 1.6em 
-    #login-buttons-twitter 
+        font-size 1.6em
+    #login-buttons-twitter
         background: #FFF
         border: none
-        color: social.twitter 
+        color: social.twitter
     +above($large)
         display inline-block
 
 #login-buttons, .accounts-dialog
-    label 
-        font-size 1.6em 
+    label
+        font-size 1.6em
     input[type=text], input[type=text], input[type=email], input[type=email], input[type=password], input[type=password]
-        appearance none 
+        appearance none
         background blue + 20
         border-radius 0
-        border none 
-        font-size 1.6em 
+        border none
+        font-size 1.6em
 
 
 
@@ -240,9 +177,9 @@ header
 
 .home-layout
     overflow hidden
-    background #111 
+    background #111
     header
-        background rgba(black, 0.3) 
+        background rgba(black, 0.3)
     &.scrolled
         header
             background text
@@ -254,83 +191,81 @@ header
     text-align left
     color #FFF
     &.site-intro
-        padding 20px 5% 
+        padding 20px 5%
         clearfix()
         h2
             display inline-block
             background #111
-            padding 10px 
+            padding 10px
             margin 20px 0
-            box-shadow 1px 1px 4px rgba(black, 0.3)  
+            box-shadow 1px 1px 4px rgba(black, 0.3)
             &:after
                 clear: both
         p
-            font-size 1.6em 
+            font-size 1.6em
             box-shadow 1px 1px 4px rgba(black, 0.3)
             display inline-block
-            background #111 
+            background #111
             padding 10px
         button
-            background blue 
+            background blue
             color #FFF
             appearance none
             border none
             font-size 2em
             padding 10px 20px
             text-transform uppercase
-            border-radius 4px    
-            box-shadow 1px 1px 4px rgba(black, 0.3) 
+            border-radius 4px
+            box-shadow 1px 1px 4px rgba(black, 0.3)
         +above($large)
             height: 80vh
             h2
                 font-size 4em
             p
-                font-size 2em                 
+                font-size 2em
 
 .billboard
-    z-index 5
-    opacity 0.4
+    z-index -1
     position fixed
     top 0
     left 0
-    width 100%   
+    width 100%
 
 .first-zone
-    padding 5% 
-    background text 
+    padding 5%
+    background text
     text-align center
-    box-shadow 0px -1px 4px rgba(#000, 0.3) 
+    box-shadow 0px -1px 4px rgba(#000, 0.3)
     .fa-wrench
         font-size 5em
         border solid 1px #fff
-        border-radius 50%  
+        border-radius 50%
         padding 20px
-        margin-bottom 40px 
+        margin-bottom 40px
     h2
         font-size 2em
         text-transform uppercase
-        font-weight 400
-        letter-spacing 0.4em
+        font-weight 600
+        letter-spacing 0.2em
         margin-bottom 40px
-        line-height 2.2 
+        line-height 2.2
         span
             border-bottom 4px solid red
             padding-bottom 5px
     p
         font-size 1em
-        line-height 1.2 
     article
-        margin-bottom 60px 
+        margin-bottom 60px
     .tools-tease
         +above($large)
             display flex
             justify-content space-apart
             article
-                width 33% 
-                padding 0 20px 
+                width 33%
+                padding 0 20px
                 h3
                     font-size 2em
-                    font-weight 400  
+                    font-weight 400
 
 
 /*------------------------------------*\
@@ -359,11 +294,11 @@ header
     position relative
     background: #FFF
     width: 100%
-    border-radius 4px 
-    shadow-level(4)
+    border-radius 4px
+    elevation(4)
     h1
         font-size: 1.8em
-        letter-spacing 2px 
+        letter-spacing 2px
         background-color: blue
         text-transform uppercase
         text-align center
@@ -374,12 +309,12 @@ header
         border-radius: 4px 4px 0 0;
     &.types-battle-mode
         .moves
-            width 100% 
+            width 100%
 
 .types-wrapper
     display: flex
     flex-wrap: wrap
-    justify-content: space-between    
+    justify-content: space-between
     padding: 0 0 15px
     clearfix()
     +above($small)
@@ -388,7 +323,7 @@ header
         padding: 0 80px 40px
 
 .type
-    width 100% 
+    width 100%
     +above($large)
         width: 48%
     h3
@@ -404,15 +339,15 @@ header
 .moves
     list-style none
     padding 0
-    margin 0 15px    
+    margin 0 15px
     overflow hidden
 
 .move
     margin 0 10px 20px
     font-size: 26px
-    max-height 400px 
+    max-height 400px
     position relative
-    background #FFF 
+    background #FFF
     transition all 0.3s ease
     .move-value
         display inline-block
@@ -426,7 +361,7 @@ header
         height 25px
         text-align center
         line-height: 28px
-        margin-left 10px  
+        margin-left 10px
         position relative
         top -4px
         left 0
@@ -439,7 +374,7 @@ header
         transition all 0.3s ease
     &.battle-used
         overflow hidden
-        max-height 0px 
+        max-height 0px
         margin 0 10px
         padding-top 0 !important
         border-top 0px solid rgba(blue, 0.2) !important
@@ -450,7 +385,7 @@ header
         .use-move
             display block
             text-align center
-            width 100% 
+            width 100%
             margin-left 0
         +above($large)
             .text
@@ -461,15 +396,15 @@ header
                 display block
                 width auto
                 text-align center
-            
-    &.battle-mode + .move 
+
+    &.battle-mode + .move
         border-top 1px solid rgba(blue, 0.2)
         padding-top 20px
     &:hover
         .edit-toggle
-            opacity 0.5 
+            opacity 0.5
         .move-value
-            left 5px 
+            left 5px
     > .controls
         display none
         .delete.btn
@@ -483,66 +418,66 @@ header
 
 .move-form
     margin-bottom: 17px;
-    font-size 26px 
+    font-size 26px
 
 .new-move
     display: flex
-    justify-content space-apart 
+    justify-content space-apart
     input
-        width 60% 
+        width 60%
         padding: 10px 13px 6px
         background: #EEEEEE
         border: none
         & + input
-            width 25% 
+            width 25%
             margin-left 2.5%
     button
-        margin-left 2.5% 
+        margin-left 2.5%
         background blue
         border: none
         color #FFF
         text-align center
         width 10%
         transition all 0.2s ease
-        &:hover 
+        &:hover
             background dark-blue
-        
+
 .add-new-move
     width 100%
     background #FFF
     border none
     color #D5D5D5
-    border-top @color solid 4px   
+    border-top @color solid 4px
     font-size 1.4em
-    padding 15px 
+    padding 15px
     transform: translateY(-75px)
     transition all 0.3s ease
     &:focus
         outline none
     .form-toggle-icons
-        top -5px 
-        width 20px 
-        height 20px 
+        top -5px
+        width 20px
+        height 20px
         position relative
         display inline-block
         i
             position absolute
-            transition all 0.3s ease 
+            transition all 0.3s ease
     &.open
         transform: translateY(0)
         .fa-plus
             transform: scaleY(0)
     .form-toggle-text
-        opacity 0 
+        opacity 0
         white-space: nowrap
         display inline-block
-        width 0 
+        width 0
         overflow hidden
-        transition all 0.3s ease 
+        transition all 0.3s ease
     &:hover
         .form-toggle-text
-            opacity 1 
-            width 150px 
+            opacity 1
+            width 150px
 
 .edit-move
     display none
@@ -556,21 +491,22 @@ header
 
 
 .stopwatch
+    text-align center
     h3
         font-size 6em
         margin 0.4em 0
-    .btn 
+    .btn
         width 100%
-        margin-bottom 20px  
+        margin-bottom 20px
     +above($large)
         h3
-            font-size 12em 
+            font-size 12em
             margin 0.4em 0
         .btn
-            width auto       
+            width auto
             font-size 2em
             & + .btn
-                margin-left 5px 
+                margin-left 5px
 
 
 .practice-tools, .battle-tools
@@ -578,38 +514,38 @@ header
         display block
     h1
         background green
-        margin-bottom 40px 
+        margin-bottom 40px
 
 .battle-tools
     h1
-        background red 
+        background red
 
 .practice-tool
     display block
     lost-column 1/1
     text-decoration none
     color text
-    margin-bottom 20px 
+    margin-bottom 20px
     padding 0 0 20px
-    shadow-level(1)
+    elevation(1)
     transition all 0.3s ease
-    h3 
+    h3
         background text
         color #FFF
         margin 0
         font-size 1.5rem
-        padding 20px 
+        padding 20px
         text-transform uppercase
         letter-spacing: .2em
         font-weight: 600
         text-align: center
         letter-spacing: 3px
     p
-        padding 20px 
+        padding 20px
         margin 0
-        line-height 1.2 
+        line-height 1.2
     &:hover
-        shadow-level(3)
+        elevation(3)
     +above($large)
         lost-column 1/2
 
@@ -620,7 +556,7 @@ header
 
 .btn-reset
     background green
-    margin-bottom 40px 
+    margin-bottom 40px
     padding: 10px 50px;
     font-size 26px
     width 100%
@@ -631,9 +567,8 @@ header
     color #FFF
     padding 20px
     z-index 8
-    position relative 
-    margin-top 20px 
-    
+    position relative
+
 .newmove-enter
   animation-duration: .75s;
   animation-name: fadeInLeft;
@@ -648,12 +583,12 @@ header
 
 .pagetrans-appear
     transform: translate3d(0, 100vh, 0)
-    transition: all .5s cubic-bezier(0.165, 0.84, 0.44, 1.1)
-    opacity 0 
+    transition: all .5s easeOutExpo
+    opacity 0
 
 .pagetrans-appear.pagetrans-appear-active
   transform: translate3d(0, 0, 0)
-  opacity 1 
+  opacity 1
 
 .page-wrapper
   min-height: 100%
@@ -666,16 +601,16 @@ header
 
 .site-footer, .page-wrap:after
     height: 142px
-    
+
 .book
     display none
-    width 120px 
-    height 180px 
-    top -110px 
+    width 120px
+    height 180px
+    top -110px
     left 50%
-    transform: translateX(-60px)  
+    transform: translateX(-60px)
     position absolute
-    border-radius 9px 
+    border-radius 9px
     background #333
     box-shadow: 1px 3px 4px rgba(#000000, 0.22), -3px 1px 4px rgba(#000000, 0.15)
     +above($med)
@@ -683,10 +618,10 @@ header
         left -50px
         transform: translateX(0)
     p
-        background #FFF 
-        font-size 56px 
+        background #FFF
+        font-size 56px
         margin 50px 10px
         border-radius 5px
-        text-align center 
+        text-align center
     .book-title
-        display none   
+        display none

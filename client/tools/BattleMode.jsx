@@ -1,9 +1,10 @@
-_ = lodash
-import React from 'react';
+_ = lodash;
+import React, {Component} from 'react';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import TrackerReact from 'meteor/ultimatejs:tracker-react';
+import BattleModeMove from '../moves/BattleModeMove.jsx';
 
-export default class BattleMode extends TrackerReact(React.Component) {
+export default class BattleMode extends TrackerReact(Component) {
     constructor() {
         super();
 
@@ -11,7 +12,7 @@ export default class BattleMode extends TrackerReact(React.Component) {
             subscription: {
                 moves: Meteor.subscribe('moves')
             }
-        }
+        };
     }
 
     componentWillUnmount() {
@@ -21,10 +22,9 @@ export default class BattleMode extends TrackerReact(React.Component) {
     renderMoves() {
         let moves = Moves.find({}, {sort: {createdAt: 1}}).fetch();
         return moves.map((move) => {
-            return <Move key={move._id} move={move} bMode={true} />
+            return <BattleModeMove key={move._id} move={move} />;
         });
     }
-
 
     resetBattleMode() {
         Meteor.call('move.resetBattle', Meteor.userId(), (error) => {

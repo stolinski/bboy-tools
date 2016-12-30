@@ -3,7 +3,7 @@ import {mount} from 'react-mounter';
 
 import {HomeLayout} from './layout/HomeLayout.jsx';
 import {MainLayout} from './layout/MainLayout.jsx';
-import Home from './layout/Home.jsx';
+import Home from './layout/Home';
 import App from './moves/App.jsx';
 import PracticeTools from './tools/PracticeTools.jsx';
 import Thirties from './tools/Thirties.jsx';

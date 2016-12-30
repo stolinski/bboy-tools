@@ -1,15 +1,15 @@
 import React from 'react';
 
-export const MainLayout = ({content}) => (
+export const MainLayout = ({ content }) => (
+  <div>
     <div>
-        <div>
-            <Header />
-            <main className='main-layout'>
-                {content()}
-            </main>
-        </div>
-        <footer className='site-footer'>
-            Bboy Tools © 2015
-        </footer>
+      <Header />
+      <main className="main-layout">
+        {content()}
+      </main>
     </div>
+    <footer className="site-footer">
+      Bboy Tools © 2016
+    </footer>
+  </div>
 );

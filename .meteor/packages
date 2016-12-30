@@ -23,6 +23,7 @@ meteortoys:allthings
 erasaur:meteor-lodash
 stolinski:stylus-multi
 fortawesome:fontawesome
+accounts-base
 accounts-ui
 accounts-password
 accounts-twitter

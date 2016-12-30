@@ -1,8 +1,6 @@
 /**
  * @fileoverview A class to manage state of generating a code path.
  * @author Toru Nagashima
- * @copyright 2015 Toru Nagashima. All rights reserved.
- * See LICENSE file in root directory for full license.
  */
 
 "use strict";
@@ -11,7 +9,7 @@
 // Requirements
 //------------------------------------------------------------------------------
 
-var CodePathSegment = require("./code-path-segment"),
+const CodePathSegment = require("./code-path-segment"),
     ForkContext = require("./fork-context");
 
 //------------------------------------------------------------------------------
@@ -32,8 +30,8 @@ var CodePathSegment = require("./code-path-segment"),
  * @returns {void}
  */
 function addToReturnedOrThrown(dest, others, all, segments) {
-    for (var i = 0; i < segments.length; ++i) {
-        var segment = segments[i];
+    for (let i = 0; i < segments.length; ++i) {
+        const segment = segments[i];
 
         dest.push(segment);
         if (others.indexOf(segment) === -1) {
@@ -54,7 +52,8 @@ function getContinueContext(state, label) {
         return state.loopContext;
     }
 
-    var context = state.loopContext;
+    let context = state.loopContext;
+
     while (context) {
         if (context.label === label) {
             return context;
@@ -74,7 +73,8 @@ function getContinueContext(state, label) {
  * @returns {LoopContext|SwitchContext} A context for a `break` statement.
  */
 function getBreakContext(state, label) {
-    var context = state.breakContext;
+    let context = state.breakContext;
+
     while (context) {
         if (label ? context.label === label : context.breakable) {
             return context;
@@ -93,7 +93,8 @@ function getBreakContext(state, label) {
  * @returns {TryContext|CodePathState} A context for a `return` statement.
  */
 function getReturnContext(state) {
-    var context = state.tryContext;
+    let context = state.tryContext;
+
     while (context) {
         if (context.hasFinalizer && context.position !== "finally") {
             return context;
@@ -111,7 +112,8 @@ function getReturnContext(state) {
  * @returns {TryContext|CodePathState} A context for a `throw` statement.
  */
 function getThrowContext(state) {
-    var context = state.tryContext;
+    let context = state.tryContext;
+
     while (context) {
         if (context.position === "try" ||
             (context.hasFinalizer && context.position === "catch")
@@ -147,9 +149,9 @@ function remove(xs, x) {
  * @returns {void}
  */
 function removeConnection(prevSegments, nextSegments) {
-    for (var i = 0; i < prevSegments.length; ++i) {
-        var prevSegment = prevSegments[i];
-        var nextSegment = nextSegments[i];
+    for (let i = 0; i < prevSegments.length; ++i) {
+        const prevSegment = prevSegments[i];
+        const nextSegment = nextSegments[i];
 
         remove(prevSegment.nextSegments, nextSegment);
         remove(prevSegment.allNextSegments, nextSegment);
@@ -167,10 +169,11 @@ function removeConnection(prevSegments, nextSegments) {
  * @returns {void}
  */
 function makeLooped(state, fromSegments, toSegments) {
-    var end = Math.min(fromSegments.length, toSegments.length);
-    for (var i = 0; i < end; ++i) {
-        var fromSegment = fromSegments[i];
-        var toSegment = toSegments[i];
+    const end = Math.min(fromSegments.length, toSegments.length);
+
+    for (let i = 0; i < end; ++i) {
+        const fromSegment = fromSegments[i];
+        const toSegment = toSegments[i];
 
         if (toSegment.reachable) {
             fromSegment.nextSegments.push(toSegment);
@@ -222,7 +225,7 @@ function finalizeTestSegmentsOfFor(context, choiceContext, head) {
  * @constructor
  * @param {IdGenerator} idGenerator - An id generator to generate id for code
  *   path segments.
- * @param {function} onLooped - A callback function to notify looping.
+ * @param {Function} onLooped - A callback function to notify looping.
  */
 function CodePathState(idGenerator, onLooped) {
     this.idGenerator = idGenerator;
@@ -238,9 +241,10 @@ function CodePathState(idGenerator, onLooped) {
     this.initialSegment = this.forkContext.head[0];
 
     // returnedSegments and thrownSegments push elements into finalSegments also.
-    var final = this.finalSegments = [];
-    var returned = this.returnedForkContext = [];
-    var thrown = this.thrownForkContext = [];
+    const final = this.finalSegments = [];
+    const returned = this.returnedForkContext = [];
+    const thrown = this.thrownForkContext = [];
+
     returned.add = addToReturnedOrThrown.bind(null, returned, thrown, final);
     thrown.add = addToReturnedOrThrown.bind(null, thrown, returned, final);
 }
@@ -262,7 +266,8 @@ CodePathState.prototype = {
      * @type {ForkContext}
      */
     get parentForkContext() {
-        var current = this.forkContext;
+        const current = this.forkContext;
+
         return current && current.upper;
     },
 
@@ -273,7 +278,7 @@ CodePathState.prototype = {
      *   "finally" block.
      * @returns {ForkContext} The created context.
      */
-    pushForkContext: function(forkLeavingPath) {
+    pushForkContext(forkLeavingPath) {
         this.forkContext = ForkContext.newEmpty(
             this.forkContext,
             forkLeavingPath
@@ -286,8 +291,8 @@ CodePathState.prototype = {
      * Pops and merges the last forking context.
      * @returns {ForkContext} The last context.
      */
-    popForkContext: function() {
-        var lastContext = this.forkContext;
+    popForkContext() {
+        const lastContext = this.forkContext;
 
         this.forkContext = lastContext.upper;
         this.forkContext.replaceHead(lastContext.makeNext(0, -1));
@@ -299,7 +304,7 @@ CodePathState.prototype = {
      * Creates a new path.
      * @returns {void}
      */
-    forkPath: function() {
+    forkPath() {
         this.forkContext.add(this.parentForkContext.makeNext(-1, -1));
     },
 
@@ -309,7 +314,7 @@ CodePathState.prototype = {
      *
      * @returns {void}
      */
-    forkBypassPath: function() {
+    forkBypassPath() {
         this.forkContext.add(this.parentForkContext.head);
     },
 
@@ -348,11 +353,11 @@ CodePathState.prototype = {
      *   paths between `true` and `false`.
      * @returns {void}
      */
-    pushChoiceContext: function(kind, isForkingAsResult) {
+    pushChoiceContext(kind, isForkingAsResult) {
         this.choiceContext = {
             upper: this.choiceContext,
-            kind: kind,
-            isForkingAsResult: isForkingAsResult,
+            kind,
+            isForkingAsResult,
             trueForkContext: ForkContext.newEmpty(this.forkContext),
             falseForkContext: ForkContext.newEmpty(this.forkContext),
             processed: false
@@ -364,53 +369,72 @@ CodePathState.prototype = {
      *
      * @returns {ChoiceContext} The popped context.
      */
-    popChoiceContext: function() {
-        var context = this.choiceContext;
+    popChoiceContext() {
+        const context = this.choiceContext;
+
         this.choiceContext = context.upper;
 
-        var forkContext = this.forkContext;
-        var headSegments = forkContext.head;
+        const forkContext = this.forkContext;
+        const headSegments = forkContext.head;
 
         switch (context.kind) {
             case "&&":
             case "||":
-                // If any result were not transferred from child contexts,
-                // this sets the head segments to both cases.
-                // The head segments are the path of the right-hand operand.
+
+                /*
+                 * If any result were not transferred from child contexts,
+                 * this sets the head segments to both cases.
+                 * The head segments are the path of the right-hand operand.
+                 */
                 if (!context.processed) {
                     context.trueForkContext.add(headSegments);
                     context.falseForkContext.add(headSegments);
                 }
 
-                // Transfers results to upper context if this context is in
-                // test chunk.
+                /*
+                 * Transfers results to upper context if this context is in
+                 * test chunk.
+                 */
                 if (context.isForkingAsResult) {
-                    var parentContext = this.choiceContext;
+                    const parentContext = this.choiceContext;
+
                     parentContext.trueForkContext.addAll(context.trueForkContext);
                     parentContext.falseForkContext.addAll(context.falseForkContext);
                     parentContext.processed = true;
 
                     return context;
                 }
+
                 break;
 
             case "test":
                 if (!context.processed) {
-                    // The head segments are the path of the `if` block here.
-                    // Updates the `true` path with the end of the `if` block.
+
+                    /*
+                     * The head segments are the path of the `if` block here.
+                     * Updates the `true` path with the end of the `if` block.
+                     */
                     context.trueForkContext.clear();
                     context.trueForkContext.add(headSegments);
                 } else {
-                    // The head segments are the path of the `else` block here.
-                    // Updates the `false` path with the end of the `else` block.
+
+                    /*
+                     * The head segments are the path of the `else` block here.
+                     * Updates the `false` path with the end of the `else`
+                     * block.
+                     */
                     context.falseForkContext.clear();
                     context.falseForkContext.add(headSegments);
                 }
+
                 break;
 
             case "loop":
-                // Loops are addressed in popLoopContext().
-                // This is called from popLoopContext().
+
+                /*
+                 * Loops are addressed in popLoopContext().
+                 * This is called from popLoopContext().
+                 */
                 return context;
 
             /* istanbul ignore next */
@@ -419,7 +443,8 @@ CodePathState.prototype = {
         }
 
         // Merges all paths.
-        var prevForkContext = context.trueForkContext;
+        const prevForkContext = context.trueForkContext;
+
         prevForkContext.addAll(context.falseForkContext);
         forkContext.replaceHead(prevForkContext.makeNext(0, -1));
 
@@ -432,14 +457,17 @@ CodePathState.prototype = {
      *
      * @returns {void}
      */
-    makeLogicalRight: function() {
-        var context = this.choiceContext;
-        var forkContext = this.forkContext;
+    makeLogicalRight() {
+        const context = this.choiceContext;
+        const forkContext = this.forkContext;
 
         if (context.processed) {
-            // This got segments already from the child choice context.
-            // Creates the next path from own true/false fork context.
-            var prevForkContext =
+
+            /*
+             * This got segments already from the child choice context.
+             * Creates the next path from own true/false fork context.
+             */
+            const prevForkContext =
                 context.kind === "&&" ? context.trueForkContext :
                 /* kind === "||" */ context.falseForkContext;
 
@@ -448,13 +476,18 @@ CodePathState.prototype = {
 
             context.processed = false;
         } else {
-            // This did not get segments from the child choice context.
-            // So addresses the head segments.
-            // The head segments are the path of the left-hand operand.
+
+            /*
+             * This did not get segments from the child choice context.
+             * So addresses the head segments.
+             * The head segments are the path of the left-hand operand.
+             */
             if (context.kind === "&&") {
+
                 // The path does short-circuit if false.
                 context.falseForkContext.add(forkContext.head);
             } else {
+
                 // The path does short-circuit if true.
                 context.trueForkContext.add(forkContext.head);
             }
@@ -468,17 +501,20 @@ CodePathState.prototype = {
      *
      * @returns {void}
      */
-    makeIfConsequent: function() {
-        var context = this.choiceContext;
-        var forkContext = this.forkContext;
+    makeIfConsequent() {
+        const context = this.choiceContext;
+        const forkContext = this.forkContext;
 
-        // If any result were not transferred from child contexts,
-        // this sets the head segments to both cases.
-        // The head segments are the path of the test expression.
+        /*
+         * If any result were not transferred from child contexts,
+         * this sets the head segments to both cases.
+         * The head segments are the path of the test expression.
+         */
         if (!context.processed) {
             context.trueForkContext.add(forkContext.head);
             context.falseForkContext.add(forkContext.head);
         }
+
         context.processed = false;
 
         // Creates new path from the `true` case.
@@ -492,12 +528,14 @@ CodePathState.prototype = {
      *
      * @returns {void}
      */
-    makeIfAlternate: function() {
-        var context = this.choiceContext;
-        var forkContext = this.forkContext;
+    makeIfAlternate() {
+        const context = this.choiceContext;
+        const forkContext = this.forkContext;
 
-        // The head segments are the path of the `if` block.
-        // Updates the `true` path with the end of the `if` block.
+        /*
+         * The head segments are the path of the `if` block.
+         * Updates the `true` path with the end of the `if` block.
+         */
         context.trueForkContext.clear();
         context.trueForkContext.add(forkContext.head);
         context.processed = true;
@@ -520,16 +558,17 @@ CodePathState.prototype = {
      * @param {string|null} label - The label text.
      * @returns {void}
      */
-    pushSwitchContext: function(hasCase, label) {
+    pushSwitchContext(hasCase, label) {
         this.switchContext = {
             upper: this.switchContext,
-            hasCase: hasCase,
+            hasCase,
             defaultSegments: null,
             defaultBodySegments: null,
             foundDefault: false,
             lastIsDefault: false,
             countForks: 0
         };
+
         this.pushBreakContext(true, label);
     },
 
@@ -543,53 +582,72 @@ CodePathState.prototype = {
      *
      * @returns {void}
      */
-    popSwitchContext: function() {
-        var context = this.switchContext;
+    popSwitchContext() {
+        const context = this.switchContext;
+
         this.switchContext = context.upper;
 
-        var forkContext = this.forkContext;
-        var brokenForkContext = this.popBreakContext().brokenForkContext;
+        const forkContext = this.forkContext;
+        const brokenForkContext = this.popBreakContext().brokenForkContext;
 
         if (context.countForks === 0) {
-            // When there is only one `default` chunk and there is one or more
-            // `break` statements, even if forks are nothing, it needs to merge
-            // those.
+
+            /*
+             * When there is only one `default` chunk and there is one or more
+             * `break` statements, even if forks are nothing, it needs to merge
+             * those.
+             */
             if (!brokenForkContext.empty) {
                 brokenForkContext.add(forkContext.makeNext(-1, -1));
                 forkContext.replaceHead(brokenForkContext.makeNext(0, -1));
             }
+
             return;
         }
 
-        var lastSegments = forkContext.head;
-        this.forkBypassPath();
-        var lastCaseSegments = forkContext.head;
+        const lastSegments = forkContext.head;
 
-        // `brokenForkContext` is used to make the next segment.
-        // It must add the last segment into `brokenForkContext`.
+        this.forkBypassPath();
+        const lastCaseSegments = forkContext.head;
+
+        /*
+         * `brokenForkContext` is used to make the next segment.
+         * It must add the last segment into `brokenForkContext`.
+         */
         brokenForkContext.add(lastSegments);
 
-        // A path which is failed in all case test should be connected to path
-        // of `default` chunk.
+        /*
+         * A path which is failed in all case test should be connected to path
+         * of `default` chunk.
+         */
         if (!context.lastIsDefault) {
             if (context.defaultBodySegments) {
-                // Remove a link from `default` label to its chunk.
-                // It's false route.
+
+                /*
+                 * Remove a link from `default` label to its chunk.
+                 * It's false route.
+                 */
                 removeConnection(context.defaultSegments, context.defaultBodySegments);
                 makeLooped(this, lastCaseSegments, context.defaultBodySegments);
             } else {
-                // It handles the last case body as broken if `default` chunk
-                // does not exist.
+
+                /*
+                 * It handles the last case body as broken if `default` chunk
+                 * does not exist.
+                 */
                 brokenForkContext.add(lastCaseSegments);
             }
         }
 
         // Pops the segment context stack until the entry segment.
-        for (var i = 0; i < context.countForks; ++i) {
+        for (let i = 0; i < context.countForks; ++i) {
             this.forkContext = this.forkContext.upper;
         }
-        // Creates a path from all brokenForkContext paths.
-        // This is a path after switch statement.
+
+        /*
+         * Creates a path from all brokenForkContext paths.
+         * This is a path after switch statement.
+         */
         this.forkContext.replaceHead(brokenForkContext.makeNext(0, -1));
     },
 
@@ -600,22 +658,28 @@ CodePathState.prototype = {
      * @param {boolean} isDefault - `true` if the body is the default case.
      * @returns {void}
      */
-    makeSwitchCaseBody: function(isEmpty, isDefault) {
-        var context = this.switchContext;
+    makeSwitchCaseBody(isEmpty, isDefault) {
+        const context = this.switchContext;
+
         if (!context.hasCase) {
             return;
         }
 
-        // Merge forks.
-        // The parent fork context has two segments.
-        // Those are from the current case and the body of the previous case.
-        var parentForkContext = this.forkContext;
-        var forkContext = this.pushForkContext();
+        /*
+         * Merge forks.
+         * The parent fork context has two segments.
+         * Those are from the current case and the body of the previous case.
+         */
+        const parentForkContext = this.forkContext;
+        const forkContext = this.pushForkContext();
+
         forkContext.add(parentForkContext.makeNext(0, -1));
 
-        // Save `default` chunk info.
-        // If the `default` label is not at the last, we must make a path from
-        // the last `case` to the `default` chunk.
+        /*
+         * Save `default` chunk info.
+         * If the `default` label is not at the last, we must make a path from
+         * the last `case` to the `default` chunk.
+         */
         if (isDefault) {
             context.defaultSegments = parentForkContext.head;
             if (isEmpty) {
@@ -629,6 +693,7 @@ CodePathState.prototype = {
                 context.defaultBodySegments = forkContext.head;
             }
         }
+
         context.lastIsDefault = isDefault;
         context.countForks += 1;
     },
@@ -644,14 +709,16 @@ CodePathState.prototype = {
      *   `finally` block.
      * @returns {void}
      */
-    pushTryContext: function(hasFinalizer) {
+    pushTryContext(hasFinalizer) {
         this.tryContext = {
             upper: this.tryContext,
             position: "try",
-            hasFinalizer: hasFinalizer,
+            hasFinalizer,
+
             returnedForkContext: hasFinalizer
                 ? ForkContext.newEmpty(this.forkContext)
                 : null,
+
             thrownForkContext: ForkContext.newEmpty(this.forkContext),
             lastOfTryIsReachable: false,
             lastOfCatchIsReachable: false
@@ -663,29 +730,36 @@ CodePathState.prototype = {
      *
      * @returns {void}
      */
-    popTryContext: function() {
-        var context = this.tryContext;
+    popTryContext() {
+        const context = this.tryContext;
+
         this.tryContext = context.upper;
 
         if (context.position === "catch") {
+
             // Merges two paths from the `try` block and `catch` block merely.
             this.popForkContext();
             return;
         }
-        // The following process is executed only when there is the `finally`
-        // block.
 
-        var returned = context.returnedForkContext;
-        var thrown = context.thrownForkContext;
+        /*
+         * The following process is executed only when there is the `finally`
+         * block.
+         */
+
+        const returned = context.returnedForkContext;
+        const thrown = context.thrownForkContext;
+
         if (returned.empty && thrown.empty) {
             return;
         }
 
         // Separate head to normal paths and leaving paths.
-        var headSegments = this.forkContext.head;
+        const headSegments = this.forkContext.head;
+
         this.forkContext = this.forkContext.upper;
-        var normalSegments = headSegments.slice(0, headSegments.length / 2 | 0);
-        var leavingSegments = headSegments.slice(headSegments.length / 2 | 0);
+        const normalSegments = headSegments.slice(0, headSegments.length / 2 | 0);
+        const leavingSegments = headSegments.slice(headSegments.length / 2 | 0);
 
         // Forwards the leaving path to upper contexts.
         if (!returned.empty) {
@@ -710,10 +784,10 @@ CodePathState.prototype = {
      *
      * @returns {void}
      */
-    makeCatchBlock: function() {
-        var context = this.tryContext;
-        var forkContext = this.forkContext;
-        var thrown = context.thrownForkContext;
+    makeCatchBlock() {
+        const context = this.tryContext;
+        const forkContext = this.forkContext;
+        const thrown = context.thrownForkContext;
 
         // Update state.
         context.position = "catch";
@@ -722,7 +796,7 @@ CodePathState.prototype = {
 
         // Merge thrown paths.
         thrown.add(forkContext.head);
-        var thrownSegments = thrown.makeNext(0, -1);
+        const thrownSegments = thrown.makeNext(0, -1);
 
         // Fork to a bypass and the merged thrown path.
         this.pushForkContext();
@@ -739,15 +813,16 @@ CodePathState.prototype = {
      *
      * @returns {void}
      */
-    makeFinallyBlock: function() {
-        var context = this.tryContext;
-        var forkContext = this.forkContext;
-        var returned = context.returnedForkContext;
-        var thrown = context.thrownForkContext;
-        var headOfLeavingSegments = forkContext.head;
+    makeFinallyBlock() {
+        const context = this.tryContext;
+        let forkContext = this.forkContext;
+        const returned = context.returnedForkContext;
+        const thrown = context.thrownForkContext;
+        const headOfLeavingSegments = forkContext.head;
 
         // Update state.
         if (context.position === "catch") {
+
             // Merges two paths from the `try` block and `catch` block.
             this.popForkContext();
             forkContext = this.forkContext;
@@ -759,16 +834,20 @@ CodePathState.prototype = {
         context.position = "finally";
 
         if (returned.empty && thrown.empty) {
+
             // This path does not leave.
             return;
         }
 
-        // Create a parallel segment from merging returned and thrown.
-        // This segment will leave at the end of this finally block.
-        var segments = forkContext.makeNext(-1, -1);
-        var j;
-        for (var i = 0; i < forkContext.count; ++i) {
-            var prevSegsOfLeavingSegment = [headOfLeavingSegments[i]];
+        /*
+         * Create a parallel segment from merging returned and thrown.
+         * This segment will leave at the end of this finally block.
+         */
+        const segments = forkContext.makeNext(-1, -1);
+        let j;
+
+        for (let i = 0; i < forkContext.count; ++i) {
+            const prevSegsOfLeavingSegment = [headOfLeavingSegments[i]];
 
             for (j = 0; j < returned.segmentsList.length; ++j) {
                 prevSegsOfLeavingSegment.push(returned.segmentsList[j][i]);
@@ -792,13 +871,15 @@ CodePathState.prototype = {
      *
      * @returns {void}
      */
-    makeFirstThrowablePathInTryBlock: function() {
-        var forkContext = this.forkContext;
+    makeFirstThrowablePathInTryBlock() {
+        const forkContext = this.forkContext;
+
         if (!forkContext.reachable) {
             return;
         }
 
-        var context = getThrowContext(this);
+        const context = getThrowContext(this);
+
         if (context === this ||
             context.position !== "try" ||
             !context.thrownForkContext.empty
@@ -823,17 +904,17 @@ CodePathState.prototype = {
      * @param {string|null} label - A label of the node which was triggered.
      * @returns {void}
      */
-    pushLoopContext: function(type, label) {
-        var forkContext = this.forkContext;
-        var breakContext = this.pushBreakContext(true, label);
+    pushLoopContext(type, label) {
+        const forkContext = this.forkContext;
+        const breakContext = this.pushBreakContext(true, label);
 
         switch (type) {
             case "WhileStatement":
                 this.pushChoiceContext("loop", false);
                 this.loopContext = {
                     upper: this.loopContext,
-                    type: type,
-                    label: label,
+                    type,
+                    label,
                     test: void 0,
                     continueDestSegments: null,
                     brokenForkContext: breakContext.brokenForkContext
@@ -844,8 +925,8 @@ CodePathState.prototype = {
                 this.pushChoiceContext("loop", false);
                 this.loopContext = {
                     upper: this.loopContext,
-                    type: type,
-                    label: label,
+                    type,
+                    label,
                     test: void 0,
                     entrySegments: null,
                     continueForkContext: ForkContext.newEmpty(forkContext),
@@ -857,8 +938,8 @@ CodePathState.prototype = {
                 this.pushChoiceContext("loop", false);
                 this.loopContext = {
                     upper: this.loopContext,
-                    type: type,
-                    label: label,
+                    type,
+                    label,
                     test: void 0,
                     endOfInitSegments: null,
                     testSegments: null,
@@ -874,8 +955,8 @@ CodePathState.prototype = {
             case "ForOfStatement":
                 this.loopContext = {
                     upper: this.loopContext,
-                    type: type,
-                    label: label,
+                    type,
+                    label,
                     prevSegments: null,
                     leftSegments: null,
                     endOfLeftSegments: null,
@@ -886,7 +967,7 @@ CodePathState.prototype = {
 
             /* istanbul ignore next */
             default:
-                throw new Error("unknown type: \"" + type + "\"");
+                throw new Error(`unknown type: "${type}"`);
         }
     },
 
@@ -895,13 +976,14 @@ CodePathState.prototype = {
      *
      * @returns {void}
      */
-    popLoopContext: function() {
-        var context = this.loopContext;
+    popLoopContext() {
+        const context = this.loopContext;
+
         this.loopContext = context.upper;
 
-        var forkContext = this.forkContext;
-        var brokenForkContext = this.popBreakContext().brokenForkContext;
-        var choiceContext;
+        const forkContext = this.forkContext;
+        const brokenForkContext = this.popBreakContext().brokenForkContext;
+        let choiceContext;
 
         // Creates a looped path.
         switch (context.type) {
@@ -914,7 +996,7 @@ CodePathState.prototype = {
                     context.continueDestSegments);
                 break;
 
-            case "DoWhileStatement":
+            case "DoWhileStatement": {
                 choiceContext = this.popChoiceContext();
 
                 if (!choiceContext.processed) {
@@ -926,14 +1008,16 @@ CodePathState.prototype = {
                 }
 
                 // `true` paths go to looping.
-                var segmentsList = choiceContext.trueForkContext.segmentsList;
-                for (var i = 0; i < segmentsList.length; ++i) {
+                const segmentsList = choiceContext.trueForkContext.segmentsList;
+
+                for (let i = 0; i < segmentsList.length; ++i) {
                     makeLooped(
                         this,
                         segmentsList[i],
                         context.entrySegments);
                 }
                 break;
+            }
 
             case "ForInStatement":
             case "ForOfStatement":
@@ -963,10 +1047,10 @@ CodePathState.prototype = {
      * @param {boolean|undefined} test - The test value (only when constant).
      * @returns {void}
      */
-    makeWhileTest: function(test) {
-        var context = this.loopContext;
-        var forkContext = this.forkContext;
-        var testSegments = forkContext.makeNext(0, -1);
+    makeWhileTest(test) {
+        const context = this.loopContext;
+        const forkContext = this.forkContext;
+        const testSegments = forkContext.makeNext(0, -1);
 
         // Update state.
         context.test = test;
@@ -979,10 +1063,10 @@ CodePathState.prototype = {
      *
      * @returns {void}
      */
-    makeWhileBody: function() {
-        var context = this.loopContext;
-        var choiceContext = this.choiceContext;
-        var forkContext = this.forkContext;
+    makeWhileBody() {
+        const context = this.loopContext;
+        const choiceContext = this.choiceContext;
+        const forkContext = this.forkContext;
 
         if (!choiceContext.processed) {
             choiceContext.trueForkContext.add(forkContext.head);
@@ -1001,10 +1085,10 @@ CodePathState.prototype = {
      *
      * @returns {void}
      */
-    makeDoWhileBody: function() {
-        var context = this.loopContext;
-        var forkContext = this.forkContext;
-        var bodySegments = forkContext.makeNext(-1, -1);
+    makeDoWhileBody() {
+        const context = this.loopContext;
+        const forkContext = this.forkContext;
+        const bodySegments = forkContext.makeNext(-1, -1);
 
         // Update state.
         context.entrySegments = bodySegments;
@@ -1017,16 +1101,16 @@ CodePathState.prototype = {
      * @param {boolean|undefined} test - The test value (only when constant).
      * @returns {void}
      */
-    makeDoWhileTest: function(test) {
-        var context = this.loopContext;
-        var forkContext = this.forkContext;
+    makeDoWhileTest(test) {
+        const context = this.loopContext;
+        const forkContext = this.forkContext;
 
         context.test = test;
 
         // Creates paths of `continue` statements.
         if (!context.continueForkContext.empty) {
             context.continueForkContext.add(forkContext.head);
-            var testSegments = context.continueForkContext.makeNext(0, -1);
+            const testSegments = context.continueForkContext.makeNext(0, -1);
 
             forkContext.replaceHead(testSegments);
         }
@@ -1038,11 +1122,11 @@ CodePathState.prototype = {
      * @param {boolean|undefined} test - The test value (only when constant).
      * @returns {void}
      */
-    makeForTest: function(test) {
-        var context = this.loopContext;
-        var forkContext = this.forkContext;
-        var endOfInitSegments = forkContext.head;
-        var testSegments = forkContext.makeNext(-1, -1);
+    makeForTest(test) {
+        const context = this.loopContext;
+        const forkContext = this.forkContext;
+        const endOfInitSegments = forkContext.head;
+        const testSegments = forkContext.makeNext(-1, -1);
 
         // Update state.
         context.test = test;
@@ -1056,10 +1140,10 @@ CodePathState.prototype = {
      *
      * @returns {void}
      */
-    makeForUpdate: function() {
-        var context = this.loopContext;
-        var choiceContext = this.choiceContext;
-        var forkContext = this.forkContext;
+    makeForUpdate() {
+        const context = this.loopContext;
+        const choiceContext = this.choiceContext;
+        const forkContext = this.forkContext;
 
         // Make the next paths of the test.
         if (context.testSegments) {
@@ -1072,7 +1156,8 @@ CodePathState.prototype = {
         }
 
         // Update state.
-        var updateSegments = forkContext.makeDisconnected(-1, -1);
+        const updateSegments = forkContext.makeDisconnected(-1, -1);
+
         context.continueDestSegments = context.updateSegments = updateSegments;
         forkContext.replaceHead(updateSegments);
     },
@@ -1082,10 +1167,10 @@ CodePathState.prototype = {
      *
      * @returns {void}
      */
-    makeForBody: function() {
-        var context = this.loopContext;
-        var choiceContext = this.choiceContext;
-        var forkContext = this.forkContext;
+    makeForBody() {
+        const context = this.loopContext;
+        const choiceContext = this.choiceContext;
+        const forkContext = this.forkContext;
 
         // Update state.
         if (context.updateSegments) {
@@ -1107,11 +1192,16 @@ CodePathState.prototype = {
             context.endOfInitSegments = forkContext.head;
         }
 
-        var bodySegments = context.endOfTestSegments;
+        let bodySegments = context.endOfTestSegments;
+
         if (!bodySegments) {
-            // If there is not the `test` part, the `body` path comes from the
-            // `init` part and the `update` part.
-            var prevForkContext = ForkContext.newEmpty(forkContext);
+
+            /*
+             * If there is not the `test` part, the `body` path comes from the
+             * `init` part and the `update` part.
+             */
+            const prevForkContext = ForkContext.newEmpty(forkContext);
+
             prevForkContext.add(context.endOfInitSegments);
             if (context.endOfUpdateSegments) {
                 prevForkContext.add(context.endOfUpdateSegments);
@@ -1129,10 +1219,10 @@ CodePathState.prototype = {
      *
      * @returns {void}
      */
-    makeForInOfLeft: function() {
-        var context = this.loopContext;
-        var forkContext = this.forkContext;
-        var leftSegments = forkContext.makeDisconnected(-1, -1);
+    makeForInOfLeft() {
+        const context = this.loopContext;
+        const forkContext = this.forkContext;
+        const leftSegments = forkContext.makeDisconnected(-1, -1);
 
         // Update state.
         context.prevSegments = forkContext.head;
@@ -1146,12 +1236,13 @@ CodePathState.prototype = {
      *
      * @returns {void}
      */
-    makeForInOfRight: function() {
-        var context = this.loopContext;
-        var forkContext = this.forkContext;
-        var temp = ForkContext.newEmpty(forkContext);
+    makeForInOfRight() {
+        const context = this.loopContext;
+        const forkContext = this.forkContext;
+        const temp = ForkContext.newEmpty(forkContext);
+
         temp.add(context.prevSegments);
-        var rightSegments = temp.makeNext(-1, -1);
+        const rightSegments = temp.makeNext(-1, -1);
 
         // Update state.
         context.endOfLeftSegments = forkContext.head;
@@ -1164,12 +1255,13 @@ CodePathState.prototype = {
      *
      * @returns {void}
      */
-    makeForInOfBody: function() {
-        var context = this.loopContext;
-        var forkContext = this.forkContext;
-        var temp = ForkContext.newEmpty(forkContext);
+    makeForInOfBody() {
+        const context = this.loopContext;
+        const forkContext = this.forkContext;
+        const temp = ForkContext.newEmpty(forkContext);
+
         temp.add(context.endOfLeftSegments);
-        var bodySegments = temp.makeNext(-1, -1);
+        const bodySegments = temp.makeNext(-1, -1);
 
         // Make a path: `right` -> `left`.
         makeLooped(this, forkContext.head, context.leftSegments);
@@ -1189,13 +1281,13 @@ CodePathState.prototype = {
      * @param {boolean} breakable - The flag to indicate it can break by
      *      an unlabeled BreakStatement.
      * @param {string|null} label - The label of this context.
-     * @returns {object} The new context.
+     * @returns {Object} The new context.
      */
-    pushBreakContext: function(breakable, label) {
+    pushBreakContext(breakable, label) {
         this.breakContext = {
             upper: this.breakContext,
-            breakable: breakable,
-            label: label,
+            breakable,
+            label,
             brokenForkContext: ForkContext.newEmpty(this.forkContext)
         };
         return this.breakContext;
@@ -1204,16 +1296,18 @@ CodePathState.prototype = {
     /**
      * Removes the top item of the break context stack.
      *
-     * @returns {object} The removed context.
+     * @returns {Object} The removed context.
      */
-    popBreakContext: function() {
-        var context = this.breakContext;
-        var forkContext = this.forkContext;
+    popBreakContext() {
+        const context = this.breakContext;
+        const forkContext = this.forkContext;
+
         this.breakContext = context.upper;
 
         // Process this context here for other than switches and loops.
         if (!context.breakable) {
-            var brokenForkContext = context.brokenForkContext;
+            const brokenForkContext = context.brokenForkContext;
+
             if (!brokenForkContext.empty) {
                 brokenForkContext.add(forkContext.head);
                 forkContext.replaceHead(brokenForkContext.makeNext(0, -1));
@@ -1232,17 +1326,20 @@ CodePathState.prototype = {
      * @param {string} label - A label of the break statement.
      * @returns {void}
      */
-    makeBreak: function(label) {
-        var forkContext = this.forkContext;
+    makeBreak(label) {
+        const forkContext = this.forkContext;
+
         if (!forkContext.reachable) {
             return;
         }
 
-        var context = getBreakContext(this, label);
+        const context = getBreakContext(this, label);
+
         /* istanbul ignore else: foolproof (syntax error) */
         if (context) {
             context.brokenForkContext.add(forkContext.head);
         }
+
         forkContext.replaceHead(forkContext.makeUnreachable(-1, -1));
     },
 
@@ -1255,13 +1352,15 @@ CodePathState.prototype = {
      * @param {string} label - A label of the continue statement.
      * @returns {void}
      */
-    makeContinue: function(label) {
-        var forkContext = this.forkContext;
+    makeContinue(label) {
+        const forkContext = this.forkContext;
+
         if (!forkContext.reachable) {
             return;
         }
 
-        var context = getContinueContext(this, label);
+        const context = getContinueContext(this, label);
+
         /* istanbul ignore else: foolproof (syntax error) */
         if (context) {
             if (context.continueDestSegments) {
@@ -1288,8 +1387,9 @@ CodePathState.prototype = {
      *
      * @returns {void}
      */
-    makeReturn: function() {
-        var forkContext = this.forkContext;
+    makeReturn() {
+        const forkContext = this.forkContext;
+
         if (forkContext.reachable) {
             getReturnContext(this).returnedForkContext.add(forkContext.head);
             forkContext.replaceHead(forkContext.makeUnreachable(-1, -1));
@@ -1304,8 +1404,9 @@ CodePathState.prototype = {
      *
      * @returns {void}
      */
-    makeThrow: function() {
-        var forkContext = this.forkContext;
+    makeThrow() {
+        const forkContext = this.forkContext;
+
         if (forkContext.reachable) {
             getThrowContext(this).thrownForkContext.add(forkContext.head);
             forkContext.replaceHead(forkContext.makeUnreachable(-1, -1));
@@ -1316,8 +1417,9 @@ CodePathState.prototype = {
      * Makes the final path.
      * @returns {void}
      */
-    makeFinal: function() {
-        var segments = this.currentSegments;
+    makeFinal() {
+        const segments = this.currentSegments;
+
         if (segments.length > 0 && segments[0].reachable) {
             this.returnedForkContext.add(segments);
         }

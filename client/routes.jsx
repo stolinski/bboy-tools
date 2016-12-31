@@ -76,3 +76,12 @@ battleTools.route('/battle-mode', {
     });
   },
 });
+
+
+Accounts.onLogin(() => {
+  FlowRouter.go('moves');
+});
+
+Accounts.onLogout(() => {
+  FlowRouter.go('home');
+});

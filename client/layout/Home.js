@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
 
 export default class Home extends Component {
-
   handleClick() {
     const e = document.getElementById('login-sign-in-link');
-    console.log(e);
     e.click();
   }
 

@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import ReactDOM from 'react-dom';
 
 import React from 'react';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
@@ -51,9 +52,9 @@ Type = React.createClass({
     event.preventDefault();
 
         // Find the text field via the React ref
-    const name = React.findDOMNode(this.refs.moveName).value.trim();
-    const value = React.findDOMNode(this.refs.moveValue).value.trim();
-    const type = React.findDOMNode(this.refs.moveType).value.trim();
+    const name = ReactDOM.findDOMNode(this.refs.moveName).value.trim();
+    const value = ReactDOM.findDOMNode(this.refs.moveValue).value.trim();
+    const type = ReactDOM.findDOMNode(this.refs.moveType).value.trim();
 
     Meteor.call('move.add', name, value, type, Meteor.userId(), Meteor.user().username, (error) => {
       if (error) {
@@ -62,8 +63,8 @@ Type = React.createClass({
     });
 
         // Clear form
-    React.findDOMNode(this.refs.moveName).value = '';
-    React.findDOMNode(this.refs.moveValue).value = '';
+    ReactDOM.findDOMNode(this.refs.moveName).value = '';
+    ReactDOM.findDOMNode(this.refs.moveValue).value = '';
   },
 
   render() {

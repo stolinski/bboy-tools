@@ -1,89 +1,121 @@
 import React from 'react';
 
-import SoundPlayerComponents, {PlayButton, Timer, Progress, Icons} from 'react-soundplayer/components';
-import SoundPlayerAddons, {SoundPlayerContainer} from 'react-soundplayer/addons';
+import SoundPlayerComponents, { PlayButton, Timer, Progress, Icons } from 'react-soundplayer/components';
+import SoundPlayerAddons, { SoundPlayerContainer } from 'react-soundplayer/addons';
 
-var audio = new Audio('/instantrapairhorn.mp3');
-var audio1 = new Audio('/champ.mp3');
+const audio = new Audio('/instantrapairhorn.mp3');
+const audio1 = new Audio('/champ.mp3');
 
 StopWatch = React.createClass({
-    getInitialState: function() {
-        return {
-            isStart: false,
-            elapsed: 0,
-            diff: 0,
-            laps: [],
-        };
-    },
-    componentWillUnmount: function() { // clear timer
-        clearInterval(this.state.timer);
-        this.setState({timer: undefined});
-    },
-    tick: function() {
-        var elapsed = Date.now() - this.state.start + this.state.diff;
-        var s = String(Math.floor((elapsed%(1000*60))/1000)+100).substring(1);
-        if(!(s % 30)) {
-            audio1.play();
-        }
-        this.setState({elapsed: elapsed});
-    },
-    getTimeSpan: function(elapsed) {
-        var m = String(Math.floor(elapsed / 1000 / 60) + 100).substring(1);
-        var s = String(Math.floor((elapsed % (1000 * 60)) / 1000) + 100).substring(1);
-        return m + ':' + s;
-    },
-    onClick: function() {
-        if(!this.state.isStart) {
-            var timer = setInterval(this.tick, 33);
-            this.setState({
-                isStart: true,
-                timer: timer,
-                start: new Date(),
-            });
-        } else { // pause
-            clearInterval(this.state.timer);
-            this.setState({
-                timer: undefined,
-                isStart: false,
-                diff: this.state.elapsed,
-            });
-        }
-    },
+  getInitialState() {
+    return {
+      isStart: false,
+      elapsed: 0,
+      diff: 0,
+      view: 'time',
+      laps: [],
+    };
+  },
+  componentWillUnmount() { // clear timer
+    clearInterval(this.state.timer);
+    this.setState({ timer: undefined });
+  },
+  tick() {
+    const elapsed = Date.now() - this.state.start + this.state.diff;
+    const s = String(Math.floor((elapsed % (1000 * 60)) / 1000) + 100).substring(1);
+    if (!(s % 30)) {
+      audio1.play();
+    }
+    this.setState({ elapsed });
+  },
+  getTimeSpan(elapsed) {
+    const m = String(Math.floor(elapsed / 1000 / 60));
+    const s = String(Math.floor((elapsed % (1000 * 60)) / 1000) + 100).substring(1);
+    return `${m}m ${s}s`;
+  },
+  getSeconds() {
+    return Math.floor((this.state.elapsed % (1000 * 60)) / 1000);
+  },
 
-    setLap: function() {
-        var lapElapsed = this.state.laps.length ? this.state.laps[0].elapsed : 0;
-        var lapTitle = 'Lap'+(this.state.laps.length+1);
-        var lapTime = lapTitle+': '+this.getTimeSpan(this.state.elapsed - lapElapsed)
-        var lapElem = { label: lapTime, elapsed: this.state.elapsed };
-        this.setState({laps: [lapElem].concat(this.state.laps)});
-    },
-    reset: function() {
-        clearInterval(this.state.timer);
-        this.setState({
-            timer: undefined,
-            isStart: false,
-            elapsed: 0,
-            diff: 0,
-            laps: [],
-        });
-    },
-    render: function() {
-        return (
-            <div className='stopwatch practice-tools types'>
-                <h1>30/30's</h1>
-                <div className='types-wrapper'>
-                    <h3>{this.getTimeSpan(this.state.elapsed)}</h3>
-                    <button className='btn btn-start' onClick={this.onClick}>
-                        {this.state.isStart ? 'pause' : 'start'}
-                    </button>
-                    <button className='btn btn-cancel' onClick={this.reset}>reset</button>
-                    <ul>
-                        {this.state.laps.map(function(lap) {
-                            return <li key={lap.id}>{lap.label}</li>;
-                            })}
-                        </ul>
-                    </div>
-                </div>
-            );
-        }
+  getRounds(elapsed) {
+    const m = Math.floor(elapsed / 1000 / 60);
+    const s = Math.floor((elapsed % (1000 * 60)) / 1000);
+    const ts = (m * 60) + s;
+    return Math.floor(ts / 60);
+  },
+
+  onClick() {
+    if (!this.state.isStart) {
+      const timer = setInterval(this.tick, 33);
+      this.setState({
+        isStart: true,
+        timer,
+        start: new Date(),
+      });
+    } else { // pause
+      clearInterval(this.state.timer);
+      this.setState({
+        timer: undefined,
+        isStart: false,
+        diff: this.state.elapsed,
+      });
+    }
+  },
+  changeList(e) {
+    this.setState({
+      view: e.target.value,
     });
+  },
+
+
+  reset() {
+    clearInterval(this.state.timer);
+    this.setState({
+      timer: undefined,
+      isStart: false,
+      elapsed: 0,
+      diff: 0,
+      rounds: 0,
+      view: 'time',
+      dancers: 0,
+    });
+  },
+  render() {
+    return (
+      <div className="stopwatch practice-tools types">
+        <h1>30/30's</h1>
+        <section className="settings-panel">
+          {/* <div className="form-row">
+            <label htmlFor=""># of dancers</label>
+            <input type="number" />
+          </div> */}
+          <div className="form-row">
+            <label htmlFor="">View Mode</label>
+            <select name="view" id="" onChange={this.changeList} value={this.state.view}>
+              <option value="rounds">Rounds</option>
+              <option value="time">Time</option>
+            </select>
+          </div>
+        </section>
+        <div className="types-wrapper">
+          {this.state.view === 'time' ? <h3>{this.getTimeSpan(this.state.elapsed)}</h3> : null }
+          {this.state.view === 'rounds' ?
+            <div className="box-container">
+              <div className="toggle-box">
+                <h2>Time</h2>
+                <h3>{this.getSeconds()}</h3>
+              </div>
+              <div className="toggle-box">
+                <h2>Round</h2>
+                <h3>{this.getRounds(this.state.elapsed)}</h3>
+              </div>
+            </div> : null}
+          <button className="btn btn-start" onClick={this.onClick}>
+            {this.state.isStart ? 'pause' : 'start'}
+          </button>
+          <button className="btn btn-cancel" onClick={this.reset}>reset</button>
+        </div>
+      </div>
+            );
+  },
+});

@@ -43,7 +43,7 @@ p
     &.btn-cancel
         background red
     &.btn-start
-        background green
+        background yellow
     &.use-move
         margin-left 50px
         padding: 10px 50px
@@ -53,7 +53,7 @@ p
 
 
 header
-    background blue
+    background black
     color #fff
     fixed top left
     width 100%
@@ -95,7 +95,6 @@ header
 
 .main-nav
     transform: translateX(-100%)
-    background blue
     fixed top left
     width 100%
     height 100%
@@ -112,10 +111,10 @@ header
         transition all 0.3s ease
         display block
         text-decoration none
-        border-bottom 4px solid blue
+        border-bottom 4px solid transparent
         height 65px
         &:hover
-            border-bottom 4px solid green
+            border-color yellow
             background dark-blue
     +above($large)
         transform: none
@@ -520,7 +519,7 @@ header
     .types-wrapper
         display block
     h1
-        background green
+        background yellow
         margin-bottom 40px
 
 .battle-tools
@@ -632,3 +631,21 @@ header
         text-align center
     .book-title
         display none
+
+.toggle-box
+  h3
+    margin 0
+    line-height 1
+
+.settings-panel
+  display flex
+  justify-content center
+  padding 0 5%
+  .form-row
+    margin-right 10px
+  label, input
+    display block
+
+.box-container
+  display: flex
+  justify-content space-around

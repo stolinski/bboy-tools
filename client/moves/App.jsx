@@ -18,10 +18,8 @@ export default class App extends TrackerReact(React.Component) {
     this.state.subscription.moves.stop();
   }
 
-    // Loads items from the Moves collection and puts them on this.data.moves
   getMeteorData() {
     return {
-            // moves: Moves.find({}, {sort: {createdAt: 1}}).fetch(),
       currentUser: Meteor.user(),
     };
   }
@@ -60,7 +58,6 @@ export default class App extends TrackerReact(React.Component) {
     const moves = Moves.find({}, { sort: { createdAt: 1 } }).fetch();
 
     mergeByProperty(start, moves, 'type');
-
 
         // Get moves from this.data.moves
     return _.map(copy, (type, index) => {

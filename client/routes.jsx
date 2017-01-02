@@ -79,7 +79,9 @@ battleTools.route('/battle-mode', {
 
 
 Accounts.onLogin(() => {
-  FlowRouter.go('moves');
+  if (FlowRouter.current().path === '/') {
+    FlowRouter.go('moves');
+  }
 });
 
 Accounts.onLogout(() => {

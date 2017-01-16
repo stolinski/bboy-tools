@@ -115,7 +115,7 @@ header
         height 65px
         &:hover
             border-color yellow
-            background dark-blue
+            background black + 10
     +above($large)
         transform: none
         padding-top 0
@@ -126,44 +126,60 @@ header
             font-size 16px
             float left
 
-#login-dropdown-list
+
+#login-buttons
+  display block
+  a
+    text-decoration none
+  .login-button
+    background yellow
+    color black
+    font-size 1.6em
+    text-transform uppercase
+    font-weight 900
+    font-family 'Avenir Next', 'Helvetica Neue', Helvetica, Arial, sans-serif
+    border none
+    trans()
+    &:hover
+      background yellow - 20
+  #login-buttons-twitter
+    background: #FFF
+    border: none
+    color: social.twitter
+  +above($large)
+    display inline-block
+  #login-dropdown-list
     position fixed
     right 0
     border none
     border-radius 0
     left 0
     box-shadow: 1px 3px 4px rgba(#000000, 0.22), -3px 1px 4px rgba(#000000, 0.15)
-    background blue
+    background black
     color #FFF
     width 100%
     top 0
     margin 0
     height 100%
-    +above($large)
-        padding: 5% 15%
-
-#login-buttons
-    display block
-    a
-        text-decoration none
-    .login-button
-        font-size 1.6em
-    #login-buttons-twitter
-        background: #FFF
-        border: none
-        color: social.twitter
-    +above($large)
-        display inline-block
-
-#login-buttons, .accounts-dialog
+    input[type=password], input[type=email]
+      background: #111
+      padding: 10px
+      border none
+      border-bottom: solid 2px #fff
+      appearance none
+      border-radius 0
+      margin-bottom 10px
     label
-        font-size 1.6em
-    input[type=text], input[type=text], input[type=email], input[type=email], input[type=password], input[type=password]
-        appearance none
-        background blue + 20
-        border-radius 0
-        border none
-        font-size 1.6em
+      text-align: left;
+      display: block;
+      text-transform: uppercase;
+      font-size: 1rem
+      font-weight 900
+      font-family 'Avenir Next', 'Helvetica Neue', Helvetica, Arial, sans-serif
+    +above($large)
+      padding: 5% 15%
+
+
 
 
 
@@ -294,7 +310,7 @@ header
     background: #FFF
     width: 100%
     border-radius 4px
-    elevation(4)
+    box-shadow: 0 0px 28px rgba(0,0,0,0.5), 0 0px 23px rgba(0,0,0,0.5)
     h1
         font-size: 1.8em
         letter-spacing 2px
@@ -488,7 +504,10 @@ header
 .edit-move
     display none
 
-
+.comboizer
+  text-align center
+  h3
+    font-size 4rem
 
 
 /*------------------------------------*\
@@ -507,7 +526,9 @@ header
     +above($large)
         h3
             font-size 12em
-            margin 0.4em 0
+            margin 2rem 0
+        .box-container
+          margin 2rem 0
         .btn
             width auto
             font-size 2em

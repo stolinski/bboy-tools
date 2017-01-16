@@ -78,7 +78,11 @@ Type = React.createClass({
 
         <ul className="moves">
 
-          <ReactCSSTransitionGroup transitionName="newmove">
+          <ReactCSSTransitionGroup
+            transitionEnterTimeout={750}
+            transitionLeaveTimeout={750}
+            transitionName="newmove"
+          >
             {this.renderTypes()}
           </ReactCSSTransitionGroup>
 

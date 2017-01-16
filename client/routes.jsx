@@ -7,6 +7,7 @@ import Home from './layout/Home';
 import App from './moves/App.jsx';
 import PracticeTools from './tools/PracticeTools.jsx';
 import Thirties from './tools/Thirties.jsx';
+import Comboizer from './tools/Comboizer';
 import BattleMode from './tools/BattleMode.jsx';
 
 FlowRouter.route('/', {
@@ -45,6 +46,14 @@ practiceTools.route('/thirties', {
   action() {
     mount(MainLayout, {
       content: () => (<Thirties />),
+    });
+  },
+});
+
+practiceTools.route('/comboizer', {
+  action() {
+    mount(MainLayout, {
+      content: () => (<Comboizer />),
     });
   },
 });

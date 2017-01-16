@@ -6,7 +6,6 @@ import TrackerReact from 'meteor/ultimatejs:tracker-react';
 export default class App extends TrackerReact(React.Component) {
   constructor() {
     super();
-
     this.state = {
       subscription: {
         moves: Meteor.subscribe('moves'),
@@ -71,7 +70,13 @@ export default class App extends TrackerReact(React.Component) {
   render() {
     return (
       <div className="container">
-        <ReactCSSTransitionGroup transitionName="pagetrans" transitionAppear>
+        <ReactCSSTransitionGroup
+          transitionAppearTimeout={500}
+          transitionEnterTimeout={500}
+          transitionLeaveTimeout={500}
+          transitionName="pagetrans"
+          transitionAppear
+        >
           <div className="types" key="1">
             <h1>My Moves</h1>
             <div className="types-wrapper">

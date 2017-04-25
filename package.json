@@ -19,6 +19,7 @@
     "react-soundplayer": "0.2.3"
   },
   "devDependencies": {
+    "babel-eslint": "^7.2.3",
     "babel-plugin-transform-class-properties": "^6.16.0",
     "babel-plugin-transform-object-assign": "^6.8.0",
     "babel-plugin-transform-object-rest-spread": "^6.16.0",

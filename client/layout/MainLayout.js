@@ -1,7 +1,7 @@
 import React from 'react';
 
 export const MainLayout = ({ content }) => (
-  <div>
+  <div className="main-layout-wrapper">
     <div>
       <Header />
       <main className="main-layout">
@@ -9,7 +9,7 @@ export const MainLayout = ({ content }) => (
       </main>
     </div>
     <footer className="site-footer">
-      Bboy Tools © 2016
+      <h2 className="logo">Bboy Tools</h2>
     </footer>
   </div>
 );

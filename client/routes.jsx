@@ -6,8 +6,10 @@ import { MainLayout } from './layout/MainLayout';
 import Home from './layout/Home';
 import App from './moves/App.jsx';
 import PracticeTools from './tools/PracticeTools.jsx';
+import BattleTools from './tools/BattleTools';
 import Thirties from './tools/Thirties.jsx';
 import Comboizer from './tools/Comboizer';
+import Timemachine from './tools/Timemachine';
 import BattleMode from './tools/BattleMode.jsx';
 
 FlowRouter.route('/', {
@@ -50,7 +52,7 @@ practiceTools.route('/thirties', {
   },
 });
 
-practiceTools.route('/comboizer', {
+practiceTools.route('/one-in-the-chamber', {
   action() {
     mount(MainLayout, {
       content: () => (<Comboizer />),
@@ -58,10 +60,10 @@ practiceTools.route('/comboizer', {
   },
 });
 
-practiceTools.route('/one-in-the-chamber', {
+practiceTools.route('/timemachine-mirror', {
   action() {
     mount(MainLayout, {
-      content: () => (<Thirties />),
+      content: () => (<Timemachine />),
     });
   },
 });

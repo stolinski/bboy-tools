@@ -30,6 +30,9 @@ p
     font-size 1.6em
     line-height 1.5
 
+.logo
+    font-family: 'Kumar One Outline', cursive
+    font-weight 400
 
 .btn
     background blue
@@ -76,7 +79,8 @@ header
         margin 0
         padding 0 20px
         font-size: 31px
-        font-weight: 700
+        font-family: 'Kumar One Outline', cursive
+        font-weight 400
         line-height: 65px
     +above($large)
         h1, h2
@@ -203,6 +207,11 @@ header
         position relative
         z-index 8
 
+.main-layout-wrapper
+    display: flex
+    flex-direction: column
+    justify-content: space-between
+
 .homepage-zone
     text-align left
     color #FFF
@@ -291,7 +300,9 @@ header
 
 .main-layout
     width: 100%
-    margin: 60px auto
+    margin: 10px auto
+    +above($small)
+        margin: 60px auto
     +above($large)
         width: 90%
 
@@ -313,7 +324,7 @@ header
     border-radius 4px
     box-shadow: 0 0px 28px rgba(0,0,0,0.5), 0 0px 23px rgba(0,0,0,0.5)
     h1
-        font-size: 1.8em
+        font-size: 1rem
         letter-spacing 2px
         background-color: blue
         text-transform uppercase
@@ -347,7 +358,7 @@ header
         font-size: 38px;
         padding 10px 15px
         color text
-        margin-top 0x
+        margin-top 0
     for $label, $color in moves
         &.{$label}
             h3
@@ -563,12 +574,9 @@ header
         color #FFF
         margin 0
         font-size 1.5rem
-        padding 20px
-        text-transform uppercase
-        letter-spacing: .2em
+        padding 10px
         font-weight: 600
         text-align: center
-        letter-spacing: 3px
     p
         padding 20px
         margin 0
@@ -597,6 +605,9 @@ header
     padding 20px
     z-index 8
     position relative
+    .logo
+        text-align center
+        opacity 0.5
 
 .newmove-enter
   animation-duration: .75s;
@@ -672,3 +683,11 @@ header
 .box-container
   display: flex
   justify-content space-around
+
+
+.recorded-video
+    width 100%
+
+#gum
+    display none
+

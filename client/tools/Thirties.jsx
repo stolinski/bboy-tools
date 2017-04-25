@@ -1,11 +1,8 @@
-import React, { Component } from 'react';
+import React from 'react';
 
-export default class Thirties extends Component {
-  render() {
-    return (
-      <div className="container">
-        <StopWatch />
-      </div>
-        );
-  }
-}
+const Thirties = () =>
+  <div className="container">
+    <StopWatch />
+  </div>;
+
+export default Thirties;

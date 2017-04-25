@@ -116,6 +116,6 @@ StopWatch = React.createClass({
           <button className="btn btn-cancel" onClick={this.reset}>reset</button>
         </div>
       </div>
-            );
+    );
   },
 });

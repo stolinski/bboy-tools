@@ -34,14 +34,12 @@ Type = React.createClass({
   },
 
   renderTypes() {
-    if (typeof this.props.moves[0] != 'undefined') {
+    if (typeof this.props.moves[0] !== 'undefined') {
       if (this.props.moves[0].name === undefined) {
         this.props.moves.shift();
       }
     }
-    return this.props.moves.map((move) => {
-      return <Move key={move._id} move={move} bMode={false} />;
-    });
+    return this.props.moves.map(move => <Move key={move._id} move={move} bMode={false} />);
   },
 
   noTypes() {
@@ -98,7 +96,7 @@ Type = React.createClass({
                 ref="moveValue"
                 min="0"
                 max="10"
-                placeholder="Value"
+                placeholder="10"
               />
               <input
                 type="hidden"
@@ -124,6 +122,6 @@ Type = React.createClass({
           <span className="form-toggle-text">New Move</span>
         </button>
       </div>
-        );
+    );
   },
 });

@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import { toggleNav, closeNav } from '../actions';
-
+import { toggleNav, closeNav, toggleAccounts } from '../actions';
 
 export default class Home extends Component {
   render() {
@@ -10,7 +9,7 @@ export default class Home extends Component {
           <h2>Bboy Tools</h2><br />
           <p>Save your moves and improve your skills</p>
           <br />
-          <button onClick={toggleNav}>Sign Up</button>
+          <button onClick={() => { toggleNav(); toggleAccounts(); }}>Sign Up</button>
         </section>
         <section className="first-zone homepage-zone">
           <i className="fa fa-wrench" />

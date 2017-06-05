@@ -1,11 +1,11 @@
-const toggleNav = () => {
-  Session.set('Meteor.loginButtons.dropdownVisible', !Session.set('Meteor.loginButtons.dropdownVisible'));
-  return Session.set('navDrawer', !Session.get('navDrawer'));
-};
+const toggleNav = () => Session.set('navDrawer', !Session.get('navDrawer'));
+const toggleAccounts = () => Session.set(
+  'Meteor.loginButtons.dropdownVisible',
+  !Session.set('Meteor.loginButtons.dropdownVisible')
+);
 
-const closeNav = () => {
-  Session.set('Meteor.loginButtons.dropdownVisible', false);
-  return Session.set('navDrawer', false);
-};
+const closeNav = () => Session.set('navDrawer', false);
+const closeAccounts = () => Session.set('Meteor.loginButtons.dropdownVisible', false);
 
-export { toggleNav, closeNav };
+
+export { toggleNav, closeNav, closeAccounts, toggleAccounts };

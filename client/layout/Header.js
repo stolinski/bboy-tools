@@ -6,6 +6,8 @@ import MainNav from './MainNav';
 import {
   toggleNav,
   closeNav,
+  closeAccounts,
+  toggleAccounts,
 } from '../actions';
 
 @withData(() => ({
@@ -16,9 +18,10 @@ export default class Header extends PureComponent {
 
   closeMenu() {
     closeNav();
+    closeAccounts();
   }
 
-  toggleMenu() {
+  openMenu() {
     toggleNav();
   }
 
@@ -28,8 +31,8 @@ export default class Header extends PureComponent {
       <header className={menuToggle}>
         <h2>Bboy Tools</h2>
         <MainNav toggleMenu={this.closeMenu} />
-        <i className="fa fa-navicon" onClick={this.toggleMenu} />
-        <i className="fa fa-times" onClick={this.toggleMenu} />
+        <i className="fa fa-navicon" onClick={this.openMenu} />
+        <i className="fa fa-times" onClick={this.closeMenu} />
       </header>
     );
   }

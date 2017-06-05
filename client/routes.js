@@ -14,6 +14,10 @@ import Timemachine from './tools/Timemachine';
 import BattleTools from './tools/BattleTools';
 import BattleMode from './tools/BattleMode';
 
+import { toggleNav, closeNav, closeAccounts,
+ } from './actions';
+
+
 FlowRouter.route('/', {
   name: 'home',
   action() {
@@ -93,10 +97,14 @@ battleTools.route('/battle-mode', {
 
 Accounts.onLogin(() => {
   if (FlowRouter.current().path === '/') {
+    closeNav();
+    closeAccounts();
     FlowRouter.go('moves');
   }
 });
 
 Accounts.onLogout(() => {
+  closeNav();
+  closeAccounts();
   FlowRouter.go('home');
 });

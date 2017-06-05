@@ -19,3 +19,22 @@ A timer that goes off every 30 seconds. You can set an amount of dancers to keep
 #### One In The Chamber
 
 2 Random moves from your move book appear. Connect them with a transition you've never tried before.
+
+## Battle Tools
+
+#### Battle Mode
+
+Keep track of used and available moves while battling, so that you always know what's left in your aresenal
+
+
+## Coming Soon Tools
+
+#### TimeMachine Mirror - Watch yoruself practice on a delay
+
+#### Boombox - Mixtapes
+
+#### Set Generator - Generate sets based on move values
+
+#### Set Builder - Build your own sets
+
+#### Spot Finder - Find session spots

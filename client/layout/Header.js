@@ -1,24 +1,29 @@
 import React, { PureComponent } from 'react';
 import { autobind } from 'core-decorators';
+import { withData } from 'meteor/orionsoft:react-meteor-data';
 
 import MainNav from './MainNav';
+import {
+  toggleNav,
+  closeNav,
+} from '../actions';
 
+@withData(() => ({
+  navDrawer: Session.get('navDrawer'),
+}))
 @autobind
 export default class Header extends PureComponent {
-  state = {
-    menuClass: false,
-  }
 
   closeMenu() {
-    this.setState({ menuClass: false });
+    closeNav();
   }
 
   toggleMenu() {
-    this.setState({ menuClass: !this.state.menuClass });
+    toggleNav();
   }
 
   render() {
-    const menuToggle = this.state.menuClass ? 'open main-menu' : 'main-menu';
+    const menuToggle = this.props.navDrawer ? 'open main-menu' : 'main-menu';
     return (
       <header className={menuToggle}>
         <h2>Bboy Tools</h2>

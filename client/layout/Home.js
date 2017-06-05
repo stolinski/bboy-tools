@@ -1,11 +1,8 @@
 import React, { Component } from 'react';
+import { toggleNav, closeNav } from '../actions';
+
 
 export default class Home extends Component {
-  handleClick() {
-    const e = document.getElementById('login-sign-in-link');
-    e.click();
-  }
-
   render() {
     return (
       <div className="container">
@@ -13,7 +10,7 @@ export default class Home extends Component {
           <h2>Bboy Tools</h2><br />
           <p>Save your moves and improve your skills</p>
           <br />
-          <button onClick={this.handleClick}>Sign Up</button>
+          <button onClick={toggleNav}>Sign Up</button>
         </section>
         <section className="first-zone homepage-zone">
           <i className="fa fa-wrench" />
@@ -34,12 +31,12 @@ export default class Home extends Component {
             <article>
               <h3>30/30s</h3>
               <p>
-                                    An airhorn and large clock let you know every 30 seconds. Train rounds of 30sec for endurance, or do it in a group and outlast your crew.
+                An airhorn and large clock let you know every 30 seconds. Train rounds of 30sec for endurance, or do it in a group and outlast your crew.
               </p>
             </article>
           </div>
         </section>
       </div>
-      );
+    );
   }
 }

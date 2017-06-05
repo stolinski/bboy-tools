@@ -1,21 +1,19 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 
 import MainNav from './MainNav';
 
-Header = React.createClass({
-  getInitialState() {
-    return {
-      menuClass: false,
-    };
-  },
+export default class Header extends PureComponent {
+  state = {
+    menuClass: false,
+  }
 
   closeMenu() {
     this.setState({ menuClass: false });
-  },
+  }
 
   toggleMenu() {
     this.setState({ menuClass: !this.state.menuClass });
-  },
+  }
 
   render() {
     const menuToggle = this.state.menuClass ? 'open main-menu' : 'main-menu';
@@ -27,5 +25,5 @@ Header = React.createClass({
         <i className="fa fa-times" onClick={this.toggleMenu} />
       </header>
     );
-  },
-});
+  }
+}

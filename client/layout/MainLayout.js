@@ -1,4 +1,5 @@
 import React from 'react';
+import Header from './Header';
 
 export const MainLayout = ({ content }) => (
   <div className="main-layout-wrapper">

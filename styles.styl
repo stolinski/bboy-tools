@@ -3,6 +3,17 @@
 @import './styl/_funcs.styl'
 
 
+@font-face 
+    font-family: 'GrandmasterClash'
+    src: url('/GrandmasterClash.eot')
+    src: url('/GrandmasterClash.eot?#iefix') format('embedded-opentype'),
+        url('/GrandmasterClash.woff') format('woff'),
+        url('/GrandmasterClash.ttf') format('truetype')
+    font-weight: normal
+    font-style: normal
+
+
+
 /*------------------------------------*\
     $BASE
 \*------------------------------------*/
@@ -31,8 +42,8 @@ p
     line-height 1.5
 
 .logo
-    font-family: 'Kumar One Outline', cursive
-    font-weight 400
+    font-family: 'GrandmasterClash'
+    font-weight normal
 
 .btn
     background blue
@@ -79,8 +90,8 @@ header
         margin 0
         padding 0 20px
         font-size: 31px
-        font-family: 'Kumar One Outline', cursive
-        font-weight 400
+        font-family: 'GrandmasterClash'
+        font-weight normal
         line-height: 65px
     +above($large)
         h1, h2
@@ -333,10 +344,11 @@ header
     border-radius 4px
     box-shadow: 0 0px 28px rgba(0,0,0,0.5), 0 0px 23px rgba(0,0,0,0.5)
     h1
+        font-family: 'GrandmasterClash'
+        font-weight normal
         font-size: 1rem
         letter-spacing 2px
-        background-color: blue
-        text-transform uppercase
+        background-color black
         text-align center
         color: #FFF;
         padding: 15px 20px
@@ -351,12 +363,12 @@ header
     display: flex
     flex-wrap: wrap
     justify-content: space-between
-    padding: 0 0 15px
+    padding: 10px
     clearfix()
     +above($small)
         padding: 0 40px 30px
     +above($large)
-        padding: 0 80px 40px
+        padding 20px
 
 .type
     width 100%
@@ -562,12 +574,8 @@ header
     .types-wrapper
         display block
     h1
-        background yellow
         margin-bottom 40px
 
-.battle-tools
-    h1
-        background red
 
 .practice-tool
     display block

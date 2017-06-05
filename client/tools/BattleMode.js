@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
-import BattleModeMove from '../moves/BattleModeMove.jsx';
+import BattleModeMove from '../moves/BattleModeMove';
 import { withData } from 'meteor/orionsoft:react-meteor-data';
 
 @withData(() => {

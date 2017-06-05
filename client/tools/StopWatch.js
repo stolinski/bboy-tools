@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
+import { autobind } from 'core-decorators';
 
 import SoundPlayerComponents, { PlayButton, Timer, Progress, Icons } from 'react-soundplayer/components';
 import SoundPlayerAddons, { SoundPlayerContainer } from 'react-soundplayer/addons';
@@ -6,20 +7,23 @@ import SoundPlayerAddons, { SoundPlayerContainer } from 'react-soundplayer/addon
 const audio = new Audio('/instantrapairhorn.mp3');
 const audio1 = new Audio('/champ.mp3');
 
-StopWatch = React.createClass({
-  getInitialState() {
-    return {
-      isStart: false,
-      elapsed: 0,
-      diff: 0,
-      view: 'time',
-      laps: [],
-    };
-  },
-  componentWillUnmount() { // clear timer
+@autobind
+export default class StopWatch extends PureComponent {
+
+  state = {
+    isStart: false,
+    elapsed: 0,
+    diff: 0,
+    view: 'time',
+    laps: [],
+  }
+
+  componentWillUnmount() {
+    // clear timer
     clearInterval(this.state.timer);
     this.setState({ timer: undefined });
-  },
+  }
+
   tick() {
     const elapsed = Date.now() - this.state.start + this.state.diff;
     const s = String(Math.floor((elapsed % (1000 * 60)) / 1000) + 100).substring(1);
@@ -27,22 +31,24 @@ StopWatch = React.createClass({
       audio1.play();
     }
     this.setState({ elapsed });
-  },
+  }
+
   getTimeSpan(elapsed) {
     const m = String(Math.floor(elapsed / 1000 / 60));
     const s = String(Math.floor((elapsed % (1000 * 60)) / 1000) + 100).substring(1);
     return `${m}m ${s}s`;
-  },
+  }
+
   getSeconds() {
     return Math.floor((this.state.elapsed % (1000 * 60)) / 1000);
-  },
+  }
 
   getRounds(elapsed) {
     const m = Math.floor(elapsed / 1000 / 60);
     const s = Math.floor((elapsed % (1000 * 60)) / 1000);
     const ts = (m * 60) + s;
     return Math.floor(ts / 60);
-  },
+  }
 
   onClick() {
     if (!this.state.isStart) {
@@ -60,13 +66,13 @@ StopWatch = React.createClass({
         diff: this.state.elapsed,
       });
     }
-  },
+  }
+
   changeList(e) {
     this.setState({
       view: e.target.value,
     });
-  },
-
+  }
 
   reset() {
     clearInterval(this.state.timer);
@@ -79,7 +85,8 @@ StopWatch = React.createClass({
       view: 'time',
       dancers: 0,
     });
-  },
+  }
+
   render() {
     return (
       <div className="stopwatch practice-tools types">
@@ -117,5 +124,5 @@ StopWatch = React.createClass({
         </div>
       </div>
     );
-  },
-});
+  }
+}

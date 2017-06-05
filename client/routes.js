@@ -6,8 +6,8 @@ import { MainLayout } from './layout/MainLayout';
 import Home from './layout/Home';
 import App from './moves/App';
 // Practice Tools
-import PracticeTools from './tools/PracticeTools.jsx';
-import Thirties from './tools/Thirties.jsx';
+import PracticeTools from './tools/PracticeTools';
+import Thirties from './tools/Thirties';
 import Comboizer from './tools/Comboizer';
 import Timemachine from './tools/Timemachine';
 // Battle Tools

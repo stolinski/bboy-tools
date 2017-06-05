@@ -1,37 +1,38 @@
 import _ from 'lodash';
 import ReactDOM from 'react-dom';
 
-import React from 'react';
+import React, { PureComponent, PropTypes } from 'react';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
-// Type component - represents the whole type
-Type = React.createClass({
-  propTypes: {
-    type: React.PropTypes.object.isRequired,
-    moves: React.PropTypes.array.isRequired,
-  },
+import { autobind } from 'core-decorators';
 
-  getInitialState() {
-    return {
-      formToggle: false,
-    };
-  },
+@autobind
+export default class Type extends PureComponent {
+
+  static propTypes = {
+    type: PropTypes.object.isRequired,
+    moves: PropTypes.array.isRequired,
+  }
+
+  state = {
+    formToggle: false,
+  }
 
   renderCategory() {
     return _.startCase(this.props.type.type);
-  },
+  }
 
   renderCategorySnake() {
     return this.props.type.type;
-  },
+  }
 
   typeClasses() {
     return `${_.kebabCase(this.props.type.type)} type`;
-  },
+  }
 
   openForm() {
     this.setState({ formToggle: !this.state.formToggle });
-  },
+  }
 
   renderTypes() {
     if (typeof this.props.moves[0] !== 'undefined') {
@@ -40,11 +41,11 @@ Type = React.createClass({
       }
     }
     return this.props.moves.map(move => <Move key={move._id} move={move} bMode={false} />);
-  },
+  }
 
   noTypes() {
     return <li className="no-results">No Moves Added Yet</li>;
-  },
+  }
 
   handleSubmit(event) {
     event.preventDefault();
@@ -63,7 +64,7 @@ Type = React.createClass({
         // Clear form
     ReactDOM.findDOMNode(this.refs.moveName).value = '';
     ReactDOM.findDOMNode(this.refs.moveValue).value = '';
-  },
+  }
 
   render() {
     let toggleForm = this.state.formToggle ? 'open' : '';
@@ -123,5 +124,5 @@ Type = React.createClass({
         </button>
       </div>
     );
-  },
-});
+  }
+}

@@ -1,24 +1,15 @@
 import React, { PureComponent } from 'react';
 
-// import { autobind } from 'core-decorators';
+import AccountsUIWrapper from '../AccountsUIWrapper';
 
 export default class MainNav extends PureComponent {
 
   featureFlags = [
-    { 'href':'/moves',           'label':'My Moves',       'enabled':true },
-    { 'href':'/practice-tools',  'label':'Practice Tools', 'enabled':true },
-    { 'href':'/battle-tools',    'label':'Battle Tools',   'enabled':true },
-    { 'href':'/locations',       'label':'Locations Tool', 'enabled':false },
-  ];
-
-  navLinks(featureFlags, toggleMenu){
-    links = [];
-    featureFlags.forEach(function(feature){
-      if (feature.enabled)
-        links.push(<li><a onClick={toggleMenu} href={feature.href}>{feature.label}</a></li>)
-    });
-    return links;
-  }
+    { href: '/moves', label: 'My Moves', enabled: true },
+    { href: '/practice-tools', label: 'Practice Tools', enabled: true },
+    { href: '/battle-tools', label: 'Battle Tools', enabled: true },
+    { href: '/locations', label: 'Locations Tool', enabled: false },
+  ]
 
   render() {
     const { toggleMenu } = this.props;
@@ -27,7 +18,10 @@ export default class MainNav extends PureComponent {
         {
           Meteor.userId() ? (
             <ul>
-              {this.navLinks(this.featureFlags, toggleMenu)}
+              {this.featureFlags
+                .filter(feature => feature.enabled)
+                .map(feature => <li key={feature.href}><a onClick={toggleMenu} href={feature.href}>{feature.label}</a></li>)
+              }
               <li>
                 <AccountsUIWrapper />
               </li>

@@ -3,6 +3,8 @@ import React, { Component } from 'react';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import { withData } from 'meteor/orionsoft:react-meteor-data';
 
+import Type from './Type';
+
 @withData(() => {
   const movesSub = Meteor.subscribe('moves');
   return {

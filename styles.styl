@@ -321,8 +321,6 @@ header
 .main-layout
     width: 100%
     margin: 10px auto
-    +above($small)
-        margin: 60px auto
     +above($large)
         width: 90%
 
@@ -366,8 +364,6 @@ header
     padding: 10px
     clearfix()
     +above($small)
-        padding: 0 40px 30px
-    +above($large)
         padding 20px
 
 .type
@@ -376,7 +372,7 @@ header
         width: 48%
     h3
         border-bottom: solid 4px green
-        font-size: 38px;
+        font-size: 28px;
         padding 10px 15px
         color text
         margin-top 0
@@ -400,10 +396,9 @@ header
     transition all 0.3s ease
     .move-value
         display inline-block
-        background blue
+        background black
         color #FFF
         border-radius 50%
-        opacity 0.5
         font-size 0.8em
         font-weight 800
         width 25px
@@ -587,17 +582,18 @@ header
     elevation(1)
     transition all 0.3s ease
     h3
-        background text
-        color #FFF
+        color black
+        border-bottom solid black
         margin 0
         font-size 1.5rem
         padding 10px
-        font-weight: 600
-        text-align: center
+        font-weight: normal
+        font-family: 'GrandmasterClash'
     p
-        padding 20px
+        padding 10px
         margin 0
         line-height 1.2
+        font-size 1.2rem
     &:hover
         elevation(3)
     +above($large)

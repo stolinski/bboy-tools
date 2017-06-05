@@ -4,7 +4,7 @@ import { mount } from 'react-mounter';
 import { HomeLayout } from './layout/HomeLayout';
 import { MainLayout } from './layout/MainLayout';
 import Home from './layout/Home';
-import App from './moves/App.jsx';
+import App from './moves/App';
 import PracticeTools from './tools/PracticeTools.jsx';
 import BattleTools from './tools/BattleTools';
 import Thirties from './tools/Thirties.jsx';

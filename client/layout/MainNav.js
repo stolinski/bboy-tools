@@ -5,16 +5,17 @@ import React, { PureComponent } from 'react';
 export default class MainNav extends PureComponent {
 
   featureFlags = [
-    {'href':'/moves',           'label':'My Moves'},
-    {'href':'/practice-tools',  'label':'Practice Tools'},
-    {'href':'/battle-tools',    'label':'Battle Tools'},
-    //{'href':'/locations',       'label':'Locations Tool'}
+    { 'href':'/moves',           'label':'My Moves',       'enabled':true },
+    { 'href':'/practice-tools',  'label':'Practice Tools', 'enabled':true },
+    { 'href':'/battle-tools',    'label':'Battle Tools',   'enabled':true },
+    { 'href':'/locations',       'label':'Locations Tool', 'enabled':false },
   ];
 
   navLinks(featureFlags, toggleMenu){
     links = [];
     featureFlags.forEach(function(feature){
-      links.push(<li><a onClick={toggleMenu} href={feature.href}>{feature.label}</a></li>)
+      if (feature.enabled)
+        links.push(<li><a onClick={toggleMenu} href={feature.href}>{feature.label}</a></li>)
     });
     return links;
   }

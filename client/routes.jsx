@@ -5,12 +5,14 @@ import { HomeLayout } from './layout/HomeLayout';
 import { MainLayout } from './layout/MainLayout';
 import Home from './layout/Home';
 import App from './moves/App';
+// Practice Tools
 import PracticeTools from './tools/PracticeTools.jsx';
-import BattleTools from './tools/BattleTools';
 import Thirties from './tools/Thirties.jsx';
 import Comboizer from './tools/Comboizer';
 import Timemachine from './tools/Timemachine';
-import BattleMode from './tools/BattleMode.jsx';
+// Battle Tools
+import BattleTools from './tools/BattleTools';
+import BattleMode from './tools/BattleMode';
 
 FlowRouter.route('/', {
   name: 'home',

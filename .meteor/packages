@@ -13,7 +13,6 @@ standard-minifier-js@2.0.0
 es5-shim@4.6.15                # ECMAScript 5 compatibility for older browsers.
 ecmascript@0.7.2              # Enable ECMAScript2015+ syntax in app code
 
-
 insecure@1.0.7
 
 stolinski:stylus-multi
@@ -28,7 +27,6 @@ kadira:flow-router
 check@1.2.5
 zimme:active-route
 
-ultimatejs:tracker-react
 shell-server@0.2.3
 gwendall:accounts-helpers
 

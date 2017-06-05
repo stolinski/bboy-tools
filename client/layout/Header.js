@@ -1,7 +1,9 @@
 import React, { PureComponent } from 'react';
+import { autobind } from 'core-decorators';
 
 import MainNav from './MainNav';
 
+@autobind
 export default class Header extends PureComponent {
   state = {
     menuClass: false,

@@ -1,28 +1,20 @@
 import React, { Component } from 'react';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
-import TrackerReact from 'meteor/ultimatejs:tracker-react';
 import BattleModeMove from '../moves/BattleModeMove.jsx';
+import { withData } from 'meteor/orionsoft:react-meteor-data';
 
-export default class BattleMode extends TrackerReact(Component) {
-  constructor() {
-    super();
+@withData(() => {
+  const movesSub = Meteor.subscribe('moves');
+  return {
+    movesSub: movesSub.ready(),
+    moves: Moves.find({}, { sort: { createdAt: 1 } }).fetch(),
 
-    this.state = {
-      subscription: {
-        moves: Meteor.subscribe('moves'),
-      },
-    };
-  }
-
-  componentWillUnmount() {
-    this.state.subscription.moves.stop();
-  }
-
+  };
+})
+export default class BattleMode extends Component {
   renderMoves() {
-    const moves = Moves.find({}, { sort: { createdAt: 1 } }).fetch();
-    return moves.map((move) => {
-      return <BattleModeMove key={move._id} move={move} />;
-    });
+    const moves = this.props.moves;
+    return moves.map(move => <BattleModeMove key={move._id} move={move} />);
   }
 
   resetBattleMode() {
@@ -46,6 +38,6 @@ export default class BattleMode extends TrackerReact(Component) {
           </div>
         </ReactCSSTransitionGroup>
       </div>
-        );
+    );
   }
 }

@@ -1,12 +1,24 @@
 import React from 'react';
-import Header from './Header';
+import {
+  Route,
+  Switch,
+} from 'react-router-dom';
 
-export const MainLayout = ({ content }) => (
+import Header from './Header';
+import MyMoves from '../moves/MyMoves';
+import PracticeTools from '../tools/PracticeTools';
+import BattleTools from '../tools/BattleTools';
+
+const MainLayout = () => (
   <div className="main-layout-wrapper">
     <div>
       <Header />
       <main className="main-layout">
-        {content()}
+        <Switch>
+          <Route exact path="/moves" component={MyMoves} />
+          <Route path="/practice-tools" component={PracticeTools} />
+          <Route path="/battle-tools" component={BattleTools} />
+        </Switch>
       </main>
     </div>
     <footer className="site-footer">
@@ -14,3 +26,5 @@ export const MainLayout = ({ content }) => (
     </footer>
   </div>
 );
+
+export default MainLayout;

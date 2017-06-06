@@ -22,7 +22,6 @@ accounts-ui@1.1.9
 accounts-password@1.3.6
 accounts-twitter@1.3.0
 natestrauser:animate-css
-kadira:flow-router
 
 check@1.2.5
 zimme:active-route

@@ -1,4 +1,7 @@
 import React, { PureComponent } from 'react';
+import {
+  Link,
+} from 'react-router-dom';
 
 import AccountsUIWrapper from '../AccountsUIWrapper';
 
@@ -20,7 +23,7 @@ export default class MainNav extends PureComponent {
             <ul>
               {this.featureFlags
                 .filter(feature => feature.enabled)
-                .map(feature => <li key={feature.href}><a onClick={toggleMenu} href={feature.href}>{feature.label}</a></li>)
+                .map(feature => <li key={feature.href}><Link onClick={toggleMenu} to={feature.href}>{feature.label}</Link></li>)
               }
               <li>
                 <AccountsUIWrapper />

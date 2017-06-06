@@ -1,110 +1,80 @@
 import React from 'react';
-import { mount } from 'react-mounter';
+import ReactDOM from 'react-dom';
+import {
+  BrowserRouter as Router,
+  Route,
+  Switch,
+  Redirect,
+} from 'react-router-dom';
 
 import { HomeLayout } from './layout/HomeLayout';
-import { MainLayout } from './layout/MainLayout';
-import Home from './layout/Home';
-import MyMoves from './moves/MyMoves';
-// Practice Tools
-import PracticeTools from './tools/PracticeTools';
-import Thirties from './tools/Thirties';
-import Comboizer from './tools/Comboizer';
-import Timemachine from './tools/Timemachine';
-// Battle Tools
-import BattleTools from './tools/BattleTools';
-import BattleMode from './tools/BattleMode';
+import MainLayout from './layout/MainLayout';
 
 import { toggleNav, closeNav, closeAccounts,
  } from './actions';
 
 
-FlowRouter.route('/', {
-  name: 'home',
-  action() {
-    if (Meteor.userId()) { FlowRouter.go('moves'); }
-    mount(HomeLayout, {
-      content: () => (<Home />),
-    });
-  },
-});
+const PrivateRoute = ({ component: Component, ...rest }) =>
+  <Route
+    {...rest} render={props => (
+      Meteor.userId() ? (
+        <Component {...props} />
+      ) : (
+        <Redirect
+          to={{
+            pathname: '/',
+            state: { from: props.location },
+          }}
+        />
+      )
+    )}
+  />;
 
-FlowRouter.route('/moves', {
-  name: 'moves',
-  action() {
-    if (!Meteor.userId()) { FlowRouter.go('home'); }
-    mount(MainLayout, {
-      content: () => (<MyMoves />),
-    });
-  },
-});
+const App = () =>
+  <Switch>
+    <Route exact path="/" component={HomeLayout} />
+    <PrivateRoute path="/" component={MainLayout} />
+  </Switch>;
 
-const practiceTools = FlowRouter.group({
-  prefix: '/practice-tools',
-});
-
-practiceTools.route('/', {
-  action() {
-    mount(MainLayout, {
-      content: () => (<PracticeTools />),
-    });
-  },
-});
-
-practiceTools.route('/thirties', {
-  action() {
-    mount(MainLayout, {
-      content: () => (<Thirties />),
-    });
-  },
-});
-
-practiceTools.route('/one-in-the-chamber', {
-  action() {
-    mount(MainLayout, {
-      content: () => (<Comboizer />),
-    });
-  },
-});
-
-practiceTools.route('/timemachine-mirror', {
-  action() {
-    mount(MainLayout, {
-      content: () => (<Timemachine />),
-    });
-  },
+Meteor.startup(() => {
+  ReactDOM.render((
+    <Router>
+      <App />
+    </Router>
+  ), document.getElementById('react-root'));
 });
 
 
-const battleTools = FlowRouter.group({
-  prefix: '/battle-tools',
-});
+// const battleTools = FlowRouter.group({
+//   prefix: '/battle-tools',
+// });
 
-battleTools.route('/', {
-  action() {
-    mount(MainLayout, {
-      content: () => (<BattleTools />),
-    });
-  },
-});
-battleTools.route('/battle-mode', {
-  action() {
-    mount(MainLayout, {
-      content: () => (<BattleMode />),
-    });
-  },
-});
+// battleTools.route('/', {
+//   action() {
+//     mount(MainLayout, {
+//       content: () => (<BattleTools />),
+//     });
+//   },
+// });
+// battleTools.route('/battle-mode', {
+//   action() {
+//     mount(MainLayout, {
+//       content: () => (<BattleMode />),
+//     });
+//   },
+// });
 
 
-Accounts.onLogin(() => {
-  if (FlowRouter.current().path === '/') {
-    closeNav();
-    closeAccounts();
-    FlowRouter.go('moves');
-  }
-});
+// Accounts.onLogin(() => {
+//   if (FlowRouter.current().path === '/') {
+//     closeNav();
+//     closeAccounts();
+//     FlowRouter.go('moves');
+//   }
+// });
 
-Accounts.onLogout(() => {
-  closeNav();
-  closeAccounts();
-  FlowRouter.go('home');
-});
+// Accounts.onLogout(() => {
+//   closeNav();
+//   closeAccounts();
+//   FlowRouter.go('home');
+// });

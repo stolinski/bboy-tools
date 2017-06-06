@@ -1,7 +1,10 @@
+/* eslint-disable */
+
 // Grabs current users moves
 Meteor.publish('moves', function() {
     return Moves.find({owner: this.userId});
 });
+
 
 // Grabs users profile and twitter info
 Meteor.publish('users', function() {

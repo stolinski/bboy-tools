@@ -3,8 +3,9 @@ import ReactDOM from 'react-dom';
 
 import React, { PureComponent, PropTypes } from 'react';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
-
 import { autobind } from 'core-decorators';
+
+import Move from './Move';
 
 @autobind
 export default class Type extends PureComponent {
@@ -50,7 +51,7 @@ export default class Type extends PureComponent {
   handleSubmit(event) {
     event.preventDefault();
 
-        // Find the text field via the React ref
+    // Find the text field via the React ref
     const name = ReactDOM.findDOMNode(this.refs.moveName).value.trim();
     const value = ReactDOM.findDOMNode(this.refs.moveValue).value.trim();
     const type = ReactDOM.findDOMNode(this.refs.moveType).value.trim();
@@ -61,7 +62,7 @@ export default class Type extends PureComponent {
       }
     });
 
-        // Clear form
+    // Clear form
     ReactDOM.findDOMNode(this.refs.moveName).value = '';
     ReactDOM.findDOMNode(this.refs.moveValue).value = '';
   }

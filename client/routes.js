@@ -4,7 +4,7 @@ import { mount } from 'react-mounter';
 import { HomeLayout } from './layout/HomeLayout';
 import { MainLayout } from './layout/MainLayout';
 import Home from './layout/Home';
-import App from './moves/App';
+import MyMoves from './moves/MyMoves';
 // Practice Tools
 import PracticeTools from './tools/PracticeTools';
 import Thirties from './tools/Thirties';
@@ -33,7 +33,7 @@ FlowRouter.route('/moves', {
   action() {
     if (!Meteor.userId()) { FlowRouter.go('home'); }
     mount(MainLayout, {
-      content: () => (<App />),
+      content: () => (<MyMoves />),
     });
   },
 });

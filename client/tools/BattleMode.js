@@ -34,9 +34,9 @@ export default class BattleMode extends Component {
               leaveAnimation="accordionVertical"
             >
               {this.props.moves
-                  .filter(move => !move.battleUsed)
+                .filter(move => !move.battleUsed)
                 .map(move => <BattleModeMove key={move._id} move={move} />)
-            }
+              }
             </FlipMove>
           </ul>
         </div>

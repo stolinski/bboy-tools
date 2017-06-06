@@ -17,6 +17,7 @@
     "react-dom": "^15.4.1",
     "react-flip-move": "^2.9.3",
     "react-mounter": "^1.1.0",
+    "react-router": "^4.1.1",
     "react-soundplayer": "0.2.3"
   },
   "devDependencies": {

@@ -12,7 +12,7 @@ import Type from './Type';
     moves: Moves.find({}, { sort: { createdAt: 1 } }).fetch(),
   };
 })
-export default class App extends Component {
+export default class MyMoves extends Component {
 
   renderMoves() {
     const start = [

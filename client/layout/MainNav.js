@@ -3,7 +3,8 @@ import {
   Link,
 } from 'react-router-dom';
 
-import AccountsUIWrapper from '../AccountsUIWrapper';
+import LoginButton from '../utilities/LoginButton';
+import LogoutButton from '../utilities/LogoutButton';
 
 export default class MainNav extends PureComponent {
 
@@ -18,25 +19,14 @@ export default class MainNav extends PureComponent {
     const { toggleMenu, user } = this.props;
     return (
       <nav className="main-nav">
-        {
-          user ? (
-            <ul>
-              {this.featureFlags
-                .filter(feature => feature.enabled)
-                .map(feature => <li key={feature.href}><Link onClick={toggleMenu} to={feature.href}>{feature.label}</Link></li>)
-              }
-              <li>
-                <AccountsUIWrapper />
-              </li>
-            </ul>
-          ) : (
-            <ul>
-              <li>
-                <AccountsUIWrapper />
-              </li>
-            </ul>
-          )
-        }
+        <ul>
+          {user &&
+            this.featureFlags
+              .filter(feature => feature.enabled)
+              .map(feature => <li key={feature.href}><Link onClick={toggleMenu} to={feature.href}>{feature.label}</Link></li>)
+          }
+          {user ? <li><LogoutButton /></li> : <li><LoginButton /></li>}
+        </ul>
       </nav>
     );
   }

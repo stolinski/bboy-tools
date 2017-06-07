@@ -5,9 +5,6 @@ import {
   Redirect,
 } from 'react-router-dom';
 
-import currentUser from '../containers/currentUser';
-
-import Header from './Header';
 import MyMoves from '../moves/MyMoves';
 import PracticeTools from '../tools/PracticeTools';
 import BattleTools from '../tools/BattleTools';

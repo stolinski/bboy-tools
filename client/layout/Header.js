@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import { autobind } from 'core-decorators';
 import { withData } from 'meteor/orionsoft:react-meteor-data';
+import AccountsUIWrapper from '../AccountsUIWrapper';
 
 import MainNav from './MainNav';
 import {
@@ -31,8 +32,9 @@ export default class Header extends PureComponent {
       <header className={menuToggle}>
         <h2>Bboy Tools</h2>
         <MainNav toggleMenu={this.closeMenu} user={this.props.user} />
-        <i className="fa fa-navicon" onClick={this.openMenu} />
-        <i className="fa fa-times" onClick={this.closeMenu} />
+        <AccountsUIWrapper />
+        {this.props.user && <i className="fa fa-navicon" onClick={this.openMenu} />}
+        {this.props.user && <i className="fa fa-times" onClick={this.closeMenu} />}
       </header>
     );
   }

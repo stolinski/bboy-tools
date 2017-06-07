@@ -141,12 +141,22 @@ header
         li
             font-size 16px
             float left
-
-.login-close-text
-    display none !important 
-    +above($large)
-        display block !important
-
+    button
+        appearance none
+        background transparent
+        border none
+        display block
+        padding 20px
+        color #FFF
+        transition all 0.3s ease
+        display block
+        text-decoration none
+        border-bottom 4px solid transparent
+        height 65px
+        width 100%
+        &:hover
+            border-color yellow
+            background black + 10
 
 
 
@@ -691,3 +701,5 @@ header
 #gum
     display none
 
+.login-link-text
+    display none 

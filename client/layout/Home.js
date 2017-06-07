@@ -11,7 +11,7 @@ export default class Home extends Component {
           <br />
           <button onClick={() => { toggleNav(); toggleAccounts(); }}>Sign Up</button>
         </section>
-        <section className="first-zone homepage-zone">
+        {/* <section className="first-zone homepage-zone">
           <i className="fa fa-wrench" />
           <h2><span>Practice & Battle Tools</span></h2>
           <div className="tools-tease">
@@ -34,7 +34,7 @@ export default class Home extends Component {
               </p>
             </article>
           </div>
-        </section>
+        </section>*/}
       </div>
     );
   }

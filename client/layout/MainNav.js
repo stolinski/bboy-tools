@@ -15,11 +15,11 @@ export default class MainNav extends PureComponent {
   ]
 
   render() {
-    const { toggleMenu } = this.props;
+    const { toggleMenu, user } = this.props;
     return (
       <nav className="main-nav">
         {
-          Meteor.userId() ? (
+          user ? (
             <ul>
               {this.featureFlags
                 .filter(feature => feature.enabled)

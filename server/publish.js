@@ -7,7 +7,7 @@ Meteor.publish('moves', function() {
 
 
 // Grabs users profile and twitter info
-Meteor.publish('users', function() {
+Meteor.publish('user', function() {
     var currentUser = this.userId;
     return Meteor.users.find({_id: currentUser}, {
         fields: {

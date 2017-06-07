@@ -2,29 +2,26 @@ import React from 'react';
 import {
   Route,
   Switch,
+  Redirect,
 } from 'react-router-dom';
+
+import currentUser from '../containers/currentUser';
 
 import Header from './Header';
 import MyMoves from '../moves/MyMoves';
 import PracticeTools from '../tools/PracticeTools';
 import BattleTools from '../tools/BattleTools';
 
-const MainLayout = () => (
-  <div className="main-layout-wrapper">
-    <div>
-      <Header />
-      <main className="main-layout">
-        <Switch>
-          <Route exact path="/moves" component={MyMoves} />
-          <Route path="/practice-tools" component={PracticeTools} />
-          <Route path="/battle-tools" component={BattleTools} />
-        </Switch>
-      </main>
-    </div>
-    <footer className="site-footer">
-      <h2 className="logo">Bboy Tools</h2>
-    </footer>
-  </div>
-);
+const MainLayout = ({ userSub, user }) => {
+  if (userSub && !user) return <Redirect to={{ pathname: '/' }} />;
+
+  return (
+    <Switch>
+      <Route exact path="/moves" component={MyMoves} />
+      <Route path="/practice-tools" component={PracticeTools} />
+      <Route path="/battle-tools" component={BattleTools} />
+    </Switch>
+  );
+};
 
 export default MainLayout;

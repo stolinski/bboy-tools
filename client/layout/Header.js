@@ -30,7 +30,7 @@ export default class Header extends PureComponent {
     return (
       <header className={menuToggle}>
         <h2>Bboy Tools</h2>
-        <MainNav toggleMenu={this.closeMenu} />
+        <MainNav toggleMenu={this.closeMenu} user={this.props.user} />
         <i className="fa fa-navicon" onClick={this.openMenu} />
         <i className="fa fa-times" onClick={this.closeMenu} />
       </header>

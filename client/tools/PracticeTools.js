@@ -11,7 +11,6 @@ import Thirties from './Thirties';
 import Comboizer from './Comboizer';
 import Timemachine from './Timemachine';
 
-
 const PracticeTools = ({ match }) =>
   <div className="container">
     <ReactCSSTransitionGroup
@@ -21,7 +20,6 @@ const PracticeTools = ({ match }) =>
       transitionAppearTimeout={500}
       transitionLeaveTimeout={500}
     >
-
       <Switch>
         <Route path="/practice-tools/thirties" component={Thirties} />
         <Route path="/practice-tools/one-in-the-chamber" component={Comboizer} />

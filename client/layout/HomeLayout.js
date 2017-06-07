@@ -1,19 +1,17 @@
 import React from 'react';
-import Header from './Header';
+import { Redirect } from 'react-router-dom';
+
 import Home from './Home';
 
 
-export const HomeLayout = ({ content }) => (
-  <div>
+const HomeLayout = ({ userSub, user }) => {
+  if (userSub && user) return <Redirect to={{ pathname: '/moves' }} />;
+  return (
     <div>
-      <Header />
       <img src="/img/tom.jpg" className="billboard" />
-      <main className="">
-        <Home />
-      </main>
+      <Home />
     </div>
-    <footer className="site-footer">
-      Bboy Tools © 2017
-    </footer>
-  </div>
-);
+  );
+};
+
+export default HomeLayout;

@@ -7,9 +7,7 @@ export default class Home extends Component {
     return (
       <div className="container">
         <section className="site-intro homepage-zone">
-          <h2>Bboy Tools</h2><br />
           <p>Save your moves and improve your skills</p>
-          <br />
           <LoginButton />
         </section>
         {/* <section className="first-zone homepage-zone">

@@ -1,5 +1,6 @@
-import _ from 'lodash';
-import ReactDOM from 'react-dom';
+import startCase from 'lodash/startCase';
+import kebabCase from 'lodash/kebabCase';
+import findDOMNode from 'react-dom/lib/findDOMNode';
 
 import React, { PureComponent, PropTypes } from 'react';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
@@ -20,7 +21,7 @@ export default class Type extends PureComponent {
   }
 
   renderCategory() {
-    return _.startCase(this.props.type.type);
+    return startCase(this.props.type.type);
   }
 
   renderCategorySnake() {
@@ -28,7 +29,7 @@ export default class Type extends PureComponent {
   }
 
   typeClasses() {
-    return `${_.kebabCase(this.props.type.type)} type`;
+    return `${kebabCase(this.props.type.type)} type`;
   }
 
   openForm() {
@@ -52,9 +53,9 @@ export default class Type extends PureComponent {
     event.preventDefault();
 
     // Find the text field via the React ref
-    const name = ReactDOM.findDOMNode(this.refs.moveName).value.trim();
-    const value = ReactDOM.findDOMNode(this.refs.moveValue).value.trim();
-    const type = ReactDOM.findDOMNode(this.refs.moveType).value.trim();
+    const name = findDOMNode(this.refs.moveName).value.trim();
+    const value = findDOMNode(this.refs.moveValue).value.trim();
+    const type = findDOMNode(this.refs.moveType).value.trim();
 
     Meteor.call('move.add', name, value, type, Meteor.userId(), Meteor.user().username, (error) => {
       if (error) {
@@ -63,8 +64,8 @@ export default class Type extends PureComponent {
     });
 
     // Clear form
-    ReactDOM.findDOMNode(this.refs.moveName).value = '';
-    ReactDOM.findDOMNode(this.refs.moveValue).value = '';
+    findDOMNode(this.refs.moveName).value = '';
+    findDOMNode(this.refs.moveValue).value = '';
   }
 
   render() {

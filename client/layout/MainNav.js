@@ -25,6 +25,7 @@ export default class MainNav extends PureComponent {
               .filter(feature => feature.enabled)
               .map(feature => <li key={feature.href}><Link onClick={toggleMenu} to={feature.href}>{feature.label}</Link></li>)
           }
+          {/* Show login buttons based on users status */}
           {user ? <li><LogoutButton /></li> : <li><LoginButton /></li>}
         </ul>
       </nav>

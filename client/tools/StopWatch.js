@@ -1,9 +1,6 @@
 import React, { PureComponent } from 'react';
 import { autobind } from 'core-decorators';
 
-import SoundPlayerComponents, { PlayButton, Timer, Progress, Icons } from 'react-soundplayer/components';
-import SoundPlayerAddons, { SoundPlayerContainer } from 'react-soundplayer/addons';
-
 const audio = new Audio('/instantrapairhorn.mp3');
 const audio1 = new Audio('/champ.mp3');
 

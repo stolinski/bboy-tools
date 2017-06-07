@@ -7,8 +7,6 @@ import MainNav from './MainNav';
 import {
   toggleNav,
   closeNav,
-  closeAccounts,
-  toggleAccounts,
 } from '../actions';
 
 @withData(() => ({

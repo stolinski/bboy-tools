@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import React, { Component } from 'react';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import { withData } from 'meteor/orionsoft:react-meteor-data';
@@ -30,14 +29,14 @@ export default class MyMoves extends Component {
         type: 'burner',
       },
     ];
-    _.each(start, (type) => {
+    start.forEach((type) => {
       type._id = Random.id();
     });
     const copy = start.slice();
 
     // Merge Two Arrays of objects
     function mergeByProperty(arr1, arr2, prop) {
-      _.each(arr2, (arr2obj) => {
+      arr2.forEach((arr2obj) => {
         const arr1obj = _.find(arr1, arr1obj => arr1obj[prop] === arr2obj[prop]);
         arr1obj ? start.push(arr2obj) : arr1.push(arr2obj);
       });
@@ -48,8 +47,8 @@ export default class MyMoves extends Component {
     mergeByProperty(start, moves, 'type');
 
     // Get moves from this.data.moves
-    return _.map(copy, (type, index) => {
-      const movez = _.filter(start, n => n.type === type.type);
+    return copy.map((type, index) => {
+      const movez = start.filter(n => n.type === type.type);
       return <Type key={type._id} type={type} moves={movez} />;
     });
   }

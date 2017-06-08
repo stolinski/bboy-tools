@@ -1,4 +1,5 @@
-import _ from 'lodash';
+import startCase from 'lodash/startCase';
+import kebabCase from 'lodash/kebabCase';
 import ReactDOM from 'react-dom';
 
 import React, { PureComponent, PropTypes } from 'react';
@@ -20,7 +21,7 @@ export default class Type extends PureComponent {
   }
 
   renderCategory() {
-    return _.startCase(this.props.type.type);
+    return startCase(this.props.type.type);
   }
 
   renderCategorySnake() {
@@ -28,7 +29,7 @@ export default class Type extends PureComponent {
   }
 
   typeClasses() {
-    return `${_.kebabCase(this.props.type.type)} type`;
+    return `${kebabCase(this.props.type.type)} type`;
   }
 
   openForm() {

@@ -19,7 +19,7 @@ stolinski:stylus-multi
 fortawesome:fontawesome
 accounts-base@1.3.0
 accounts-ui@1.1.9
-accounts-password@1.3.6
+accounts-password
 accounts-twitter@1.3.0
 natestrauser:animate-css
 

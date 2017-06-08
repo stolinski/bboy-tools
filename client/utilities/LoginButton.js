@@ -2,7 +2,7 @@ import React from 'react';
 
 const LoginButton = () =>
   <button
-    onClick={() => Session.set('Meteor.loginButtons.dropdownVisible', true)}
+    onClick={() => Session.set('loginOpen', true)}
   >
     Login / Signup
   </button>;

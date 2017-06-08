@@ -2,13 +2,13 @@ import React, { Component, PropTypes } from 'react';
 import EmailPasswordForm from './EmailPasswordForm';
 
 export default class RegisterUserWrapper extends Component {
-  static defaultProps = {
-    loginLink: <p>{'Already have an account?'} <a href="/login">Sign In</a></p>,
-  }
+
   static propTypes = {}
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+
+    };
   }
 
   createUser(e) {
@@ -33,15 +33,13 @@ export default class RegisterUserWrapper extends Component {
 
   render() {
     return (
-      <div className="row">
-        <div className="col-md-6 col-md-offset-3">
-          <h1>Register</h1>
-          <EmailPasswordForm
-            submitBtnLabel="Register"
-            submitAction={this.createUser}
-          />
-          {this.props.loginLink}
-        </div>
+      <div className="register-form">
+        <h2>Register</h2>
+        <EmailPasswordForm
+          submitBtnLabel="Register"
+          submitAction={this.createUser}
+        />
+        <p>Already have an account? <a onClick={this.props.toggleLogin}>Sign In</a></p>
       </div>
     );
   }

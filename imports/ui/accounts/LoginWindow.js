@@ -1,19 +1,30 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import autobind from 'core-decorators/lib/autobind';
 
 import RegisterUserWrapper from './RegisterUserWrapper';
 import LoginUserWrapper from './LoginUserWrapper';
 
+import Icon from '../icons/Icon';
+
+@autobind
 export default class LoginWindow extends Component {
   static defaultProps = {}
   static propTypes = {}
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      login: false,
+    };
   }
+
+  toggleLogin() {
+    this.setState({ login: !this.state.login });
+  }
+
   render() {
     return (
       <div
-        className="register-user-wrapper" style={{
+        className="login-window" style={{
           position: 'fixed',
           backgroundColor: '#111111',
           left: 0,
@@ -22,8 +33,12 @@ export default class LoginWindow extends Component {
           bottom: 0,
         }}
       >
-        <RegisterUserWrapper />
-        <LoginUserWrapper />
+        <Icon name="close" color="white" onClick={() => Session.set('loginOpen', false)} />
+        {this.state.login ? (
+          <LoginUserWrapper toggleLogin={this.toggleLogin} />
+        ) : (
+          <RegisterUserWrapper toggleLogin={this.toggleLogin} />
+        )}
       </div>
     );
   }

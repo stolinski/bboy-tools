@@ -15,11 +15,9 @@ export default class EmailPasswordForm extends PureComponent {
     return (
       <form onSubmit={this.props.submitAction}>
         <div className="form-group">
-          <label htmlFor="email">Email:</label>
           <input placeholder="Email" type="email" id="email" className="form-control" />
         </div>
         <div className="form-group">
-          <label htmlFor="password">Password:</label>
           <input placeholder="Password" type="password" id="password" className="form-control" />
         </div>
         <div className="form-group">

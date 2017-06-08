@@ -3,16 +3,6 @@ import React, { Component, PropTypes } from 'react';
 import EmailPasswordForm from './EmailPasswordForm';
 
 export default class LoginWindowWrapper extends Component {
-  static defaultProps = {
-    registerLink: <p>{'Don\'t have an account?'} <a href="/register">Register</a></p>,
-  }
-  static propTypes = {}
-
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
-
   loginWithPassword(e) {
     e.preventDefault();
     const email = $('#email').val();
@@ -28,15 +18,13 @@ export default class LoginWindowWrapper extends Component {
   }
   render() {
     return (
-      <div className="row">
-        <div className="col-md-6 col-md-offset-3">
-          <h1>Login</h1>
-          <EmailPasswordForm
-            submitBtnLabel="Login"
-            submitAction={this.loginWithPassword}
-          />
-          {this.props.registerLink}
-        </div>
+      <div className="login-form">
+        <h2>Login</h2>
+        <EmailPasswordForm
+          submitBtnLabel="Login"
+          submitAction={this.loginWithPassword}
+        />
+        <p>Don\'t have an account? <a onClick={this.props.toggleLogin}>Register</a></p>
       </div>
     );
   }

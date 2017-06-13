@@ -11,7 +11,6 @@ if (Meteor.isClient) {
 @autobind
 export default class Locations extends PureComponent {
   componentDidMount() {
-
   }
 
   constructor(props) {

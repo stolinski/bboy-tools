@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import { withData } from 'meteor/orionsoft:react-meteor-data';
+import _ from 'lodash';
 
 import Type from './Type';
 
@@ -47,7 +48,7 @@ export default class MyMoves extends Component {
     mergeByProperty(start, moves, 'type');
 
     // Get moves from this.data.moves
-    return copy.map((type, index) => {
+    return copy.map((type) => {
       const movez = start.filter(n => n.type === type.type);
       return <Type key={type._id} type={type} moves={movez} />;
     });

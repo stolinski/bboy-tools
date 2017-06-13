@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-
 import {
   Route,
   Switch,
@@ -9,7 +8,6 @@ import {
 import currentUser from '../containers/currentUser';
 
 import Header from './Header';
-
 import HomeLayout from './HomeLayout';
 import MainLayout from './MainLayout';
 

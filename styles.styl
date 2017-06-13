@@ -45,15 +45,26 @@ p
     font-family: 'GrandmasterClash'
     font-weight normal
 
+h2
+    font-family: 'GrandmasterClash'
+    font-weight normal
+
 .btn
-    background blue
-    color #FFF
+    background white
+    color black
     text-transform uppercase
     border none
-    border-radius 4px
+    border-radius 40px
     padding: 25px 80px
     font-weight 700
     transition: all 0.3s
+    border solid
+    &.btn-twitter
+        background: social.twitter
+        border-color: social.twitter
+        padding 15px 40px
+        color white
+        margin-bottom: 1rem
     &.btn-cancel
         background red
     &.btn-start
@@ -86,7 +97,7 @@ header
     .fa-times
         display none
     clearfix()
-    h1, h2
+    .logo
         margin 0
         padding 0 20px
         font-size: 31px
@@ -94,7 +105,7 @@ header
         font-weight normal
         line-height: 65px
     +above($large)
-        h1, h2
+        .logo
             float left
         .fa-navicon
             display none !important
@@ -717,3 +728,55 @@ header
   text-align: center
   width: 100%
   height: calc(100vh - 207px)
+
+form
+    input
+        margin-bottom 1rem
+        width 100%
+        padding 5px
+        font-size 1.2rem
+        background-color transparent
+        border none
+        border-bottom: white solid 4px
+        color white
+        &:focus
+            border-color yellow
+
+input::placeholder
+    color: white
+
+input:-webkit-autofill
+    -webkit-box-shadow: 0 0 0 30px black inset
+    -webkit-text-fill-color: white
+
+
+.login-window
+    padding 40px 20px
+    text-align center
+    .btn
+        width 100%
+    .register-form, .login-form
+        max-width 400px
+        margin 0 auto
+    .close
+        margin-left auto
+        display block
+        max-width: 40px
+
+.comboizer-filters
+    display flex
+    flex-wrap: wrap
+
+
+input[type="checkbox"]
+    display none
+    + label
+        border solid 2px black
+        border-radius 22px
+        padding 5px
+        display block
+        margin-right 5px
+        margin-bottom 5px
+    &:checked + label
+        background black
+        color white

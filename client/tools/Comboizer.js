@@ -4,6 +4,7 @@ import React, {
 } from 'react';
 import { autobind } from 'core-decorators';
 import { withData } from 'meteor/orionsoft:react-meteor-data';
+import startCase from 'lodash/startCase';
 
 @withData(() => {
   const movesSub = Meteor.subscribe('moves');
@@ -26,22 +27,19 @@ export default class Comboizer extends Component {
       freeze: true,
       burner: false,
     };
-  }
-
-  getMoves() {
-    const filters = [
+    this.filters = [
       { status: this.state.top_rock, type: 'top_rock' },
       { status: this.state.go_down, type: 'go_down' },
       { status: this.state.power_move, type: 'power_move' },
       { status: this.state.footwork, type: 'footwork' },
       { status: this.state.freeze, type: 'freeze' },
       { status: this.state.burner, type: 'burner' },
-    ].filter(value => value.status).map(filter => filter.type);
+    ];
+  }
 
-    const moves = this.props.moves.filter((move) => {
-      return filters.indexOf(move.type) > -1;
-    });
-
+  getMoves() {
+    const filters = this.filters.filter(value => value.status).map(filter => filter.type);
+    const moves = this.props.moves.filter(move => filters.indexOf(move.type) > -1);
     const { rand1, rand2 } = getRandTwo(moves.length);
 
     this.setState({
@@ -59,55 +57,20 @@ export default class Comboizer extends Component {
     return (
       <div className="comboizer practice-tools types">
         <h1>Comboizer</h1>
-        <div>
-          <label>
-            Top Rock
-            <input
-              type="checkbox"
-              checked={this.state.top_rock}
-              onClick={() => this.setState({ top_rock: !this.state.top_rock })}
-            />
-          </label>
-          <label>
-            Go Down
-            <input
-              type="checkbox"
-              checked={this.state.go_down}
-              onClick={() => this.setState({ go_down: !this.state.go_down })}
-            />
-          </label>
-          <label>
-            Footwork
-            <input
-              type="checkbox"
-              checked={this.state.footwork}
-              onClick={() => this.setState({ footwork: !this.state.footwork })}
-            />
-          </label>
-          <label>
-            Freeze
-            <input
-              type="checkbox"
-              onClick={() => this.setState({ freeze: !this.state.freeze })}
-              checked={this.state.freeze}
-            />
-          </label>
-          <label>
-            Power
-            <input
-              type="checkbox"
-              checked={this.state.power_move}
-              onClick={() => this.setState({ power_move: !this.state.power_move })}
-            />
-          </label>
-          <label>
-            Burners
-            <input
-              type="checkbox"
-              checked={this.state.burner}
-              onClick={() => this.setState({ burner: !this.state.burner })}
-            />
-          </label>
+        <div className="comboizer-filters">
+          {this.filters.map(filter => (
+            <div className="comboizer-filter">
+              <input
+                type="checkbox"
+                id={filter.type}
+                checked={this.state[filter.type]}
+                onClick={() => this.setState({ [filter.type]: !this.state[filter.type] })}
+              />
+              <label htmlFor={filter.type}>
+                {startCase(filter.type)}
+              </label>
+            </div>
+          ))}
         </div>
         {this.state.randomMoves.length > 0 && <h3>{this.state.randomMoves[0].name}</h3>}
         {this.state.randomMoves.length > 0 && <h3>{this.state.randomMoves[1].name}</h3>}

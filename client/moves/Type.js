@@ -1,6 +1,6 @@
 import startCase from 'lodash/startCase';
 import kebabCase from 'lodash/kebabCase';
-import findDOMNode from 'react-dom/lib/findDOMNode';
+import ReactDOM from 'react-dom';
 
 import React, { PureComponent, PropTypes } from 'react';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
@@ -53,9 +53,9 @@ export default class Type extends PureComponent {
     event.preventDefault();
 
     // Find the text field via the React ref
-    const name = findDOMNode(this.refs.moveName).value.trim();
-    const value = findDOMNode(this.refs.moveValue).value.trim();
-    const type = findDOMNode(this.refs.moveType).value.trim();
+    const name = ReactDOM.findDOMNode(this.refs.moveName).value.trim();
+    const value = ReactDOM.findDOMNode(this.refs.moveValue).value.trim();
+    const type = ReactDOM.findDOMNode(this.refs.moveType).value.trim();
 
     Meteor.call('move.add', name, value, type, Meteor.userId(), Meteor.user().username, (error) => {
       if (error) {
@@ -64,8 +64,8 @@ export default class Type extends PureComponent {
     });
 
     // Clear form
-    findDOMNode(this.refs.moveName).value = '';
-    findDOMNode(this.refs.moveValue).value = '';
+    ReactDOM.findDOMNode(this.refs.moveName).value = '';
+    ReactDOM.findDOMNode(this.refs.moveValue).value = '';
   }
 
   render() {

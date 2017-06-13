@@ -35,7 +35,10 @@ export default class Header extends PureComponent {
     return (
       <header className={menuToggle}>
         <h2 className="logo">Bboy Tools</h2>
-        <MainNav toggleMenu={this.closeMenu} user={user} />
+        {/* Menu shouldn't even exist if you aren't logged in */}
+        {user && userSub &&
+          <MainNav toggleMenu={this.closeMenu} user={user} />
+        }
         {!user && userSub && loginOpen &&
           <LoginWindow />
         }

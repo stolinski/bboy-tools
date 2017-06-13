@@ -8,8 +8,6 @@ import Icon from '../icons/Icon';
 
 @autobind
 export default class LoginWindow extends Component {
-  static defaultProps = {}
-  static propTypes = {}
   constructor(props) {
     super(props);
     this.state = {
@@ -18,7 +16,9 @@ export default class LoginWindow extends Component {
   }
 
   toggleLogin() {
-    this.setState({ login: !this.state.login });
+    this.setState({
+      login: !this.state.login,
+    });
   }
 
   render() {

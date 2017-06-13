@@ -4,12 +4,6 @@ import EmailPasswordForm from './EmailPasswordForm';
 export default class RegisterUserWrapper extends Component {
 
   static propTypes = {}
-  constructor(props) {
-    super(props);
-    this.state = {
-
-    };
-  }
 
   createUser(e) {
     e.preventDefault();

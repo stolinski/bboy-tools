@@ -1,8 +1,9 @@
 import React, { PureComponent, PropTypes } from 'react';
 
 export default class EmailPasswordForm extends PureComponent {
-  propTypes: {
-    submitAction: PropTypes.func.isRequired
+
+  static propTypes = {
+    submitAction: PropTypes.func.isRequired,
   }
 
   getDefaultProps() {
@@ -14,6 +15,11 @@ export default class EmailPasswordForm extends PureComponent {
   render() {
     return (
       <form onSubmit={this.props.submitAction}>
+        <div className="form-group">
+          <button onClick={twitterSignin} className="btn btn-twitter">
+            <i className="fa fa-twitter" /> Sign in with Twitter
+          </button>
+        </div>
         <div className="form-group">
           <input placeholder="Email" type="email" id="email" className="form-control" />
         </div>
@@ -27,3 +33,5 @@ export default class EmailPasswordForm extends PureComponent {
     );
   }
 }
+
+const twitterSignin = () => Meteor.loginWithTwitter();

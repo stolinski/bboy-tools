@@ -59,6 +59,12 @@ h2
     font-weight 700
     transition: all 0.3s
     border solid
+    &.btn-twitter
+        background: social.twitter
+        border-color: social.twitter
+        padding 15px 40px
+        color white
+        margin-bottom: 1rem
     &.btn-cancel
         background red
     &.btn-start
@@ -733,6 +739,8 @@ input:-webkit-autofill
 .login-window
     padding 40px 20px
     text-align center
+    .btn
+        width 100%
     .register-form, .login-form
         max-width 400px
         margin 0 auto

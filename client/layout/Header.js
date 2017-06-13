@@ -20,7 +20,6 @@ export default class Header extends PureComponent {
 
   closeMenu() {
     closeNav();
-    closeAccounts();
   }
 
   openMenu() {

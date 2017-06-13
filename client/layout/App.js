@@ -3,6 +3,7 @@ import {
   Route,
   Switch,
   withRouter,
+  Link,
 } from 'react-router-dom';
 
 import currentUser from '../containers/currentUser';

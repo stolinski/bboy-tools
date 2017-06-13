@@ -12,7 +12,7 @@ export default class MainNav extends PureComponent {
     { href: '/moves', label: 'My Moves', enabled: true },
     { href: '/practice-tools', label: 'Practice Tools', enabled: true },
     { href: '/battle-tools', label: 'Battle Tools', enabled: true },
-    { href: '/locations', label: 'Locations Tool', enabled: false },
+    { href: '/locations', label: 'Locations', enabled: true },
   ]
 
   render() {

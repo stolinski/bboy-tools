@@ -1,6 +1,11 @@
 import React, { Component } from 'react';
+import Hammer from 'react-hammerjs';
 
 export default class BattleModeMove extends Component {
+
+  state = {
+    xpos: 0,
+  }
 
   useMove() {
     console.log('battle move');
@@ -13,18 +18,43 @@ export default class BattleModeMove extends Component {
 
   render() {
     return (
-      <li className="battle-mode move">
-        <span className="text">
-          {this.props.move.name}
-          {this.props.move.value && <span className="move-value">{this.props.move.value}</span>}
-        </span>
-        <button
-          className="btn btn-cancel use-move"
-          onClick={this.useMove.bind(this)}
+      <Hammer
+        onPan={(e) => {
+          if (e.deltaX < 0) {
+            this.setState({
+              xpos: e.deltaX,
+            });
+          }
+        }}
+        onPanCancel={() => console.log('cancel')}
+        onPanEnd={(e) => {
+          console.log(e);
+          const posX = e.deltaX;
+          if (posX < -150) {
+            this.useMove();
+          } else {
+            this.setState({
+              xpos: 0,
+            });
+          }
+        }}
+      >
+        <li
+          className={`bmove-move ${this.state.trans ? 'trans' : ''}`}
+          style={{ transform: `translateX(${this.state.xpos}px)` }}
         >
+          <span className="text">
+            {this.props.move.name}
+            {this.props.move.value && <span className="move-value">{this.props.move.value}</span>}
+          </span>
+          <button
+            className="use-move"
+            onClick={this.useMove.bind(this)}
+          >
           Use Move
         </button>
-      </li>
+        </li>
+      </Hammer>
     );
   }
 }

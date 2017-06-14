@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import FlipMove from 'react-flip-move';
 import { withData } from 'meteor/orionsoft:react-meteor-data';
 

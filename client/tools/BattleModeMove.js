@@ -22,6 +22,7 @@ export default class BattleModeMove extends Component {
         onPan={(e) => {
           if (e.deltaX < 0) {
             this.setState({
+              trans: false,
               xpos: e.deltaX,
             });
           }
@@ -34,8 +35,13 @@ export default class BattleModeMove extends Component {
             this.useMove();
           } else {
             this.setState({
-              xpos: 0,
-            });
+              trans: true,
+            }, () => {
+              this.setState({
+                xpos: 0,
+              });
+            }
+            );
           }
         }}
       >

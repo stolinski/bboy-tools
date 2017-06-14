@@ -20,13 +20,15 @@ export default class BattleModeMove extends Component {
     return (
       <Hammer
         onPan={(e) => {
-          if (e.deltaX < 0) {
+          console.log('pan', e);
+          if (e.deltaX < 0 && e.deltaY > -40) {
             this.setState({
               trans: false,
               xpos: e.deltaX,
             });
           }
         }}
+        onPanStart={() => console.log('panstarts')}
         onPanCancel={() => console.log('cancel')}
         onPanEnd={(e) => {
           console.log(e);

@@ -22,7 +22,7 @@ const MainLayout = ({ userSub, user }) => {
         <Route path="/battle-tools" component={BattleTools} />
         <Route path="/locations" component={Locations} />
       </Switch>
-      <Mixtapes />
+      {/* <Mixtapes /> */}
     </main>
   );
 };

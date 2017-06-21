@@ -7,8 +7,12 @@ export default class Home extends Component {
     return (
       <div className="container">
         <section className="site-intro homepage-zone">
-          <p>Save your moves and improve your skills</p>
-          <LoginButton />
+          <div className="site-intro-text">
+            <p>Save your moves and improve your skills</p>
+            <br />
+            <LoginButton />
+          </div>
+          <img src="/img/tom.jpg" className="billboard" />
         </section>
         {/* <section className="first-zone homepage-zone">
           <i className="fa fa-wrench" />

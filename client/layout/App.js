@@ -3,7 +3,6 @@ import {
   Route,
   Switch,
   withRouter,
-  Link,
 } from 'react-router-dom';
 
 import currentUser from '../containers/currentUser';
@@ -21,12 +20,10 @@ export default class App extends Component {
       <div className="main-layout-wrapper">
         <div>
           <Header userSub={userSub} user={user} />
-          <main className="main-layout">
-            <Switch>
-              <Route exact path="/" render={props => <HomeLayout {...props} userSub={userSub} user={user} />} />
-              <Route path="/" render={props => <MainLayout {...props} userSub={userSub} user={user} />} />
-            </Switch>
-          </main>
+          <Switch>
+            <Route exact path="/" render={props => <HomeLayout {...props} userSub={userSub} user={user} />} />
+            <Route path="/" render={props => <MainLayout {...props} userSub={userSub} user={user} />} />
+          </Switch>
         </div>
         <footer className="site-footer">
           <h2 className="logo">Bboy Tools</h2>

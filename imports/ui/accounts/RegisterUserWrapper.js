@@ -33,7 +33,7 @@ export default class RegisterUserWrapper extends Component {
           submitBtnLabel="Register"
           submitAction={this.createUser}
         />
-        <p>Already have an account? <a onClick={this.props.toggleLogin}>Sign In</a></p>
+        <p>Already have an account? <br /><a onClick={this.props.toggleLogin}>Sign In</a></p>
       </div>
     );
   }

@@ -21,7 +21,7 @@
     "react-mounter": "^1.1.0",
     "react-router": "^4.1.1",
     "react-router-dom": "^4.1.1",
-    "react-soundplayer": "0.2.3",
+    "react-soundplayer": "prerelease",
     "react-swipe-to-delete-component": "^0.3.0"
   },
   "devDependencies": {

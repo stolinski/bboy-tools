@@ -64,7 +64,7 @@ export default class MyMoves extends Component {
           transitionName="pagetrans"
           transitionAppear
         >
-          <div className="types" key="1">
+          <div className="types paper" key="1">
             <h1>My Moves</h1>
             <div className="types-wrapper">
               {this.renderMoves()}

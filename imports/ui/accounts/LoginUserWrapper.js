@@ -26,7 +26,7 @@ export default class LoginWindowWrapper extends Component {
           submitBtnLabel="Login"
           submitAction={this.loginWithPassword}
         />
-        <p>Don&apos;t have an account? <a onClick={this.props.toggleLogin}>Register</a></p>
+        <p>Don&apos;t have an account? <br /><a onClick={this.props.toggleLogin}>Register</a></p>
       </div>
     );
   }

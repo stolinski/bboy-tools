@@ -8,12 +8,14 @@ import LogoutButton from '../utilities/LogoutButton';
 
 export default class MainNav extends PureComponent {
 
-  featureFlags = [
-    { href: '/moves', label: 'My Moves', enabled: true },
-    { href: '/practice-tools', label: 'Practice Tools', enabled: true },
-    { href: '/battle-tools', label: 'Battle Tools', enabled: true },
-    { href: '/locations', label: 'Locations', enabled: true },
-  ]
+  featureFlags() {
+    return [
+      { href: '/moves', label: 'My Moves', enabled: hasFeature('moves') },
+      { href: '/practice-tools', label: 'Practice Tools', enabled: hasFeature('practice-tools') },
+      { href: '/battle-tools', label: 'Battle Tools', enabled: hasFeature('battle-tools') },
+      { href: '/locations', label: 'Locations Tool', enabled: hasFeature('locations') },
+    ]
+  }
 
   render() {
     const { toggleMenu, user } = this.props;
@@ -21,7 +23,7 @@ export default class MainNav extends PureComponent {
       <nav className="main-nav">
         <ul>
           {user &&
-            this.featureFlags
+            this.featureFlags()
               .filter(feature => feature.enabled)
               .map(feature => <li key={feature.href} onClick={toggleMenu}><Link to={feature.href}>{feature.label}</Link></li>)
           }

@@ -12,7 +12,8 @@ Meteor.publish('user', function() {
     return Meteor.users.find({_id: currentUser}, {
         fields: {
             'services.twitter': 1,
-            'profile': 1
+            'profile': 1,
+            'features': 1
         }
     });
 });

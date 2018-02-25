@@ -1,30 +1,28 @@
 import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
 
 function hasGetUserMedia() {
-  return !!(navigator.getUserMedia || navigator.webkitGetUserMedia ||
-            navigator.mozGetUserMedia || navigator.msGetUserMedia);
+  return !!(
+    navigator.getUserMedia ||
+    navigator.webkitGetUserMedia ||
+    navigator.mozGetUserMedia ||
+    navigator.msGetUserMedia
+  );
 }
 
 export default class Webcam extends PureComponent {
-
   static defaultProps = {
     audio: true,
     height: 480,
     width: 640,
-  }
+  };
 
   static propTypes = {
-    audio: React.PropTypes.bool,
-    onUserMedia: React.PropTypes.func,
-    height: React.PropTypes.oneOfType([
-      React.PropTypes.number,
-      React.PropTypes.string,
-    ]),
-    width: React.PropTypes.oneOfType([
-      React.PropTypes.number,
-      React.PropTypes.string,
-    ]),
-  }
+    audio: PropTypes.bool,
+    onUserMedia: PropTypes.func,
+    height: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+    width: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+  };
   constructor() {
     super();
     this.mountedInstances = [];
@@ -33,7 +31,7 @@ export default class Webcam extends PureComponent {
 
   state = {
     hasUserMedia: false,
-  }
+  };
 
   componentDidMount() {
     if (!hasGetUserMedia()) return;
@@ -46,10 +44,8 @@ export default class Webcam extends PureComponent {
   }
 
   requestUserMedia() {
-    navigator.getUserMedia = navigator.getUserMedia ||
-                          navigator.webkitGetUserMedia ||
-                          navigator.mozGetUserMedia ||
-                          navigator.msGetUserMedia;
+    navigator.getUserMedia =
+      navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
 
     const sourceSelected = (audioSource, videoSource) => {
       const constraints = {
@@ -64,11 +60,15 @@ export default class Webcam extends PureComponent {
         };
       }
 
-      navigator.getUserMedia(constraints, (stream) => {
-        this.mountedInstances.forEach(instance => instance.handleUserMedia(null, stream));
-      }, (e) => {
-        this.mountedInstances.forEach(instance => instance.handleUserMedia(e));
-      });
+      navigator.getUserMedia(
+        constraints,
+        (stream) => {
+          this.mountedInstances.forEach(instance => instance.handleUserMedia(null, stream));
+        },
+        (e) => {
+          this.mountedInstances.forEach(instance => instance.handleUserMedia(e));
+        },
+      );
     };
 
     if (this.props.audioSource && this.props.videoSource) {
@@ -142,9 +142,13 @@ export default class Webcam extends PureComponent {
     canvas.width = vid.clientWidth;
     context = canvas.getContext('2d');
     const that = this;
-    vid.addEventListener('play', function () {
-      that.drawCanvas(this, context, canvas.width, canvas.height);
-    }, false);
+    vid.addEventListener(
+      'play',
+      function () {
+        that.drawCanvas(this, context, canvas.width, canvas.height);
+      },
+      false,
+    );
   }
 
   drawCanvas(vid, context, width, height) {
@@ -173,20 +177,13 @@ export default class Webcam extends PureComponent {
     ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
     ctx2.drawImage(canvas, 0, 0, canvas.width, canvas.height);
 
-
     return canvas;
   }
 
   render() {
     return (
       <div>
-        <video
-          id="cam"
-          autoPlay
-          width={this.props.width}
-          height={this.props.height}
-          src={this.state.src}
-        />
+        <video id="cam" autoPlay width={this.props.width} height={this.props.height} src={this.state.src} />
         <canvas id="canvas" />
       </div>
     );

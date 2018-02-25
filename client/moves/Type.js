@@ -2,7 +2,9 @@ import startCase from 'lodash/startCase';
 import kebabCase from 'lodash/kebabCase';
 import ReactDOM from 'react-dom';
 
-import React, { PureComponent, PropTypes } from 'react';
+import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
+
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import { autobind } from 'core-decorators';
 
@@ -10,15 +12,14 @@ import Move from './Move';
 
 @autobind
 export default class Type extends PureComponent {
-
   static propTypes = {
     type: PropTypes.object.isRequired,
     moves: PropTypes.array.isRequired,
-  }
+  };
 
   state = {
     formToggle: false,
-  }
+  };
 
   renderCategory() {
     return startCase(this.props.type.type);
@@ -74,50 +75,26 @@ export default class Type extends PureComponent {
 
     return (
       <div className={this.typeClasses()}>
-
         <h3>{this.renderCategory()}</h3>
 
         <ul className="moves">
-
-          <ReactCSSTransitionGroup
-            transitionEnterTimeout={750}
-            transitionLeaveTimeout={750}
-            transitionName="newmove"
-          >
+          <ReactCSSTransitionGroup transitionEnterTimeout={750} transitionLeaveTimeout={750} transitionName="newmove">
             {this.renderTypes()}
           </ReactCSSTransitionGroup>
 
           <li className="move-form">
-            <form className="new-move" onSubmit={this.handleSubmit} >
-              <input
-                type="text"
-                ref="moveName"
-                placeholder="Move Name"
-              />
-              <input
-                type="number"
-                ref="moveValue"
-                min="0"
-                max="10"
-                placeholder="10"
-              />
-              <input
-                type="hidden"
-                ref="moveType"
-                value={this.renderCategorySnake()}
-              />
+            <form className="new-move" onSubmit={this.handleSubmit}>
+              <input type="text" ref="moveName" placeholder="Move Name" />
+              <input type="number" ref="moveValue" min="0" max="10" placeholder="10" />
+              <input type="hidden" ref="moveType" value={this.renderCategorySnake()} />
               <button type="submit">
                 <i className="fa fa-check" />
               </button>
             </form>
           </li>
-
         </ul>
 
-        <button
-          className={toggleForm}
-          onClick={this.openForm}
-        >
+        <button className={toggleForm} onClick={this.openForm}>
           <span className="form-toggle-icons">
             <i className="fa fa-plus" />
             <i className="fa fa-minus" />

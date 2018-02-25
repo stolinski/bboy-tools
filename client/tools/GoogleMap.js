@@ -1,4 +1,6 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
+
 import { Random } from 'meteor/random';
 import { createContainer } from 'meteor/react-meteor-data';
 
@@ -24,16 +26,14 @@ class GoogleMap extends React.Component {
 
   componentWillUnmount() {
     if (GoogleMaps.maps[this.name]) {
-      google.maps.event.clearInstanceListeners(
-        GoogleMaps.maps[this.name].instance,
-      );
+      google.maps.event.clearInstanceListeners(GoogleMaps.maps[this.name].instance);
       delete GoogleMaps.maps[this.name];
     }
   }
 
   render() {
     return (
-      <div className="map" ref={c => this.container = c}>
+      <div className="map" ref={c => (this.container = c)}>
         {this.props.children}
       </div>
     );
@@ -48,9 +48,6 @@ GoogleMap.propTypes = {
   children: PropTypes.node,
 };
 
-GoogleMapContainer = createContainer(
-  () => ({ loaded: GoogleMaps.loaded() }),
-  GoogleMap,
-);
+GoogleMapContainer = createContainer(() => ({ loaded: GoogleMaps.loaded() }), GoogleMap);
 
 export default GoogleMapContainer;

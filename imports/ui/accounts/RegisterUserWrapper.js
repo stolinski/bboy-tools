@@ -1,14 +1,16 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
 import EmailPasswordForm from './EmailPasswordForm';
+import PropTypes from 'prop-types';
 
 export default class RegisterUserWrapper extends Component {
-
-  static propTypes = {}
+  static propTypes = {};
 
   createUser(e) {
     e.preventDefault();
     const email = $('#email').val();
-    const password = $('#password').val().trim();
+    const password = $('#password')
+      .val()
+      .trim();
 
     Accounts.createUser(
       {
@@ -21,7 +23,7 @@ export default class RegisterUserWrapper extends Component {
         } else {
           console.log('no error');
         }
-      }
+      },
     );
   }
 
@@ -29,11 +31,11 @@ export default class RegisterUserWrapper extends Component {
     return (
       <div className="register-form">
         <h2>Register</h2>
-        <EmailPasswordForm
-          submitBtnLabel="Register"
-          submitAction={this.createUser}
-        />
-        <p>Already have an account? <br /><a onClick={this.props.toggleLogin}>Sign In</a></p>
+        <EmailPasswordForm submitBtnLabel="Register" submitAction={this.createUser} />
+        <p>
+          Already have an account? <br />
+          <a onClick={this.props.toggleLogin}>Sign In</a>
+        </p>
       </div>
     );
   }

@@ -1,10 +1,8 @@
-import React, {
-  Component,
-  PropTypes,
-} from 'react';
+import React, { Component } from 'react';
 import { autobind } from 'core-decorators';
 import { withData } from 'meteor/orionsoft:react-meteor-data';
 import startCase from 'lodash/startCase';
+import PropTypes from 'prop-types';
 
 @withData(() => {
   const movesSub = Meteor.subscribe('moves');
@@ -43,10 +41,7 @@ export default class Comboizer extends Component {
     const { rand1, rand2 } = getRandTwo(moves.length);
 
     this.setState({
-      randomMoves: [
-        moves[rand1],
-        moves[rand2],
-      ],
+      randomMoves: [moves[rand1], moves[rand2]],
     });
   }
 
@@ -66,15 +61,15 @@ export default class Comboizer extends Component {
                 checked={this.state[filter.type]}
                 onClick={() => this.setState({ [filter.type]: !this.state[filter.type] })}
               />
-              <label htmlFor={filter.type}>
-                {startCase(filter.type)}
-              </label>
+              <label htmlFor={filter.type}>{startCase(filter.type)}</label>
             </div>
           ))}
         </div>
         {this.state.randomMoves.length > 0 && <h3>{this.state.randomMoves[0].name}</h3>}
         {this.state.randomMoves.length > 0 && <h3>{this.state.randomMoves[1].name}</h3>}
-        <button className="btn" onClick={this.getMoves}>Get Moves</button>
+        <button className="btn" onClick={this.getMoves}>
+          Get Moves
+        </button>
       </div>
     );
   }

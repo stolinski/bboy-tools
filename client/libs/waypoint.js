@@ -1,14 +1,16 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+
 /**
  * Calls a function when you scroll to the element.
  */
 Waypoint = React.createClass({
   propTypes: {
-    onEnter: React.PropTypes.func,
-    onLeave: React.PropTypes.func,
+    onEnter: PropTypes.func,
+    onLeave: PropTypes.func,
     // threshold is percentage of the height of the visible part of the
     // scrollable ancestor (e.g. 0.1)
-    threshold: React.PropTypes.number,
+    threshold: PropTypes.number,
   },
 
   /**
@@ -67,8 +69,7 @@ Waypoint = React.createClass({
       }
 
       const style = window.getComputedStyle(node);
-      const overflowY = style.getPropertyValue('overflow-y') ||
-        style.getPropertyValue('overflow');
+      const overflowY = style.getPropertyValue('overflow-y') || style.getPropertyValue('overflow');
 
       if (overflowY === 'auto' || overflowY === 'scroll') {
         return node;
@@ -108,18 +109,14 @@ Waypoint = React.createClass({
    */
   _distanceToTopOfScrollableAncestor(node) {
     if (this.scrollableAncestor !== window && !node.offsetParent) {
-      throw new Error(
-        'The scrollable ancestor of Waypoint needs to have positioning to ' +
-        'properly determine position of Waypoint (e.g. `position: relative;`)'
-      );
+      throw new Error('The scrollable ancestor of Waypoint needs to have positioning to ' +
+          'properly determine position of Waypoint (e.g. `position: relative;`)');
     }
 
     if (node.offsetParent === this.scrollableAncestor || !node.offsetParent) {
       return node.offsetTop;
-    } else {
-      return node.offsetTop +
-        this._distanceToTopOfScrollableAncestor(node.offsetParent);
     }
+    return node.offsetTop + this._distanceToTopOfScrollableAncestor(node.offsetParent);
   },
 
   /**
@@ -127,8 +124,7 @@ Waypoint = React.createClass({
    *   ancestor element.
    */
   _isVisible() {
-    const waypointTop =
-      this._distanceToTopOfScrollableAncestor(React.findDOMNode(this));
+    const waypointTop = this._distanceToTopOfScrollableAncestor(React.findDOMNode(this));
     let contextHeight;
     let contextScrollTop;
 
@@ -155,6 +151,6 @@ Waypoint = React.createClass({
   render() {
     // We need an element that we can locate in the DOM to determine where it is
     // rendered relative to the top of its context.
-    return <span style={{fontSize: 0}} />;
-  }
+    return <span style={{ fontSize: 0 }} />;
+  },
 });

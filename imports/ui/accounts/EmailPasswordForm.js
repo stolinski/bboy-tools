@@ -1,10 +1,10 @@
-import React, { PureComponent, PropTypes } from 'react';
+import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
 
 export default class EmailPasswordForm extends PureComponent {
-
   static propTypes = {
     submitAction: PropTypes.func.isRequired,
-  }
+  };
 
   getDefaultProps() {
     return {
@@ -27,7 +27,9 @@ export default class EmailPasswordForm extends PureComponent {
           <input placeholder="Password" type="password" id="password" className="form-control" />
         </div>
         <div className="form-group">
-          <button type="submit" className="btn btn-primary">{this.props.submitBtnLabel}</button>
+          <button type="submit" className="btn btn-primary">
+            {this.props.submitBtnLabel}
+          </button>
         </div>
       </form>
     );

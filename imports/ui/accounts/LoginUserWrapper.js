@@ -1,13 +1,15 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 import EmailPasswordForm from './EmailPasswordForm';
 
 export default class LoginWindowWrapper extends Component {
-
   loginWithPassword(e) {
     e.preventDefault();
     const email = $('#email').val();
-    const password = $('#password').val().trim();
+    const password = $('#password')
+      .val()
+      .trim();
 
     Meteor.loginWithPassword(email, password, (error) => {
       if (error) {
@@ -22,11 +24,11 @@ export default class LoginWindowWrapper extends Component {
     return (
       <div className="login-form">
         <h2>Login</h2>
-        <EmailPasswordForm
-          submitBtnLabel="Login"
-          submitAction={this.loginWithPassword}
-        />
-        <p>Don&apos;t have an account? <br /><a onClick={this.props.toggleLogin}>Register</a></p>
+        <EmailPasswordForm submitBtnLabel="Login" submitAction={this.loginWithPassword} />
+        <p>
+          Don&apos;t have an account? <br />
+          <a onClick={this.props.toggleLogin}>Register</a>
+        </p>
       </div>
     );
   }

@@ -1,37 +1,37 @@
-meteor-base@1.1.0             # Packages every Meteor app needs to have
-mobile-experience@1.0.4       # Packages for a great mobile UX
-mongo@1.1.18                   # The database Meteor supports right now
+meteor-base@1.3.0             # Packages every Meteor app needs to have
+mobile-experience@1.0.5       # Packages for a great mobile UX
+mongo@1.4.2                   # The database Meteor supports right now
 blaze-html-templates    # Compile .html files into Meteor Blaze views
 session@1.1.7                 # Client-side reactive dictionary for your app
 jquery@1.11.10                  # Helpful client-side library
 tracker@1.1.3                 # Meteor's client-side reactive programming library
-random@1.0.10
+random@1.1.0
 react-meteor-data
 
-standard-minifier-css@1.3.4
-standard-minifier-js@2.1.0
-es5-shim@4.6.15                # ECMAScript 5 compatibility for older browsers.
-ecmascript@0.8.0              # Enable ECMAScript2015+ syntax in app code
+standard-minifier-css@1.4.0
+standard-minifier-js@2.3.1
+es5-shim@4.7.0                # ECMAScript 5 compatibility for older browsers.
+ecmascript@0.10.0              # Enable ECMAScript2015+ syntax in app code
 
 insecure@1.0.7
 
 stolinski:stylus-multi
 fortawesome:fontawesome
-accounts-base@1.3.0
-accounts-ui@1.1.9
-accounts-password
-accounts-twitter@1.3.0
+accounts-base@1.4.2
+accounts-ui@1.3.0
+accounts-password@1.5.0
+accounts-twitter@1.4.1
 natestrauser:animate-css
 
-check@1.2.5
+check@1.3.0
 zimme:active-route
 
-shell-server@0.2.3
+shell-server@0.3.1
 gwendall:accounts-helpers
 
 
 orionsoft:react-meteor-data
 msavin:jetsetter
-dynamic-import
+dynamic-import@0.3.0
 #bundle-visualizer
 dburles:google-maps

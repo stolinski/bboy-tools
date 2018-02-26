@@ -1,8 +1,16 @@
 {
-
   "plugins": [
-    "transform-object-rest-spread",
+    "react-loadable/babel",
+    "transform-console-log-variable-names",
     "transform-decorators-legacy",
-    "transform-class-properties"
+    "transform-class-properties",
+    "react-require",
+    "babel-plugin-styled-components",
+    [
+      "module-resolver",
+      {
+        "root": ["./"]
+      }
+    ]
   ]
 }

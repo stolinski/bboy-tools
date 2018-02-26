@@ -1,44 +1,50 @@
-import React, { PureComponent } from 'react';
-import { autobind } from 'core-decorators';
-import PropTypes from 'prop-types';
+import React, { PureComponent } from "react";
+import PropTypes from "prop-types";
 
-@autobind
 export default class Move extends PureComponent {
   static defaultProps = {
-    bMode: false,
+    bMode: false
   };
 
   static propTypes = {
     move: PropTypes.object.isRequired,
-    bMode: PropTypes.bool,
+    bMode: PropTypes.bool
   };
 
   state = {
-    controlsToggle: false,
+    controlsToggle: false
   };
 
-  toggleControls() {
+  toggleControls = () => {
     this.setState({
-      controlsToggle: !this.state.controlsToggle,
+      controlsToggle: !this.state.controlsToggle
     });
-  }
+  };
 
-  deleteThisMove() {
-    Moves.remove(this.props.move._id);
-  }
+  // TODO
+  // Refactor
+  // deleteThisMove = () => {
+  //   Moves.remove(this.props.move._id);
+  // };
 
   render() {
     // Give moves a different className when they are checked off,
     // so that we can style them nicely in CSS
-    let moveClassName = this.props.move.checked ? 'checked' : '';
-    moveClassName += ' move';
-    let controlsToggle = this.state.controlsToggle ? 'open' : '';
-    controlsToggle += ' controls';
+    let moveClassName = this.props.move.checked ? "checked" : "";
+    moveClassName += " move";
+    let controlsToggle = this.state.controlsToggle ? "open" : "";
+    controlsToggle += " controls";
 
     const moveEditForm = (
       <form className="edit-move" onSubmit={this.updateMove}>
         <input type="text" ref="moveName" placeholder="Move Name" />
-        <input type="number" ref="moveValue" min="0" max="10" placeholder="10" />
+        <input
+          type="number"
+          ref="moveValue"
+          min="0"
+          max="10"
+          placeholder="10"
+        />
         <input type="hidden" ref="moveType" />
         <button type="submit">
           <i className="fa fa-check" />
@@ -54,7 +60,9 @@ export default class Move extends PureComponent {
         </div>
         <span className="text">
           {this.props.move.name}
-          {this.props.move.value && <span className="move-value">{this.props.move.value}</span>}
+          {this.props.move.value && (
+            <span className="move-value">{this.props.move.value}</span>
+          )}
         </span>
         {moveEditForm}
         <span className="edit-toggle" onClick={this.toggleControls}>

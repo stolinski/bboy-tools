@@ -13,8 +13,6 @@ standard-minifier-js@2.3.1
 es5-shim@4.7.0                # ECMAScript 5 compatibility for older browsers.
 ecmascript@0.10.0              # Enable ECMAScript2015+ syntax in app code
 
-insecure@1.0.7
-
 stolinski:stylus-multi
 fortawesome:fontawesome
 accounts-base@1.4.2
@@ -29,9 +27,9 @@ zimme:active-route
 shell-server@0.3.1
 gwendall:accounts-helpers
 
-
 orionsoft:react-meteor-data
-msavin:jetsetter
-dynamic-import@0.3.0
-#bundle-visualizer
+dynamic-import
 dburles:google-maps
+apollo
+
+swydo:graphql

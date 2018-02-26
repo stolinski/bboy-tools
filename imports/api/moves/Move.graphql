@@ -20,13 +20,19 @@ type Move {
   type: String
 }
 
+input MoveInput {
+  name: String!
+  value: String
+  type: String!
+}
+
 type Query {
   # userMoves: [Move]
   moves: [Move]
 }
 
 type Mutation {
-  addMove: Move
+  addMove(move: MoveInput!): Move
   deleteMove: Move
   updateMove: Move
 }

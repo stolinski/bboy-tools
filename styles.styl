@@ -407,6 +407,10 @@ header
     padding: 10px 13px 6px
     background: #EEEEEE
     border: none
+    color: black
+    border-bottom: solid 2px black
+    &::placeholder
+      color: #aaa
     & + input
       width 25%
       margin-left 2.5%
@@ -724,7 +728,5 @@ input[type="checkbox"]
     margin 4px 0 0
 
 .paper
-  background-image: linear-gradient(to top, rgba(blue, 0.05) 5%, rgba(#fff, 0) 5%);
-  background-size: 100% $baseLine
   font-size: $baseFont
   line-height $baseLine

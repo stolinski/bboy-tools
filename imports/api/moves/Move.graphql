@@ -18,6 +18,7 @@ type Move {
   name: String
   value: String
   type: String
+  battleUsed: Boolean
 }
 
 input MoveInput {
@@ -33,6 +34,8 @@ type Query {
 
 type Mutation {
   addMove(move: MoveInput!): Move
+  resetBattleMode: Move
+  useBattleMode(id: ID!): Move
   deleteMove: Move
   updateMove: Move
 }

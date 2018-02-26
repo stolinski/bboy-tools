@@ -1,16 +1,14 @@
 import React, { Component } from "react";
 import FlipMove from "react-flip-move";
-import { graphql } from "react-apollo";
+import { graphql, compose } from "react-apollo";
+import gql from "graphql-tag";
+
 import UserMoves from "../moves/containers/UserMoves.graphql";
 import BattleModeMove from "./BattleModeMove";
 
 export class BattleMode extends Component {
   resetBattleMode = () => {
-    Meteor.call("move.resetBattle", Meteor.userId(), error => {
-      if (error) {
-        sAlert.error(error.reason);
-      }
-    });
+    this.props.resetBattleMode();
   };
 
   render() {
@@ -39,6 +37,22 @@ export class BattleMode extends Component {
   }
 }
 
-export default graphql(UserMoves, {
-  props: ({ data }) => ({ ...data })
-})(BattleMode);
+const resetBattleMode = gql`
+  mutation resetBattleMode {
+    resetBattleMode {
+      _id
+    }
+  }
+`;
+
+export default compose(
+  graphql(UserMoves, {
+    props: ({ data }) => ({ ...data })
+  }),
+  graphql(resetBattleMode, {
+    name: "resetBattleMode",
+    options: {
+      refetchQueries: ["UserMoves"]
+    }
+  })
+)(BattleMode);

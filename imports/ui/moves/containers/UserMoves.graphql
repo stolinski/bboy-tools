@@ -8,6 +8,7 @@ query UserMoves {
       _id
     }
     value
+    battleUsed
     name
   }
 }

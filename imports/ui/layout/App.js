@@ -1,34 +1,29 @@
 import React, { Component } from "react";
 import { Route, Switch, withRouter } from "react-router-dom";
-
-import currentUser from "../containers/currentUser";
+import { graphql } from "react-apollo";
+import CurrentUser from "imports/ui/user/containers/CurrentUser.graphql";
 
 import Header from "./Header";
 import HomeLayout from "./HomeLayout";
 import MainLayout from "./MainLayout";
 
-@withRouter
-@currentUser
-export default class App extends Component {
+export class App extends Component {
   render() {
-    const { userSub, user } = this.props;
+    const { user, loading } = this.props;
+    if (loading) return null;
     return (
       <div className="main-layout-wrapper">
         <div>
-          <Header userSub={userSub} user={user} />
+          <Header user={user} />
           <Switch>
             <Route
               exact
               path="/"
-              render={props => (
-                <HomeLayout {...props} userSub={userSub} user={user} />
-              )}
+              render={props => <HomeLayout {...props} user={user} />}
             />
             <Route
               path="/"
-              render={props => (
-                <MainLayout {...props} userSub={userSub} user={user} />
-              )}
+              render={props => <MainLayout {...props} user={user} />}
             />
           </Switch>
         </div>
@@ -39,3 +34,7 @@ export default class App extends Component {
     );
   }
 }
+
+export default graphql(CurrentUser, {
+  props: ({ data }) => ({ ...data })
+})(withRouter(App));

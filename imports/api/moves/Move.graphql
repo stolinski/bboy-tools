@@ -1,0 +1,32 @@
+scalar Date
+
+# type Moves {
+#   moves: [Move]
+#   topRock: [Move]
+#   footwork: [Move]
+#   powerMove: [Move]
+#   goDown: [Move]
+#   freeze: [Move]
+#   burner: [Move]
+# }
+
+type Move {
+  _id: ID!
+  owner: ID
+  user: User
+  createdAt: Date
+  name: String
+  value: String
+  type: String
+}
+
+type Query {
+  # userMoves: [Move]
+  moves: [Move]
+}
+
+type Mutation {
+  addMove: Move
+  deleteMove: Move
+  updateMove: Move
+}

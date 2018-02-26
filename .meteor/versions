@@ -21,7 +21,6 @@ caching-html-compiler@1.1.2
 callback-hook@1.1.0
 check@1.3.0
 coffeescript@1.0.17
-dburles:google-maps@1.1.5
 ddp@1.4.0
 ddp-client@2.3.1
 ddp-common@1.4.0
@@ -72,7 +71,6 @@ oauth@1.2.1
 oauth1@1.2.0
 observe-sequence@1.0.16
 ordered-dict@1.1.0
-orionsoft:react-meteor-data@0.1.5
 promise@0.10.2
 random@1.1.0
 rate-limit@1.0.9

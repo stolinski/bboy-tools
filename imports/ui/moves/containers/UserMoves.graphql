@@ -1,0 +1,13 @@
+query UserMoves {
+  moves {
+    _id
+    owner
+    createdAt
+    type
+    user {
+      _id
+    }
+    value
+    name
+  }
+}

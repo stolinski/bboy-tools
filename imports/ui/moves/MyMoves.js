@@ -1,19 +1,13 @@
 import React, { Component } from "react";
 import ReactCSSTransitionGroup from "react-addons-css-transition-group";
-import { withData } from "meteor/orionsoft:react-meteor-data";
 import _ from "lodash";
+import { graphql } from "react-apollo";
+import UserMoves from "./containers/UserMoves.graphql";
 import Moves from "imports/api/moves/moves";
 
 import Type from "./Type";
 
-@withData(() => {
-  const movesSub = Meteor.subscribe("moves");
-  return {
-    movesSub: movesSub.ready(),
-    moves: Moves.find({}, { sort: { createdAt: 1 } }).fetch()
-  };
-})
-export default class MyMoves extends Component {
+export class MyMoves extends Component {
   renderMoves() {
     const start = [
       {
@@ -63,6 +57,8 @@ export default class MyMoves extends Component {
   }
 
   render() {
+    const { moves, loading } = this.props;
+    if (loading) return null;
     return (
       <div className="container">
         <ReactCSSTransitionGroup
@@ -81,3 +77,7 @@ export default class MyMoves extends Component {
     );
   }
 }
+
+export default graphql(UserMoves, {
+  props: ({ data }) => ({ ...data })
+})(MyMoves);

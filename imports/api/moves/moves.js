@@ -9,7 +9,6 @@ Meteor.methods({
       value,
       type,
       owner: userId,
-      username: user,
       createdAt: new Date()
     });
   },

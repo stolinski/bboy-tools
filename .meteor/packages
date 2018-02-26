@@ -27,9 +27,7 @@ zimme:active-route
 shell-server@0.3.1
 gwendall:accounts-helpers
 
-orionsoft:react-meteor-data
 dynamic-import
-dburles:google-maps
 apollo
 
 swydo:graphql

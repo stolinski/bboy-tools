@@ -36,6 +36,6 @@ type Mutation {
   addMove(move: MoveInput!): Move
   resetBattleMode: Move
   useBattleMode(id: ID!): Move
-  deleteMove: Move
+  deleteMove(id: ID!): Move
   updateMove: Move
 }

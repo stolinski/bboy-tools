@@ -22,27 +22,6 @@ export default class Type extends PureComponent {
     this.setState({ formToggle: !this.state.formToggle });
   };
 
-  handleSubmit = event => {
-    event.preventDefault();
-    const name = this.name.value.trim();
-    const value = this.value.value.trim();
-    const { type } = this.props;
-    const move = {
-      name,
-      value,
-      type
-    };
-
-    this.props.addMove({
-      variables: {
-        move
-      }
-    });
-
-    this.name.value = "";
-    this.value.value = "";
-  };
-
   render() {
     const { type, moves } = this.props;
     let toggleForm = this.state.formToggle ? "open" : "";
@@ -62,7 +41,7 @@ export default class Type extends PureComponent {
               <Move key={move._id} move={move} bMode={false} />
             ))}
           </ReactCSSTransitionGroup>
-          <MoveForm />
+          <MoveForm type={type} />
         </ul>
 
         <button className={toggleForm} onClick={this.openForm}>

@@ -3,6 +3,27 @@ import gql from "graphql-tag";
 import { graphql, compose } from "react-apollo";
 
 class MoveForm extends Component {
+  handleSubmit = event => {
+    event.preventDefault();
+    const name = this.name.value.trim();
+    const value = this.value.value.trim();
+    const { type } = this.props;
+    const move = {
+      name,
+      value,
+      type
+    };
+
+    this.props.addMove({
+      variables: {
+        move
+      }
+    });
+
+    this.name.value = "";
+    this.value.value = "";
+  };
+
   render() {
     return (
       <li className="move-form">

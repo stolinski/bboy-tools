@@ -14,7 +14,9 @@ export default {
       });
       return Moves.findOne(moveId);
     },
-    deleteMove(obj, args, context) {},
+    deleteMove(obj, { id }, { userId }) {
+      Moves.remove({ owner: userId, _id: id });
+    },
     updateMove(obj, args, context) {},
     resetBattleMode(obj, args, { userId }) {
       Moves.update(

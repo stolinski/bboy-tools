@@ -19,12 +19,9 @@ export class App extends Component {
             <Route
               exact
               path="/"
-              render={props => <HomeLayout {...props} user={user} />}
+              component={props => <HomeLayout {...this.props} />}
             />
-            <Route
-              path="/"
-              render={props => <MainLayout {...props} user={user} />}
-            />
+            <Route path="/" render={props => <MainLayout {...this.props} />} />
           </Switch>
         </div>
         <footer className="site-footer">

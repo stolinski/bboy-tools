@@ -1,10 +1,17 @@
-import React from 'react';
+import React from "react";
+import { withApollo } from "react-apollo";
 
-const LogoutButton = () =>
+const LogoutButton = props => (
   <button
-    onClick={() => { Meteor.logout(); Session.set('navDrawer', false); }}
+    onClick={() => {
+      Session.set("navDrawer", false);
+      Session.set("loginOpen", false);
+      Meteor.logout();
+      props.client.resetStore();
+    }}
   >
     Logout
-  </button>;
+  </button>
+);
 
-export default LogoutButton;
+export default withApollo(LogoutButton);

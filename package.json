@@ -37,6 +37,7 @@
     "react-dom": "^16.2.0",
     "react-flip-move": "^3.0.1",
     "react-hammerjs": "^1.0.1",
+    "react-measure": "^3.0.0-rc.3",
     "react-mounter": "^1.2.0",
     "react-router": "^4.2.0",
     "react-router-dom": "^4.2.2",

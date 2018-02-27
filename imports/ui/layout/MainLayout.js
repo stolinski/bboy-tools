@@ -8,7 +8,7 @@ import BattleTools from "../tools/BattleTools";
 // import Mixtapes from '../../collections/mixtapes';
 
 const MainLayout = ({ user }) => {
-  if (!user) return <Redirect to={{ pathname: "/" }} />;
+  if (!user._id) return <Redirect to={{ pathname: "/" }} />;
 
   return (
     <main className="main-layout">

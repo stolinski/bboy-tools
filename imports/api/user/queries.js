@@ -1,10 +1,7 @@
 export default {
   Query: {
-    user(root, args, context) {
-      if (context) {
-        return context.user || {};
-      }
-      return {};
+    user(root, args, context = {}) {
+      return context.user || {};
     }
   }
 };

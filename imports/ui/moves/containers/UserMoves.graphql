@@ -4,9 +4,6 @@ query UserMoves {
     owner
     createdAt
     type
-    user {
-      _id
-    }
     value
     battleUsed
     name
